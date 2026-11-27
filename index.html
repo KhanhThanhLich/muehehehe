@@ -902,7 +902,7 @@
         </div>
 
         <div class="flower-list" id="flowerList">
-          <div class="empty-state">Đang tải dữ liệu từ Google Sheets...</div>
+          <div class="empty-state">Đang tải dữ liệu từ bumpyne</div>
         </div>
       </div>
 
@@ -1048,7 +1048,7 @@
         console.error("Lỗi tải dữ liệu:", err);
         setCloudStatus("error", "Lỗi kết nối");
         document.getElementById("flowerList").innerHTML =
-          '<div class="empty-state">Không thể tải dữ liệu từ Google Sheets. Hãy kiểm tra lại quyền truy cập Apps Script.</div>';
+          '<div class="empty-state">Không thể tải dữ liệu từ bumpyne. Hãy kiểm tra lại quyền truy cập Apps Script.</div>';
       }
     }
 
@@ -1070,7 +1070,7 @@
       } catch (err) {
         console.error("Lỗi đồng bộ:", err);
         setCloudStatus("error", "Lỗi lưu");
-        alert("Không thể lưu lên Google Sheets. Hãy kiểm tra lại quyền triển khai Apps Script.");
+        alert("Không thể lưu. Hãy kiểm tra lại quyền triển khai Apps Script.");
         return false;
       }
     }
