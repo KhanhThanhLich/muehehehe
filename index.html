@@ -388,6 +388,7 @@
       grid-template-columns: 60px 2fr 120px 2.5fr;
     }
 
+    body.role-mod .flower-row,
     body.role-super .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
@@ -1162,7 +1163,7 @@
     const PASS_MOD = "bumpy";
     const PASS_SUPER = "bumpyne";
 
-    const CACHE_KEY = "zero_garden_fb_cache_v8";
+    const CACHE_KEY = "zero_garden_fb_cache_v9";
 
     let adminLevel = "";
     let flowers = [];
@@ -1342,7 +1343,7 @@
     const recruitModal = document.getElementById("recruitModal");
 
     window.openRecruitModal = function(editMemberName = "") {
-      if (!canManageAll()) return;
+      if (!canManageFlowersAndMembers()) return;
       const oldInput = document.getElementById("recruitOldName");
       const nameInput = document.getElementById("recruitNameInput");
       const roleSelect = document.getElementById("recruitRoleSelect");
@@ -1378,7 +1379,7 @@
     });
 
     window.submitRecruitMember = async function() {
-      if (!canManageAll()) return;
+      if (!canManageFlowersAndMembers()) return;
       const name = document.getElementById("recruitNameInput").value.trim();
       const role = document.getElementById("recruitRoleSelect").value;
       const btn = document.getElementById("btnRecruitSubmit");
@@ -1733,7 +1734,7 @@
         ` : "";
 
         return `
-          <div class="flower-row" onclick="if(canManageAll()) editFlower('${item.id}')">
+          <div class="flower-row" onclick="if(canManageFlowersAndMembers()) editFlower('${item.id}')">
             <div class="col-stt">${index + 1}</div>
             <div class="col-name">${renderFlowerIconHtml(item, "flower-thumb")} <span>${escapeHtml(item.name)}</span></div>
             <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
@@ -1982,7 +1983,7 @@
     modal.addEventListener("click", (e) => { if (e.target.id === "flowerModal") modal.classList.remove("show"); });
 
     window.editFlower = function(id) {
-      if (!canManageAll()) return;
+      if (!canManageFlowersAndMembers()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
 
