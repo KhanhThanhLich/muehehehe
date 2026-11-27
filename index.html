@@ -411,11 +411,11 @@
     }
 
     .flower-thumb-cat {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       object-fit: cover;
-      border: 1px solid rgba(52, 211, 153, 0.4);
+      border: 1.5px solid rgba(52, 211, 153, 0.4);
       background: rgba(255, 255, 255, 0.05);
       flex-shrink: 0;
     }
@@ -560,10 +560,10 @@
     .mini-purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
     .member-card-footer { font-size: 12px; color: var(--green-bright); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
-    /* ================= BỐ CỤC THẲNG HÀNG MỤC LOẠI HOA ================= */
+    /* ================= MỤC LOẠI HOA: MỖI DÒNG 1 HOA, THẲNG HÀNG ================= */
     .categories-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
       gap: 18px;
       align-items: start;
     }
@@ -589,52 +589,52 @@
       font-size: 12px;
       font-weight: 700;
     }
-    .cat-flower-grid {
+    .cat-flower-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 10px;
     }
     .cat-flower-item {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-subtle);
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: 12px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: #f1f5f9;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      min-height: 48px;
-      transition: border-color 0.15s, background-color 0.15s;
+      gap: 12px;
+      min-height: 54px;
+      cursor: pointer;
+      transition: border-color 0.15s, background-color 0.15s, transform 0.15s;
     }
     .cat-flower-item:hover {
-      border-color: rgba(52, 211, 153, 0.4);
+      border-color: rgba(52, 211, 153, 0.45);
       background: rgba(255, 255, 255, 0.07);
+      transform: translateX(2px);
     }
     .cat-flower-left {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 12px;
       min-width: 0;
       flex: 1;
     }
     .cat-flower-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
+      line-height: 1.35;
+      word-break: break-word;
     }
     .btn-edit-cat-img {
       background: rgba(59, 130, 246, 0.14);
       border: 1px solid rgba(96, 165, 250, 0.35);
       color: #93c5fd;
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 11.5px;
+      font-size: 12.5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -670,12 +670,23 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
     }
 
+    .modal-flower-view {
+      background: #131826;
+      border: 1.5px dashed rgba(44, 229, 131, 0.45);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      padding: 26px 24px 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
     .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
     .edit-modal-title { font-size: 20px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
     .edit-modal-close { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; }
     .edit-modal-close:hover { color: #ffffff; }
 
-    /* ================= KHUNG ẢNH HOA TRONG POPUP SỬA ================= */
+    /* ================= KHUNG ẢNH HOA CÓ VIỀN ================= */
     .edit-flower-showcase {
       display: flex;
       flex-direction: column;
@@ -686,8 +697,8 @@
     }
 
     .flower-showcase-frame {
-      width: 108px;
-      height: 108px;
+      width: 112px;
+      height: 112px;
       border-radius: 24px;
       padding: 4px;
       display: flex;
@@ -696,19 +707,26 @@
       position: relative;
     }
 
+    .flower-showcase-frame.lg {
+      width: 148px;
+      height: 148px;
+      border-radius: 28px;
+      padding: 5px;
+    }
+
     .flower-showcase-frame.frame-Đỏ {
       background: linear-gradient(135deg, #ff4d4d 0%, #f43f5e 50%, #fbbf24 100%);
-      box-shadow: 0 0 24px rgba(239, 68, 68, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 26px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.35);
     }
 
     .flower-showcase-frame.frame-Vàng {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #fef08a 100%);
-      box-shadow: 0 0 24px rgba(245, 158, 11, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 26px rgba(245, 158, 11, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
     }
 
     .flower-showcase-frame.frame-Tím {
       background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #ec4899 100%);
-      box-shadow: 0 0 24px rgba(168, 85, 247, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 26px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.35);
     }
 
     .flower-showcase-inner {
@@ -723,6 +741,10 @@
       border: 2px solid rgba(15, 20, 34, 0.85);
     }
 
+    .flower-showcase-frame.lg .flower-showcase-inner {
+      border-radius: 23px;
+    }
+
     .flower-showcase-inner img {
       width: 100%;
       height: 100%;
@@ -731,7 +753,7 @@
     }
 
     .flower-showcase-inner i {
-      font-size: 38px;
+      font-size: 42px;
       color: var(--green-bright);
     }
 
@@ -741,6 +763,15 @@
       color: #ffffff;
       text-align: center;
       letter-spacing: 0.2px;
+    }
+
+    .flower-view-title-32 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-top: 14px;
+      word-break: break-word;
     }
 
     .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -811,6 +842,10 @@
     .flower-mini-card-name { font-size: 14px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; line-height: 1.35; }
     .flower-mini-card-name i { color: var(--green-bright); }
 
+    @media (max-width: 1120px) {
+      .categories-grid { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 1024px) {
       .news-layout { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -824,7 +859,7 @@
       .sidebar { width: 100%; padding: 16px; }
       .nav-list { flex-direction: row; overflow-x: auto; }
       .main-wrapper { padding: 16px; }
-      .cat-flower-grid { grid-template-columns: 1fr; }
+      .flower-view-title-32 { font-size: 24px; }
     }
   </style>
 </head>
@@ -976,6 +1011,22 @@
     </section>
   </main>
 
+  <!-- Popup Xem Ảnh Hoa Có Viền + Tên 32px (Dành cho Cấp 1 / Người Xem ở Loại Hoa) -->
+  <div class="modal-overlay" id="flowerDetailModal">
+    <div class="modal-flower-view">
+      <div class="edit-modal-top" style="margin-bottom:14px;">
+        <div class="edit-modal-title" style="font-size:16px; color:#94a3b8;">🌸 Chi Tiết Bông Hoa</div>
+        <button class="edit-modal-close" onclick="closeFlowerDetailModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="edit-flower-showcase" style="margin:8px 0 0;">
+        <div class="flower-showcase-frame lg frame-Tím" id="viewFlowerFrame">
+          <div class="flower-showcase-inner" id="viewFlowerImgWrap"></div>
+        </div>
+        <div class="flower-view-title-32" id="viewFlowerName32"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Popup Chỉnh Sửa Người Sở Hữu / Trồng Hoa Mới -->
   <div class="modal-overlay" id="flowerModal">
     <div class="modal-flower-edit">
@@ -1105,7 +1156,7 @@
     const PASS_MOD = "bumpy";
     const PASS_SUPER = "bumpyne";
 
-    const CACHE_KEY = "zero_garden_fb_cache_v6";
+    const CACHE_KEY = "zero_garden_fb_cache_v7";
 
     let adminLevel = "";
     let flowers = [];
@@ -1177,6 +1228,30 @@
       }
       return `<i class="fa-solid fa-leaf" style="color:#34d399;"></i>`;
     }
+
+    // ================= POPUP XEM HOA (CẤP 1 / NGƯỜI XEM Ở LOẠI HOA) =================
+    const detailModal = document.getElementById("flowerDetailModal");
+
+    window.openFlowerDetailModal = function(id) {
+      const item = flowers.find(f => String(f.id) === String(id));
+      if (!item) return;
+
+      document.getElementById("viewFlowerFrame").className = `flower-showcase-frame lg frame-${item.rarity}`;
+      const url = getFlowerImageUrl(item);
+      document.getElementById("viewFlowerImgWrap").innerHTML = url
+        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
+      document.getElementById("viewFlowerName32").textContent = item.name;
+      detailModal.classList.add("show");
+    };
+
+    window.closeFlowerDetailModal = function() {
+      detailModal.classList.remove("show");
+    };
+
+    detailModal.addEventListener("click", (e) => {
+      if (e.target.id === "flowerDetailModal") closeFlowerDetailModal();
+    });
 
     // ================= POPUP SỬA LINK ẢNH (CẤP 2) =================
     const imgModal = document.getElementById("flowerImageModal");
@@ -1797,12 +1872,12 @@
         const title = rarity === "Vàng" ? "Phẩm Vàng (Cam)" : `Phẩm ${rarity}`;
 
         const itemsHtml = list.length > 0
-          ? `<div class="cat-flower-grid">` + list.map(f => {
+          ? `<div class="cat-flower-list">` + list.map(f => {
               const editImgBtn = isSuper
                 ? `<button type="button" class="btn-edit-cat-img" title="Chỉnh sửa link ảnh" onclick="event.stopPropagation(); openFlowerImageModal('${f.id}')"><i class="fa-solid fa-image"></i></button>`
                 : "";
               return `
-                <div class="cat-flower-item" title="${escapeHtml(f.name)}">
+                <div class="cat-flower-item" onclick="openFlowerDetailModal('${f.id}')">
                   <div class="cat-flower-left">
                     ${renderFlowerIconHtml(f, "flower-thumb-cat")}
                     <span class="cat-flower-name">${escapeHtml(f.name)}</span>
