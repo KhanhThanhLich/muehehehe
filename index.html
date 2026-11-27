@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -622,7 +622,7 @@
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycby5nkZ7IHSxYJiaGzv-2Ff5Po6xcBBPKdvYaKLXnRI-HFxVr9LGk0Q_CsbLdPfPKREBGA/exec";
-    const ADMIN_PASS = "bumpyne";
+    const ADMIN_PASS = "123456";
 
     let flowers = [];
     let members = [];
@@ -730,4 +730,182 @@
     function renderFlowerCards() {
       const grades = ["Đỏ", "Vàng", "Tím", "Lam", "Xanh"];
       flowerStatsEl.innerHTML = grades
-        .map((
+        .map((g) => {
+          const count = flowers.filter((f) => f.grade === g).length;
+          return `
+            <div class="stat-card">
+              <span class="grade-badge grade-${g}">${g}</span>
+              <div class="stat-num">${count}</div>
+            </div>
+          `;
+        })
+        .join("");
+
+      const keyword = cardSearchInputEl.value.trim().toLowerCase();
+      const filtered = flowers
+        .map((item, idx) => ({ ...item, stt: idx + 1 }))
+        .filter((item) => {
+          const matchGrade = cardSelectedGrade === "ALL" || item.grade === cardSelectedGrade;
+          const matchText = !keyword || item.name.toLowerCase().includes(keyword);
+          return matchGrade && matchText;
+        });
+
+      if (!filtered.length) {
+        flowerCardsEl.innerHTML = `<div class="placeholder-card">Chưa có hoa nào trong mục này.</div>`;
+        return;
+      }
+
+      flowerCardsEl.innerHTML = filtered
+        .map((item) => `
+          <div class="flower-card">
+            <div class="flower-card-title">🌸 ${escapeHtml(item.name)}</div>
+            <div class="flower-card-meta">
+              <span>#${item.stt}</span>
+              <span class="grade-badge grade-${escapeHtml(item.grade)}">${escapeHtml(item.grade)}</span>
+            </div>
+          </div>
+        `)
+        .join("");
+    }
+
+    /* Render Tab: Thành Viên */
+    function renderMembers() {
+      memberCountEl.textContent = members.length;
+      const keyword = memberSearchInputEl.value.trim().toLowerCase();
+
+      const rows = members
+        .map((item, idx) => ({ ...item, stt: idx + 1 }))
+        .filter((item) => !keyword || item.name.toLowerCase().includes(keyword));
+
+      if (!rows.length) {
+        memberListEl.innerHTML = `<div class="placeholder-card">Chưa có thành viên nào (hoặc không tìm thấy). Mở khóa Quản Trị để thêm thành viên mới.</div>`;
+        return;
+      }
+
+      memberListEl.innerHTML = rows
+        .map((item) => {
+          const roleClass = "role-" + item.role.replace(/\s+/g, "-");
+          return `
+            <div class="item-row">
+              <div class="item-left">
+                <span class="item-stt">${item.stt}</span>
+                <span class="item-name">
+                  <span>👤</span>
+                  <span>${escapeHtml(item.name)}</span>
+                  <span class="role-badge ${escapeHtml(roleClass)}">${escapeHtml(item.role)}</span>
+                </span>
+              </div>
+              <div class="item-right">
+                <button class="del-btn" type="button" onclick="deleteItem('member', ${item.row})">Xóa</button>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    window.deleteItem = async function (type, rowNumber) {
+      if (!isAdmin) return;
+      const label = type === "member" ? "thành viên" : "loại hoa";
+      if (!confirm(`Bạn chắc chắn muốn xóa ${label} này khỏi Google Sheets?`)) return;
+
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ type, action: "delete", row: rowNumber })
+      });
+      await loadAllData();
+    };
+
+    lockBtnEl.addEventListener("click", () => {
+      if (!isAdmin) {
+        const pass = prompt("Nhập mật khẩu mở khóa quản trị (mặc định: 123456):");
+        if (pass === ADMIN_PASS) {
+          isAdmin = true;
+          document.body.classList.add("admin-mode");
+          lockBtnEl.textContent = "🔓 Quản Trị";
+          lockBtnEl.classList.add("unlocked");
+          guestBannerEl.classList.add("hidden");
+        } else if (pass !== null) {
+          alert("Mật khẩu chưa đúng!");
+        }
+      } else {
+        isAdmin = false;
+        document.body.classList.remove("admin-mode");
+        lockBtnEl.textContent = "🔒 Chỉ Xem";
+        lockBtnEl.classList.remove("unlocked");
+        guestBannerEl.classList.remove("hidden");
+      }
+    });
+
+    addFlowerFormEl.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const nameInput = document.getElementById("newFlowerName");
+      const gradeInput = document.getElementById("newFlowerGrade");
+      const name = nameInput.value.trim();
+      if (!name) return;
+
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ type: "flower", action: "add", name, grade: gradeInput.value })
+      });
+      nameInput.value = "";
+      await loadAllData();
+    });
+
+    addMemberFormEl.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const nameInput = document.getElementById("newMemberName");
+      const roleInput = document.getElementById("newMemberRole");
+      const name = nameInput.value.trim();
+      if (!name) return;
+
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ type: "member", action: "add", name, role: roleInput.value })
+      });
+      nameInput.value = "";
+      await loadAllData();
+    });
+
+    searchInputEl.addEventListener("input", renderFlowers);
+    cardSearchInputEl.addEventListener("input", renderFlowerCards);
+    memberSearchInputEl.addEventListener("input", renderMembers);
+
+    document.querySelectorAll("#gradeFilters .filter-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll("#gradeFilters .filter-chip").forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        selectedGrade = chip.dataset.grade;
+        renderFlowers();
+      });
+    });
+
+    document.querySelectorAll("#cardGradeFilters .filter-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll("#cardGradeFilters .filter-chip").forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        cardSelectedGrade = chip.dataset.grade;
+        renderFlowerCards();
+      });
+    });
+
+    document.querySelectorAll(".nav-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.tab;
+        document.querySelectorAll(".tab-content").forEach((sec) => {
+          sec.style.display = sec.id === `tab-${target}` ? "block" : "none";
+        });
+      });
+    });
+
+    loadAllData();
+  </script>
+</body>
+</html>
