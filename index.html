@@ -362,11 +362,12 @@
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 16px 20px;
-      transition: border-color 0.2s, background-color 0.2s;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
     }
 
     .flower-row:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: rgba(52, 211, 153, 0.45);
       background-color: #1e2036;
     }
 
@@ -379,6 +380,11 @@
       font-size: 14.5px;
       font-weight: 700;
       color: #ffffff;
+      transition: color 0.15s;
+    }
+
+    .flower-row:hover .col-name {
+      color: var(--green-bright);
     }
 
     .col-name i { color: var(--green-bright); font-size: 15px; }
@@ -414,7 +420,7 @@
       transition: background 0.15s;
     }
 
-    .owner-pill:hover { background: rgba(16, 185, 129, 0.25); }
+    .owner-pill:hover { background: rgba(16, 185, 129, 0.28); }
     .owner-pill i { font-size: 11px; }
 
     .col-actions { display: flex; justify-content: flex-end; gap: 8px; }
@@ -478,7 +484,6 @@
     .dash-info h4 { font-size: 24px; font-weight: 800; color: #fff; }
     .dash-info p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Thẻ Thành Viên (Bấm được) */
     .members-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -524,25 +529,11 @@
       flex-shrink: 0;
     }
 
-    .member-name {
-      font-size: 15.5px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .member-total {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
+    .member-name { font-size: 15.5px; font-weight: 700; color: #ffffff; }
+    .member-total { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
     .member-total strong { color: var(--green-bright); }
 
-    .member-mini-stats {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .member-mini-stats { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .mini-badge {
       font-size: 11.5px;
@@ -607,11 +598,7 @@
       font-weight: 700;
     }
 
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
 
     .flower-tag {
       background: rgba(255, 255, 255, 0.05);
@@ -623,13 +610,16 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s;
     }
+    .flower-tag:hover { border-color: var(--green-bright); }
 
     /* ================= MODALS ================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(5px);
       display: none;
       align-items: center;
@@ -645,7 +635,7 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 18px;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       padding: 24px;
     }
 
@@ -674,6 +664,7 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 15px;
+      flex-shrink: 0;
     }
     .modal-close-icon:hover { background: rgba(239, 68, 68, 0.25); color: #f87171; }
 
@@ -730,9 +721,44 @@
       line-height: 1.35;
     }
 
-    .flower-mini-card-name i {
+    .flower-mini-card-name i { color: var(--green-bright); margin-top: 3px; }
+
+    /* Popup Thành Viên Sở Hữu Hoa */
+    .flower-owners-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      max-height: 50vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .owner-card-item {
+      background: #141326;
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .owner-card-item:hover {
+      border-color: var(--green-bright);
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    .owner-card-item i {
       color: var(--green-bright);
-      margin-top: 3px;
+      font-size: 14px;
+    }
+
+    .owner-card-item span {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #f8fafc;
     }
 
     .modal h3 { font-size: 18px; color: #fff; }
@@ -961,7 +987,30 @@
     </div>
   </div>
 
-  <!-- Modal Xem Thẻ Hoa Của Thành Viên -->
+  <!-- Popup Xem Thành Viên Sở Hữu Bông Hoa -->
+  <div class="modal-overlay" id="flowerDetailModal">
+    <div class="modal modal-wide" style="max-width: 580px;">
+      <div class="modal-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <h3 id="flowerDetailName">Tên Hoa</h3>
+            <span id="flowerDetailRarity" class="badge-rarity"></span>
+          </div>
+          <div id="flowerDetailSub" style="font-size:13px; color:#94a3b8; margin-top:6px;"></div>
+        </div>
+        <button class="modal-close-icon" onclick="closeFlowerDetailModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="flower-owners-grid" id="flowerDetailOwners"></div>
+      <div class="modal-footer">
+        <button class="btn-action btn-edit" id="btnEditFromDetail">
+          <i class="fa-solid fa-pen"></i> Chỉnh sửa hoa này
+        </button>
+        <button class="btn-cancel" onclick="closeFlowerDetailModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Xem Thẻ Hoa Của Thành Viên -->
   <div class="modal-overlay" id="memberFlowersModal">
     <div class="modal modal-wide">
       <div class="modal-header">
@@ -1119,22 +1168,23 @@
       filtered.forEach((item, index) => {
         const ownersArr = getOwnersArray(item.owners);
         const ownersHtml = ownersArr
-          .map(owner => `<span class="owner-pill" onclick="openMemberModal('${escapeHtml(owner).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(owner)}</span>`)
+          .map(owner => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeHtml(owner).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(owner)}</span>`)
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
 
         const row = document.createElement("div");
         row.className = "flower-row";
+        row.onclick = () => openFlowerDetailModal(item.id);
         row.innerHTML = `
           <div class="col-stt">${index + 1}</div>
           <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
           <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
           <div class="col-owners">${ownersHtml}</div>
           <div class="col-actions">
-            <button class="btn-action btn-edit" onclick="editFlower('${item.id}')">
+            <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
               <i class="fa-solid fa-pen"></i> Sửa
             </button>
-            <button class="btn-action btn-delete" onclick="deleteFlower('${item.id}')">
+            <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
               <i class="fa-solid fa-xmark"></i> Xóa
             </button>
           </div>
@@ -1144,6 +1194,51 @@
 
       updateCounts();
     }
+
+    // Popup Chi Tiết Hoa -> Hiển Thị Thành Viên Sở Hữu
+    window.openFlowerDetailModal = function(id) {
+      const item = flowers.find(f => String(f.id) === String(id));
+      if (!item) return;
+
+      const ownersArr = getOwnersArray(item.owners);
+      const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
+
+      document.getElementById("flowerDetailName").textContent = item.name;
+      const badge = document.getElementById("flowerDetailRarity");
+      badge.textContent = rarityLabel;
+      badge.className = `badge-rarity rarity-${item.rarity}`;
+      document.getElementById("flowerDetailSub").textContent = `Có ${ownersArr.length} thành viên đang sở hữu bông hoa này`;
+
+      const ownersContainer = document.getElementById("flowerDetailOwners");
+      if (ownersArr.length === 0) {
+        ownersContainer.innerHTML = '<div class="empty-state" style="grid-column:1/-1; padding:24px;">Chưa có thành viên nào sở hữu bông hoa này.</div>';
+      } else {
+        ownersContainer.innerHTML = ownersArr.map(owner => {
+          const safeOwner = escapeHtml(owner).replace(/'/g, "\\'");
+          return `
+            <div class="owner-card-item" onclick="closeFlowerDetailModal(); openMemberModal('${safeOwner}')">
+              <i class="fa-solid fa-user"></i>
+              <span>${escapeHtml(owner)}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.getElementById("btnEditFromDetail").onclick = () => {
+        closeFlowerDetailModal();
+        editFlower(item.id);
+      };
+
+      document.getElementById("flowerDetailModal").classList.add("show");
+    };
+
+    window.closeFlowerDetailModal = function() {
+      document.getElementById("flowerDetailModal").classList.remove("show");
+    };
+
+    document.getElementById("flowerDetailModal").addEventListener("click", (e) => {
+      if (e.target.id === "flowerDetailModal") closeFlowerDetailModal();
+    });
 
     // Tab 1: Bảng Tin
     function renderDashboard() {
@@ -1164,11 +1259,11 @@
 
       recentContainer.innerHTML = recent.map((item, idx) => {
         const ownersHtml = getOwnersArray(item.owners)
-          .map(o => `<span class="owner-pill" onclick="openMemberModal('${escapeHtml(o).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(o)}</span>`)
+          .map(o => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeHtml(o).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(o)}</span>`)
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
         return `
-          <div class="flower-row" style="grid-template-columns: 50px 2fr 120px 2.5fr;">
+          <div class="flower-row" style="grid-template-columns: 50px 2fr 120px 2.5fr;" onclick="openFlowerDetailModal('${item.id}')">
             <div class="col-stt">${idx + 1}</div>
             <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
             <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
@@ -1178,7 +1273,7 @@
       }).join("");
     }
 
-    // Tab 3: Thành Viên (Mỗi thành viên là 1 thẻ, bấm vào hiện thẻ hoa)
+    // Tab 3: Thành Viên
     function getMemberMap() {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m] = []; });
@@ -1234,7 +1329,6 @@
       }).join("");
     }
 
-    // Mở Modal Thẻ Hoa của Thành Viên
     window.openMemberModal = function(memberName) {
       selectedMemberName = memberName;
       selectedMemberFilter = "Tất cả";
@@ -1268,7 +1362,7 @@
       grid.innerHTML = filtered.map(f => {
         const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
         return `
-          <div class="flower-mini-card">
+          <div class="flower-mini-card" style="cursor:pointer;" onclick="closeMemberModal(); openFlowerDetailModal('${f.id}')">
             <div class="flower-mini-card-name">
               <i class="fa-solid fa-leaf"></i>
               <span>${escapeHtml(f.name)}</span>
@@ -1288,7 +1382,6 @@
       });
     });
 
-    // Đóng modal khi bấm ra vùng nền tối bên ngoài
     document.getElementById("memberFlowersModal").addEventListener("click", (e) => {
       if (e.target.id === "memberFlowersModal") closeMemberModal();
     });
@@ -1309,7 +1402,7 @@
             </div>
             <div class="tag-list">
               ${list.length > 0
-                ? list.map(f => `<span class="flower-tag"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${escapeHtml(f.name)}</span>`).join("")
+                ? list.map(f => `<span class="flower-tag" onclick="openFlowerDetailModal('${f.id}')"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${escapeHtml(f.name)}</span>`).join("")
                 : '<span style="color:#64748b;font-size:13px;">Chưa có hoa phẩm này</span>'}
             </div>
           </div>
@@ -1317,7 +1410,6 @@
       }).join("");
     }
 
-    // Lọc theo phẩm hoa
     document.querySelectorAll(".stat-card").forEach(card => {
       card.addEventListener("click", () => {
         document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active"));
