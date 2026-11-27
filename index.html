@@ -315,9 +315,10 @@
       justify-content: space-between;
       gap: 16px;
       margin-bottom: 24px;
+      flex-wrap: wrap;
     }
 
-    .search-box { position: relative; flex: 1; max-width: 440px; }
+    .search-box { position: relative; flex: 1; max-width: 440px; min-width: 220px; }
     .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
 
     .search-box input {
@@ -345,7 +346,9 @@
       gap: 8px;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+      transition: filter 0.15s, transform 0.1s;
     }
+    .btn-add:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
     .table-header {
       display: grid;
@@ -406,7 +409,7 @@
     .btn-edit { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; }
     .btn-delete { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; }
 
-    /* ================= HUY HIỆU CHỨC VỤ (GIỐNG ẢNH MẪU) ================= */
+    /* ================= HUY HIỆU VAI VẾ ================= */
     .role-badge {
       display: inline-flex;
       align-items: center;
@@ -425,19 +428,43 @@
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
     }
 
-    .role-badge.role-sub {
+    .role-badge.role-pho {
       background: linear-gradient(180deg, #a855f7 0%, #7e22ce 100%);
       border-color: #f6d55c;
       box-shadow: 0 0 0 1.5px #5b21b6, 0 2px 6px rgba(0, 0, 0, 0.35);
     }
 
-    .role-badge.role-custom {
+    .role-badge.role-quanly {
+      background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 1.5px #1e3a8a, 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    .role-badge.role-tinhanh {
       background: linear-gradient(180deg, #10b981 0%, #059669 100%);
       border-color: #fde68a;
       box-shadow: 0 0 0 1.5px #065f46, 0 2px 6px rgba(0, 0, 0, 0.35);
     }
 
+    .role-badge.role-thanhvien {
+      background: rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #cbd5e1;
+      font-weight: 600;
+      box-shadow: none;
+      text-shadow: none;
+    }
+
     /* ================= MEMBER & CATEGORY CARDS ================= */
+    .members-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
 
     .member-card {
@@ -485,12 +512,7 @@
       display: flex; align-items: center; justify-content: center;
       color: var(--green-bright); font-size: 18px; flex-shrink: 0;
     }
-    .member-name-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .member-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .member-name { font-size: 15.5px; font-weight: 700; color: #ffffff; }
     .member-total { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
     .member-total strong { color: var(--green-bright); }
@@ -508,7 +530,7 @@
     .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
     .flower-tag { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); padding: 5px 10px; border-radius: 8px; font-size: 12.5px; color: #e2e8f0; display: inline-flex; align-items: center; gap: 6px; }
 
-    /* ================= POPUP CHỈNH SỬA NGƯỜI SỞ HỮU ================= */
+    /* ================= POPUPS (CHỈNH SỬA HOA & CHIÊU MỘ THÀNH VIÊN) ================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -535,6 +557,7 @@
     .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
     .edit-modal-title { font-size: 21px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
     .edit-modal-close { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; }
+    .edit-modal-close:hover { color: #ffffff; }
     .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .field-label { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
 
@@ -566,12 +589,14 @@
     }
     .owner-check-item span { font-size: 14.5px; font-weight: 700; color: #ffffff; }
 
-    .edit-form-group { margin-bottom: 16px; }
+    .edit-form-group { margin-bottom: 18px; }
     .edit-form-group .field-label { margin-bottom: 8px; }
     .edit-input, .edit-select {
       width: 100%; background: #101522; border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 12px; padding: 12px 14px; color: #ffffff; font-size: 14.5px; font-weight: 600; outline: none;
     }
+    .edit-input:focus, .edit-select:focus { border-color: var(--green-neon); }
+    .edit-input::placeholder { color: #64748b; font-weight: 500; }
 
     .btn-cloud-submit {
       width: 100%; margin-top: 8px; background: linear-gradient(90deg, #1fd178, #2be585);
@@ -579,7 +604,9 @@
       font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
       display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
       box-shadow: 0 8px 25px rgba(44, 229, 131, 0.38);
+      transition: filter 0.15s, transform 0.1s;
     }
+    .btn-cloud-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
     .modal-wide {
       background: #1b1a2e; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px;
@@ -729,15 +756,17 @@
 
       <!-- TAB 3: THÀNH VIÊN -->
       <div id="tab-members" class="tab-view">
-        <div class="section-title"><i class="fa-solid fa-users"></i> Danh Sách Thành Viên</div>
+        <div class="members-header-top">
+          <div class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-users"></i> Quản Lý Thành Viên</div>
+          <button class="btn-add admin-only" onclick="openRecruitModal()">
+            <i class="fa-solid fa-user-plus"></i> Chiêu Mộ Thành Viên
+          </button>
+        </div>
         <div class="toolbar">
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="memberSearchInput" placeholder="Tìm kiếm tên thành viên..." />
           </div>
-          <button class="btn-add admin-only" onclick="addNewMember()">
-            <i class="fa-solid fa-user-plus"></i> Thêm Thành Viên
-          </button>
         </div>
         <div class="members-grid" id="membersGrid"></div>
       </div>
@@ -782,6 +811,34 @@
     </div>
   </div>
 
+  <!-- Popup Chiêu Mộ Thành Viên (Giống ảnh mẫu) -->
+  <div class="modal-overlay" id="recruitModal">
+    <div class="modal-flower-edit">
+      <div class="edit-modal-top">
+        <div class="edit-modal-title" id="recruitModalTitle">👤 Chiêu Mộ Thành Viên</div>
+        <button class="edit-modal-close" onclick="closeRecruitModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input type="hidden" id="recruitOldName" value="" />
+      <div class="edit-form-group">
+        <label class="field-label">Danh xưng</label>
+        <input type="text" class="edit-input" id="recruitNameInput" placeholder="Nhập tên người anh em..." />
+      </div>
+      <div class="edit-form-group">
+        <label class="field-label">Vai vế trong bang</label>
+        <select class="edit-select" id="recruitRoleSelect">
+          <option value="Thành Viên">Thành Viên</option>
+          <option value="Tinh Anh">Tinh Anh</option>
+          <option value="Quản Lý">Quản Lý</option>
+          <option value="Hội Phó">Hội Phó</option>
+          <option value="Hội Trưởng">Hội Trưởng</option>
+        </select>
+      </div>
+      <button type="button" class="btn-cloud-submit" id="btnRecruitSubmit" onclick="submitRecruitMember()">
+        <i class="fa-solid fa-user-check"></i> KẾT NẠP
+      </button>
+    </div>
+  </div>
+
   <!-- Popup Xem Thẻ Hoa Của Thành Viên -->
   <div class="modal-overlay" id="memberFlowersModal">
     <div class="modal-wide">
@@ -809,7 +866,7 @@
     const FIREBASE_DB_URL = "https://bumpy-e2b9c-default-rtdb.asia-southeast1.firebasedatabase.app/zero_garden";
     const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
     const ADMIN_PASS = "123456"; // Đổi mật khẩu quản trị tại đây
-    const CACHE_KEY = "zero_garden_fb_cache_v2";
+    const CACHE_KEY = "zero_garden_fb_cache_v3";
 
     let isAdmin = false;
     let flowers = [];
@@ -851,36 +908,87 @@
       };
     }
 
-    // ================= HUY HIỆU CHỨC VỤ =================
+    // ================= HUY HIỆU VAI VẾ =================
     function renderRoleBadgeHtml(memberName) {
       const role = String(memberRoles[memberName] || "").trim();
       if (!role) return "";
       const lower = role.toLowerCase();
       let cls = "role-badge";
-      if (lower.includes("phó") || lower.includes("quản")) {
-        cls += " role-sub";
-      } else if (!lower.includes("trưởng") && !lower.includes("chủ")) {
-        cls += " role-custom";
+      if (lower.includes("hội phó") || lower.includes("phó")) {
+        cls += " role-pho";
+      } else if (lower.includes("quản lý") || lower.includes("quản")) {
+        cls += " role-quanly";
+      } else if (lower.includes("tinh anh")) {
+        cls += " role-tinhanh";
+      } else if (lower.includes("thành viên")) {
+        cls += " role-thanhvien";
       }
       return `<span class="${cls}">${escapeHtml(role)}</span>`;
     }
 
-    window.editMemberRole = async function(memberName) {
-      if (!isAdmin) return;
-      const current = memberRoles[memberName] || "";
-      const newRole = prompt(`Nhập chức vụ cho "${memberName}" (VD: Hội Trưởng, Phó Hội... Để trống để xóa):`, current);
-      if (newRole === null) return;
+    // ================= POPUP CHIÊU MỘ / SỬA VAI VẾ THÀNH VIÊN =================
+    const recruitModal = document.getElementById("recruitModal");
 
-      const clean = newRole.trim();
-      if (clean) {
-        memberRoles[memberName] = clean;
+    window.openRecruitModal = function(editMemberName = "") {
+      if (!isAdmin) return;
+      const oldInput = document.getElementById("recruitOldName");
+      const nameInput = document.getElementById("recruitNameInput");
+      const roleSelect = document.getElementById("recruitRoleSelect");
+      const titleEl = document.getElementById("recruitModalTitle");
+      const btnSubmit = document.getElementById("btnRecruitSubmit");
+
+      if (editMemberName) {
+        titleEl.textContent = "✏️ Cập Nhật Vai Vế";
+        oldInput.value = editMemberName;
+        nameInput.value = editMemberName;
+        nameInput.setAttribute("readonly", "true");
+        roleSelect.value = memberRoles[editMemberName] || "Thành Viên";
+        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> LƯU THAY ĐỔI';
       } else {
-        delete memberRoles[memberName];
+        titleEl.textContent = "👤 Chiêu Mộ Thành Viên";
+        oldInput.value = "";
+        nameInput.value = "";
+        nameInput.removeAttribute("readonly");
+        roleSelect.value = "Thành Viên";
+        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> KẾT NẠP';
       }
+
+      recruitModal.classList.add("show");
+      if (!editMemberName) nameInput.focus();
+    };
+
+    window.closeRecruitModal = function() {
+      recruitModal.classList.remove("show");
+    };
+
+    recruitModal.addEventListener("click", (e) => {
+      if (e.target.id === "recruitModal") closeRecruitModal();
+    });
+
+    window.submitRecruitMember = async function() {
+      if (!isAdmin) return;
+      const name = document.getElementById("recruitNameInput").value.trim();
+      const role = document.getElementById("recruitRoleSelect").value;
+      const btn = document.getElementById("btnRecruitSubmit");
+
+      if (!name) return alert("Vui lòng nhập danh xưng thành viên!");
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
+
+      if (!allMembers.some(m => m.toLowerCase() === name.toLowerCase())) {
+        allMembers.push(name);
+      }
+      memberRoles[name] = role;
 
       saveLocalCache();
       renderMembers();
+
+      await saveToFirebase("members", allMembers);
       await saveToFirebase("roles", memberRoles);
+
+      btn.disabled = false;
+      closeRecruitModal();
     };
 
     // ================= QUYỀN QUẢN TRỊ =================
@@ -1124,19 +1232,6 @@
       });
     });
 
-    async function addNewMember() {
-      if (!isAdmin) return;
-      const name = prompt("Nhập tên thành viên mới cần thêm:");
-      if (!name || !name.trim()) return;
-      const cleanName = name.trim();
-      if (!allMembers.some(m => m.toLowerCase() === cleanName.toLowerCase())) {
-        allMembers.push(cleanName);
-        saveLocalCache();
-        renderMembers();
-        await saveToFirebase("members", allMembers);
-      }
-    }
-
     function getAllMemberNames() {
       const set = new Set(allMembers);
       flowers.forEach(f => getOwnersArray(f.owners).forEach(o => set.add(o)));
@@ -1239,7 +1334,7 @@
 
         return `
           <div class="member-card" onclick="openMemberModal('${safeName}')">
-            <button type="button" class="btn-edit-role admin-only" title="Gắn / sửa chức vụ" onclick="event.stopPropagation(); editMemberRole('${safeName}')">
+            <button type="button" class="btn-edit-role admin-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
               <i class="fa-solid fa-pen"></i>
             </button>
             <div class="member-card-top">
