@@ -36,7 +36,13 @@
       overflow-x: hidden;
     }
 
-    body:not(.is-admin) .admin-only {
+    /* Quyền cấp 1 (bumpy): quản lý Danh Sách Hoa & Thành Viên */
+    body:not(.role-mod):not(.role-super) .mod-only {
+      display: none !important;
+    }
+
+    /* Quyền cấp 2 (bumpyne): quản lý toàn bộ (Bảng Tin, Nạp từ Sheets, nút Firebase) */
+    body:not(.role-super) .super-only {
       display: none !important;
     }
 
@@ -376,7 +382,7 @@
       transition: border-color 0.2s, background-color 0.2s;
     }
 
-    body.is-admin .flower-row { cursor: pointer; }
+    body.is-admin-row-clickable .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
     .col-stt { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
@@ -762,14 +768,14 @@
         👋 Chào mừng đến với <span>Zero Garden</span>
       </div>
       <div class="header-actions">
-        <button class="btn-migrate admin-only" id="btnMigrate" onclick="migrateFromSheets()">
+        <button class="btn-migrate super-only" id="btnMigrate" onclick="migrateFromSheets()">
           <i class="fa-solid fa-file-import"></i> Nạp từ Sheets
         </button>
         <button class="btn-admin" id="btnAdminAuth" onclick="toggleAdminAuth()">
           <i class="fa-solid fa-lock" id="adminIcon"></i>
           <span id="adminText">Quyền Quản Trị</span>
         </button>
-        <div class="badge-cloud" onclick="loadFromFirebase(false)" title="Firebase Realtime">
+        <div class="badge-cloud super-only" onclick="loadFromFirebase(false)" title="Firebase Realtime">
           <span class="dot-online" id="cloudDot"></span>
           <span id="cloudText">Firebase</span>
         </div>
@@ -795,14 +801,14 @@
               <img id="newsCoverImg" src="" alt="Ảnh bìa Hoa Viên" style="display:none;" />
             </div>
             <input type="file" id="newsFileInput" accept="image/*" style="display:none;" />
-            <button type="button" class="btn-upload-cover admin-only" onclick="document.getElementById('newsFileInput').click()">
+            <button type="button" class="btn-upload-cover super-only" onclick="document.getElementById('newsFileInput').click()">
               <i class="fa-regular fa-image"></i> Tải ảnh bìa lên
             </button>
           </div>
 
           <div class="news-right">
             <textarea id="newsContentInput" class="news-textarea" readonly placeholder="Nhập nội dung bảng tin..."></textarea>
-            <button type="button" class="btn-save-news admin-only" id="btnSaveNews" onclick="saveNewsToCloud()">
+            <button type="button" class="btn-save-news super-only" id="btnSaveNews" onclick="saveNewsToCloud()">
               <i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud
             </button>
           </div>
@@ -839,7 +845,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" placeholder="Tìm kiếm tên hoa, người sở hữu..." />
           </div>
-          <button class="btn-add admin-only" id="btnOpenAdd">
+          <button class="btn-add mod-only" id="btnOpenAdd">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Trồng Hoa Mới
           </button>
         </div>
@@ -849,7 +855,7 @@
           <div>TÊN HOA / VẬT PHẨM</div>
           <div>PHẨM HOA</div>
           <div>NGƯỜI SỞ HỮU</div>
-          <div class="admin-only">HÀNH ĐỘNG</div>
+          <div class="mod-only">HÀNH ĐỘNG</div>
         </div>
 
         <div class="flower-list" id="flowerList">
@@ -861,7 +867,7 @@
       <div id="tab-members" class="tab-view">
         <div class="members-header-top">
           <div class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-users"></i> Quản Lý Thành Viên</div>
-          <button class="btn-add admin-only" onclick="openRecruitModal()">
+          <button class="btn-add mod-only" onclick="openRecruitModal()">
             <i class="fa-solid fa-user-plus"></i> Chiêu Mộ Thành Viên
           </button>
         </div>
@@ -986,10 +992,15 @@
   <script>
     const FIREBASE_DB_URL = "https://bumpy-e2b9c-default-rtdb.asia-southeast1.firebasedatabase.app/zero_garden";
     const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
-    const ADMIN_PASS = "123456"; // Đổi mật khẩu quản trị tại đây
-    const CACHE_KEY = "zero_garden_fb_cache_v4";
 
-    let isAdmin = false;
+    // 2 cấp bậc mật khẩu quản trị
+    const PASS_MOD = "bumpy";    // Quyền ở 2 trang Danh Sách Hoa & Thành Viên (ẩn Nạp từ Sheets & Firebase)
+    const PASS_SUPER = "bumpyne"; // Quyền quản lý toàn bộ
+
+    const CACHE_KEY = "zero_garden_fb_cache_v5";
+
+    // adminLevel: "" (chưa mở), "mod" (bumpy), "super" (bumpyne)
+    let adminLevel = "";
     let flowers = [];
     let allMembers = [];
     let memberRoles = {};
@@ -998,6 +1009,14 @@
     let currentFilter = "Tất cả";
     let selectedMemberName = "";
     let selectedMemberFilter = "Tất cả";
+
+    function canManageFlowersAndMembers() {
+      return adminLevel === "mod" || adminLevel === "super";
+    }
+
+    function canManageAll() {
+      return adminLevel === "super";
+    }
 
     // ================= CACHE LOCALSTORAGE =================
     function saveLocalCache() {
@@ -1074,7 +1093,7 @@
     const recruitModal = document.getElementById("recruitModal");
 
     window.openRecruitModal = function(editMemberName = "") {
-      if (!isAdmin) return;
+      if (!canManageFlowersAndMembers()) return;
       const oldInput = document.getElementById("recruitOldName");
       const nameInput = document.getElementById("recruitNameInput");
       const roleSelect = document.getElementById("recruitRoleSelect");
@@ -1110,7 +1129,7 @@
     });
 
     window.submitRecruitMember = async function() {
-      if (!isAdmin) return;
+      if (!canManageFlowersAndMembers()) return;
       const name = document.getElementById("recruitNameInput").value.trim();
       const role = document.getElementById("recruitRoleSelect").value;
       const btn = document.getElementById("btnRecruitSubmit");
@@ -1135,36 +1154,52 @@
       closeRecruitModal();
     };
 
-    // ================= QUYỀN QUẢN TRỊ =================
+    // ================= QUYỀN QUẢN TRỊ 2 CẤP BẬC =================
     function applyAdminUI() {
-      document.body.classList.toggle("is-admin", isAdmin);
+      document.body.classList.toggle("role-mod", adminLevel === "mod");
+      document.body.classList.toggle("role-super", adminLevel === "super");
+      document.body.classList.toggle("is-admin-row-clickable", canManageFlowersAndMembers());
+
       const btn = document.getElementById("btnAdminAuth");
       const icon = document.getElementById("adminIcon");
+      const text = document.getElementById("adminText");
       const textarea = document.getElementById("newsContentInput");
 
-      if (isAdmin) {
+      if (adminLevel === "super") {
+        btn.classList.add("unlocked");
+        icon.className = "fa-solid fa-crown";
+        text.textContent = "Quản Trị Toàn Quyền";
+        textarea.removeAttribute("readonly");
+      } else if (adminLevel === "mod") {
         btn.classList.add("unlocked");
         icon.className = "fa-solid fa-lock-open";
-        textarea.removeAttribute("readonly");
+        text.textContent = "Quản Trị (Hoa & TV)";
+        textarea.setAttribute("readonly", "true");
       } else {
         btn.classList.remove("unlocked");
         icon.className = "fa-solid fa-lock";
+        text.textContent = "Quyền Quản Trị";
         textarea.setAttribute("readonly", "true");
       }
+
+      renderList();
     }
 
     window.toggleAdminAuth = function() {
-      if (isAdmin) {
+      if (adminLevel) {
         if (confirm("Khóa lại Quyền Quản Trị?")) {
-          isAdmin = false;
+          adminLevel = "";
           applyAdminUI();
         }
         return;
       }
       const pass = prompt("Nhập mật khẩu Quản Trị:");
       if (pass === null) return;
-      if (pass === ADMIN_PASS) {
-        isAdmin = true;
+      if (pass === PASS_SUPER) {
+        adminLevel = "super";
+        applyAdminUI();
+      } else if (pass === PASS_MOD) {
+        adminLevel = "mod";
         applyAdminUI();
       } else {
         alert("Mật khẩu không đúng!");
@@ -1192,7 +1227,7 @@
           applyDatabaseSnapshot(data);
         } else {
           document.getElementById("flowerList").innerHTML =
-            '<div class="empty-state">Firebase đang trống. Hãy mở Quyền Quản Trị và bấm nút <strong>Nạp từ Sheets</strong> ở góc trên phải!</div>';
+            '<div class="empty-state">Firebase đang trống. Hãy mở quyền quản trị toàn quyền và bấm <strong>Nạp từ Sheets</strong>!</div>';
         }
         setCloudStatus("online", "Firebase");
       } catch (err) {
@@ -1258,7 +1293,7 @@
 
     // ================= NẠP DỮ LIỆU TỪ GOOGLE SHEETS =================
     window.migrateFromSheets = async function() {
-      if (!isAdmin) return alert("Cần mở Quyền Quản Trị!");
+      if (!canManageAll()) return alert("Cần quyền quản trị toàn quyền!");
       if (!confirm("Lấy toàn bộ dữ liệu Hoa, Thành Viên và Bảng Tin từ Google Sheets cũ đổ sang Firebase?")) return;
 
       const btn = document.getElementById("btnMigrate");
@@ -1335,7 +1370,7 @@
     });
 
     window.saveNewsToCloud = async function() {
-      if (!isAdmin) return alert("Bạn cần mở khóa Quyền Quản Trị!");
+      if (!canManageAll()) return alert("Bạn cần quyền quản trị toàn quyền để sửa Bảng Tin!");
       const btn = document.getElementById("btnSaveNews");
       newsData.content = document.getElementById("newsContentInput").value;
       saveLocalCache();
@@ -1355,6 +1390,10 @@
         : String(owners || "").split(",").map(s => s.trim()).filter(Boolean);
     }
 
+    function hasAnyOwner(item) {
+      return getOwnersArray(item && item.owners).length > 0;
+    }
+
     function escapeHtml(str) {
       return String(str || "")
         .replace(/&/g, "&amp;")
@@ -1367,6 +1406,7 @@
     function setCloudStatus(status, text) {
       const dot = document.getElementById("cloudDot");
       const label = document.getElementById("cloudText");
+      if (!dot || !label) return;
       dot.className = "dot-online";
       if (status === "syncing") dot.classList.add("dot-syncing");
       if (status === "error") dot.classList.add("dot-error");
@@ -1395,18 +1435,22 @@
       renderCategories();
     }
 
+    // Chỉ thống kê những hoa mà thành viên hội đang có (owners.length > 0)
     function updateCounts() {
-      document.getElementById("count-all").textContent = flowers.length;
-      document.getElementById("count-red").textContent = flowers.filter(f => f.rarity === "Đỏ").length;
-      document.getElementById("count-yellow").textContent = flowers.filter(f => f.rarity === "Vàng").length;
-      document.getElementById("count-purple").textContent = flowers.filter(f => f.rarity === "Tím").length;
+      const ownedFlowers = flowers.filter(hasAnyOwner);
+      document.getElementById("count-all").textContent = ownedFlowers.length;
+      document.getElementById("count-red").textContent = ownedFlowers.filter(f => f.rarity === "Đỏ").length;
+      document.getElementById("count-yellow").textContent = ownedFlowers.filter(f => f.rarity === "Vàng").length;
+      document.getElementById("count-purple").textContent = ownedFlowers.filter(f => f.rarity === "Tím").length;
     }
 
     function renderList() {
       const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const container = document.getElementById("flowerList");
+      const showActionCol = canManageFlowersAndMembers();
 
       const filtered = flowers.filter(item => {
+        if (!hasAnyOwner(item)) return false;
         const ownersArr = getOwnersArray(item.owners);
         const matchRarity = currentFilter === "Tất cả" || item.rarity === currentFilter;
         const matchSearch =
@@ -1416,7 +1460,7 @@
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state">Chưa có bông hoa nào phù hợp.</div>';
+        container.innerHTML = '<div class="empty-state">Chưa có bông hoa nào thuộc sở hữu thành viên hội.</div>';
         updateCounts();
         return;
       }
@@ -1428,20 +1472,24 @@
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
 
+        const actionHtml = showActionCol ? `
+          <div class="col-actions">
+            <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
+              <i class="fa-solid fa-pen"></i> Sửa
+            </button>
+            <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
+              <i class="fa-solid fa-xmark"></i> Xóa
+            </button>
+          </div>
+        ` : "";
+
         return `
-          <div class="flower-row" onclick="if(isAdmin) editFlower('${item.id}')">
+          <div class="flower-row" onclick="if(canManageFlowersAndMembers()) editFlower('${item.id}')">
             <div class="col-stt">${index + 1}</div>
             <div class="col-name">${renderFlowerIconHtml(item, "flower-thumb")} <span>${escapeHtml(item.name)}</span></div>
             <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
             <div class="col-owners">${ownersHtml}</div>
-            <div class="col-actions admin-only">
-              <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
-                <i class="fa-solid fa-pen"></i> Sửa
-              </button>
-              <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
-                <i class="fa-solid fa-xmark"></i> Xóa
-              </button>
-            </div>
+            ${actionHtml}
           </div>
         `;
       }).join("");
@@ -1484,7 +1532,7 @@
 
         return `
           <div class="member-card" onclick="openMemberModal('${safeName}')">
-            <button type="button" class="btn-edit-role admin-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
+            <button type="button" class="btn-edit-role mod-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
               <i class="fa-solid fa-pen"></i>
             </button>
             <div class="member-card-top">
@@ -1543,7 +1591,7 @@
       grid.innerHTML = filtered.map(f => {
         const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
         return `
-          <div class="flower-mini-card" onclick="if(isAdmin){closeMemberModal(); editFlower('${f.id}');}">
+          <div class="flower-mini-card" onclick="if(canManageFlowersAndMembers()){closeMemberModal(); editFlower('${f.id}');}">
             <div class="flower-mini-card-name">
               ${renderFlowerIconHtml(f, "flower-thumb-sm")}
               <span>${escapeHtml(f.name)}</span>
@@ -1582,7 +1630,7 @@
             </div>
             <div class="tag-list">
               ${list.length > 0
-                ? list.map(f => `<span class="flower-tag" onclick="if(isAdmin) editFlower('${f.id}')">${renderFlowerIconHtml(f, "flower-thumb-xs")} ${escapeHtml(f.name)}</span>`).join("")
+                ? list.map(f => `<span class="flower-tag" onclick="if(canManageFlowersAndMembers()) editFlower('${f.id}')">${renderFlowerIconHtml(f, "flower-thumb-xs")} ${escapeHtml(f.name)}</span>`).join("")
                 : '<span style="color:#64748b;font-size:13px;">Chưa có hoa phẩm này</span>'}
             </div>
           </div>
@@ -1642,7 +1690,7 @@
     });
 
     document.getElementById("btnOpenAdd").addEventListener("click", () => {
-      if (!isAdmin) return;
+      if (!canManageFlowersAndMembers()) return;
       document.getElementById("modalTitle").textContent = "🌱 Trồng Hoa Mới";
       document.getElementById("editId").value = "";
       document.getElementById("flowerName").value = "";
@@ -1659,7 +1707,7 @@
     modal.addEventListener("click", (e) => { if (e.target.id === "flowerModal") modal.classList.remove("show"); });
 
     window.editFlower = function(id) {
-      if (!isAdmin) return;
+      if (!canManageFlowersAndMembers()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
 
@@ -1669,7 +1717,6 @@
       document.getElementById("flowerRarity").value = item.rarity;
       document.getElementById("flowerImage").value = getFlowerImageUrl(item);
 
-      // Hiện khung ảnh hoa có viền phát sáng theo phẩm, ẩn 3 ô thông tin và mở rộng danh sách chọn người
       const frameEl = document.getElementById("editFlowerFrame");
       frameEl.className = `flower-showcase-frame frame-${item.rarity}`;
 
@@ -1688,6 +1735,7 @@
     };
 
     btnSave.addEventListener("click", async () => {
+      if (!canManageFlowersAndMembers()) return;
       const name = document.getElementById("flowerName").value.trim();
       const rarity = document.getElementById("flowerRarity").value;
       const image = document.getElementById("flowerImage").value.trim();
@@ -1715,7 +1763,7 @@
     });
 
     window.deleteFlower = async function(id) {
-      if (!isAdmin) return;
+      if (!canManageFlowersAndMembers()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách?`)) {
