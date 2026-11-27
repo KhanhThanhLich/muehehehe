@@ -197,7 +197,6 @@
       background: rgba(20, 19, 36, 0.45);
     }
 
-    /* Tab Views */
     .tab-view { display: none; }
     .tab-view.active { display: block; }
 
@@ -411,8 +410,11 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
     }
 
+    .owner-pill:hover { background: rgba(16, 185, 129, 0.25); }
     .owner-pill i { font-size: 11px; }
 
     .col-actions { display: flex; justify-content: flex-end; gap: 8px; }
@@ -443,7 +445,7 @@
     }
     .btn-delete:hover { background: rgba(239, 68, 68, 0.25); }
 
-    /* ================= CARDS FOR OTHER TABS ================= */
+    /* ================= DASHBOARD & MEMBER CARDS ================= */
     .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -476,6 +478,96 @@
     .dash-info h4 { font-size: 24px; font-weight: 800; color: #fff; }
     .dash-info p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
+    /* Thẻ Thành Viên (Bấm được) */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .member-card {
+      background: var(--bg-row);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .member-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--green-bright);
+      background: #1e2036;
+      box-shadow: 0 8px 24px rgba(52, 211, 153, 0.14);
+    }
+
+    .member-card-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .member-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(139, 92, 246, 0.25));
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-bright);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .member-name {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .member-total {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .member-total strong { color: var(--green-bright); }
+
+    .member-mini-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+    }
+    .mini-red { color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+    .mini-yellow { color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
+    .mini-purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
+
+    .member-card-footer {
+      font-size: 12px;
+      color: var(--green-bright);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Categories Grid */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -533,16 +625,17 @@
       gap: 6px;
     }
 
-    /* ================= MODAL ================= */
+    /* ================= MODALS ================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 100;
+      padding: 16px;
     }
 
     .modal-overlay.show { display: flex; }
@@ -550,13 +643,99 @@
     .modal {
       background: #1b1a2e;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
+      border-radius: 18px;
       width: 100%;
       max-width: 440px;
       padding: 24px;
     }
 
-    .modal h3 { margin-bottom: 18px; font-size: 18px; color: #fff; }
+    .modal-wide {
+      max-width: 720px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .modal-close-icon {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #cbd5e1;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .modal-close-icon:hover { background: rgba(239, 68, 68, 0.25); color: #f87171; }
+
+    .modal-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .modal-filter-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .modal-filter-btn.active {
+      background: rgba(52, 211, 153, 0.18);
+      border-color: var(--green-bright);
+      color: #ffffff;
+    }
+
+    .member-flowers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 12px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .flower-mini-card {
+      background: #141326;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .flower-mini-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.35;
+    }
+
+    .flower-mini-card-name i {
+      color: var(--green-bright);
+      margin-top: 3px;
+    }
+
+    .modal h3 { font-size: 18px; color: #fff; }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
 
@@ -739,7 +918,7 @@
             <i class="fa-solid fa-user-plus"></i> Thêm Thành Viên
           </button>
         </div>
-        <div class="cards-grid" id="membersGrid"></div>
+        <div class="members-grid" id="membersGrid"></div>
       </div>
 
       <!-- TAB 4: LOẠI HOA -->
@@ -754,7 +933,10 @@
   <!-- Modal Thêm / Sửa Hoa -->
   <div class="modal-overlay" id="flowerModal">
     <div class="modal">
-      <h3 id="modalTitle">Trồng Hoa Mới</h3>
+      <div class="modal-header" style="margin-bottom: 14px;">
+        <h3 id="modalTitle">Trồng Hoa Mới</h3>
+        <button class="modal-close-icon" id="btnCloseModalX"><i class="fa-solid fa-xmark"></i></button>
+      </div>
       <input type="hidden" id="editId" value="" />
       <div class="form-group">
         <label>Tên hoa / vật phẩm</label>
@@ -779,17 +961,48 @@
     </div>
   </div>
 
+  <!-- Modal Xem Thẻ Hoa Của Thành Viên -->
+  <div class="modal-overlay" id="memberFlowersModal">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <div>
+          <h3 id="memberModalName">Tên Thành Viên</h3>
+          <div id="memberModalSub" style="font-size:13px; color:#94a3b8; margin-top:4px;"></div>
+        </div>
+        <button class="modal-close-icon" onclick="closeMemberModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-filter-bar" id="memberModalFilters">
+        <button class="modal-filter-btn active" data-mfilter="Tất cả">Tất cả</button>
+        <button class="modal-filter-btn" data-mfilter="Đỏ">Đỏ</button>
+        <button class="modal-filter-btn" data-mfilter="Vàng">Vàng (Cam)</button>
+        <button class="modal-filter-btn" data-mfilter="Tím">Tím</button>
+      </div>
+      <div class="member-flowers-grid" id="memberModalGrid"></div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
 
     let flowers = [];
     let allMembers = [];
     let currentFilter = "Tất cả";
+    let selectedMemberName = "";
+    let selectedMemberFilter = "Tất cả";
 
     function getOwnersArray(owners) {
       return Array.isArray(owners)
         ? owners
         : String(owners || "").split(",").map(s => s.trim()).filter(Boolean);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
     function setCloudStatus(status, text) {
@@ -906,7 +1119,7 @@
       filtered.forEach((item, index) => {
         const ownersArr = getOwnersArray(item.owners);
         const ownersHtml = ownersArr
-          .map(owner => `<span class="owner-pill"><i class="fa-regular fa-user"></i> ${owner}</span>`)
+          .map(owner => `<span class="owner-pill" onclick="openMemberModal('${escapeHtml(owner).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(owner)}</span>`)
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
 
@@ -914,7 +1127,7 @@
         row.className = "flower-row";
         row.innerHTML = `
           <div class="col-stt">${index + 1}</div>
-          <div class="col-name"><i class="fa-solid fa-leaf"></i> ${item.name}</div>
+          <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
           <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
           <div class="col-owners">${ownersHtml}</div>
           <div class="col-actions">
@@ -951,13 +1164,13 @@
 
       recentContainer.innerHTML = recent.map((item, idx) => {
         const ownersHtml = getOwnersArray(item.owners)
-          .map(o => `<span class="owner-pill"><i class="fa-regular fa-user"></i> ${o}</span>`)
+          .map(o => `<span class="owner-pill" onclick="openMemberModal('${escapeHtml(o).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(o)}</span>`)
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
         return `
           <div class="flower-row" style="grid-template-columns: 50px 2fr 120px 2.5fr;">
             <div class="col-stt">${idx + 1}</div>
-            <div class="col-name"><i class="fa-solid fa-leaf"></i> ${item.name}</div>
+            <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
             <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
             <div class="col-owners">${ownersHtml}</div>
           </div>
@@ -965,11 +1178,9 @@
       }).join("");
     }
 
-    // Tab 3: Thành Viên
-    function renderMembers() {
-      const keyword = (document.getElementById("memberSearchInput").value || "").toLowerCase().trim();
+    // Tab 3: Thành Viên (Mỗi thành viên là 1 thẻ, bấm vào hiện thẻ hoa)
+    function getMemberMap() {
       const memberMap = {};
-
       allMembers.forEach(m => { memberMap[m] = []; });
       flowers.forEach(f => {
         getOwnersArray(f.owners).forEach(owner => {
@@ -977,6 +1188,12 @@
           memberMap[owner].push(f);
         });
       });
+      return memberMap;
+    }
+
+    function renderMembers() {
+      const keyword = (document.getElementById("memberSearchInput").value || "").toLowerCase().trim();
+      const memberMap = getMemberMap();
 
       const entries = Object.entries(memberMap)
         .filter(([name]) => name.toLowerCase().includes(keyword))
@@ -988,20 +1205,93 @@
         return;
       }
 
-      grid.innerHTML = entries.map(([memberName, list]) => `
-        <div class="info-card">
-          <div class="info-card-header">
-            <div class="info-card-title"><i class="fa-regular fa-user" style="color:#34d399;"></i> ${memberName}</div>
-            <div class="info-card-count">${list.length} hoa</div>
+      grid.innerHTML = entries.map(([memberName, list]) => {
+        const redCount = list.filter(f => f.rarity === "Đỏ").length;
+        const yellowCount = list.filter(f => f.rarity === "Vàng").length;
+        const purpleCount = list.filter(f => f.rarity === "Tím").length;
+        const safeName = escapeHtml(memberName).replace(/'/g, "\\'");
+
+        return `
+          <div class="member-card" onclick="openMemberModal('${safeName}')">
+            <div class="member-card-top">
+              <div class="member-avatar"><i class="fa-solid fa-user"></i></div>
+              <div>
+                <div class="member-name">${escapeHtml(memberName)}</div>
+                <div class="member-total">Đang sở hữu <strong>${list.length}</strong> loại hoa</div>
+              </div>
+            </div>
+            <div class="member-mini-stats">
+              <span class="mini-badge mini-red">Đỏ: ${redCount}</span>
+              <span class="mini-badge mini-yellow">Vàng: ${yellowCount}</span>
+              <span class="mini-badge mini-purple">Tím: ${purpleCount}</span>
+            </div>
+            <div class="member-card-footer">
+              <span>Xem thẻ hoa</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
           </div>
-          <div class="tag-list">
-            ${list.length > 0
-              ? list.map(f => `<span class="flower-tag"><span class="badge-rarity rarity-${f.rarity}" style="padding:2px 8px;font-size:10px;">${f.rarity}</span> ${f.name}</span>`).join("")
-              : '<span style="color:#64748b;font-size:13px;">Chưa sở hữu hoa nào</span>'}
-          </div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
     }
+
+    // Mở Modal Thẻ Hoa của Thành Viên
+    window.openMemberModal = function(memberName) {
+      selectedMemberName = memberName;
+      selectedMemberFilter = "Tất cả";
+      document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mfilter === "Tất cả");
+      });
+      renderMemberModalContent();
+      document.getElementById("memberFlowersModal").classList.add("show");
+    };
+
+    window.closeMemberModal = function() {
+      document.getElementById("memberFlowersModal").classList.remove("show");
+    };
+
+    function renderMemberModalContent() {
+      const memberMap = getMemberMap();
+      const list = memberMap[selectedMemberName] || [];
+      const filtered = selectedMemberFilter === "Tất cả"
+        ? list
+        : list.filter(f => f.rarity === selectedMemberFilter);
+
+      document.getElementById("memberModalName").textContent = selectedMemberName;
+      document.getElementById("memberModalSub").textContent = `Tổng cộng: ${list.length} loại hoa`;
+
+      const grid = document.getElementById("memberModalGrid");
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Không có hoa nào thuộc mục này.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(f => {
+        const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
+        return `
+          <div class="flower-mini-card">
+            <div class="flower-mini-card-name">
+              <i class="fa-solid fa-leaf"></i>
+              <span>${escapeHtml(f.name)}</span>
+            </div>
+            <div><span class="badge-rarity rarity-${f.rarity}">${rarityLabel}</span></div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedMemberFilter = btn.dataset.mfilter;
+        renderMemberModalContent();
+      });
+    });
+
+    // Đóng modal khi bấm ra vùng nền tối bên ngoài
+    document.getElementById("memberFlowersModal").addEventListener("click", (e) => {
+      if (e.target.id === "memberFlowersModal") closeMemberModal();
+    });
 
     // Tab 4: Loại Hoa
     function renderCategories() {
@@ -1019,7 +1309,7 @@
             </div>
             <div class="tag-list">
               ${list.length > 0
-                ? list.map(f => `<span class="flower-tag"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${f.name}</span>`).join("")
+                ? list.map(f => `<span class="flower-tag"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${escapeHtml(f.name)}</span>`).join("")
                 : '<span style="color:#64748b;font-size:13px;">Chưa có hoa phẩm này</span>'}
             </div>
           </div>
@@ -1053,9 +1343,8 @@
       modal.classList.add("show");
     });
 
-    document.getElementById("btnCloseModal").addEventListener("click", () => {
-      modal.classList.remove("show");
-    });
+    document.getElementById("btnCloseModal").addEventListener("click", () => modal.classList.remove("show"));
+    document.getElementById("btnCloseModalX").addEventListener("click", () => modal.classList.remove("show"));
 
     btnSave.addEventListener("click", async () => {
       const name = document.getElementById("flowerName").value.trim();
