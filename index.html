@@ -16,6 +16,7 @@
       --text-main: #2d3748;
       --text-muted: #718096;
       --accent-rose: #e56b8a;
+      --accent-green: #2f855a;
     }
 
     * {
@@ -33,35 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* Hiệu ứng cánh hoa rơi */
-    .petal-layer {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .petal {
-      position: absolute;
-      top: -30px;
-      font-size: 16px;
-      opacity: 0.75;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-30px) translateX(0) rotate(0deg);
-      }
-      50% {
-        transform: translateY(50vh) translateX(24px) rotate(180deg);
-      }
-      100% {
-        transform: translateY(105vh) translateX(-18px) rotate(360deg);
-      }
-    }
-
     /* Sidebar trái */
     .sidebar {
       width: 240px;
@@ -72,7 +44,6 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
-      z-index: 3;
       box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
     }
 
@@ -125,20 +96,17 @@
     .main-wrap {
       flex: 1;
       padding: 20px 28px 48px;
-      position: relative;
-      z-index: 2;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    /* Top bar chào mừng & khóa mật khẩu */
     .topbar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.85);
+      background: #ffffff;
       border: 1px solid var(--row-border);
       padding: 12px 18px;
       border-radius: 14px;
@@ -186,7 +154,6 @@
       background: #48bb78;
     }
 
-    /* Banner chế độ khách */
     .guest-banner {
       background: #fff9e6;
       border: 1px dashed #ecc94b;
@@ -202,7 +169,6 @@
       display: none;
     }
 
-    /* Header trang */
     .page-header {
       margin-bottom: 18px;
     }
@@ -236,7 +202,6 @@
       font-weight: 600;
     }
 
-    /* Thanh tìm kiếm & lọc */
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -293,7 +258,7 @@
       margin-bottom: 16px;
     }
 
-    .add-panel.visible {
+    body.admin-mode .add-panel {
       display: flex;
     }
 
@@ -308,15 +273,26 @@
       cursor: pointer;
     }
 
-    /* Danh sách dạng hàng ngang giống ảnh */
-    .flower-list {
+    /* Danh sách dạng hàng ngang */
+    .item-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .flower-row {
-      background: var(--row-pink);
+    .list-head {
+      display: flex;
+      gap: 24px;
+      padding: 4px 18px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .item-row {
+      background: #ffffff;
       border: 1px solid var(--row-border);
       border-radius: 12px;
       padding: 13px 18px;
@@ -327,19 +303,23 @@
       transition: transform 0.15s, box-shadow 0.15s;
     }
 
-    .flower-row:hover {
+    .flower-row {
+      background: var(--row-pink);
+    }
+
+    .item-row:hover {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(229, 107, 138, 0.12);
     }
 
-    .flower-left {
+    .item-left {
       display: flex;
       align-items: center;
       gap: 18px;
       min-width: 0;
     }
 
-    .flower-stt {
+    .item-stt {
       color: #8c96a5;
       font-weight: 700;
       font-size: 13.5px;
@@ -347,13 +327,13 @@
       text-align: right;
     }
 
-    .flower-name {
+    .item-name {
       font-weight: 700;
       font-size: 15px;
       color: #2d3748;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -367,13 +347,13 @@
       font-weight: 600;
     }
 
-    .flower-right {
+    .item-right {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* Badge phẩm hoa */
+    /* Badge phẩm hoa & vai trò */
     .grade-badge {
       padding: 4px 12px;
       border-radius: 999px;
@@ -390,6 +370,18 @@
     .grade-Lam { background: #3182ce; }
     .grade-Xanh { background: #2f855a; }
 
+    .role-badge {
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #94a3b8;
+      color: #ffffff;
+    }
+
+    .role-Hội-Trưởng { background: #e53e3e; }
+    .role-Phó-Hội { background: #d69e2e; }
+
     .del-btn {
       display: none;
       border: none;
@@ -404,6 +396,59 @@
 
     body.admin-mode .del-btn {
       display: inline-block;
+    }
+
+    /* Tab Danh Sách Hoa: Thống kê + Lưới thẻ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--row-border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 22px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .flower-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .flower-card {
+      background: #ffffff;
+      border: 1px solid var(--row-border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .flower-card-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .flower-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-muted);
     }
 
     .placeholder-card {
@@ -439,8 +484,6 @@
   </style>
 </head>
 <body>
-  <div class="petal-layer" id="petalLayer"></div>
-
   <aside class="sidebar">
     <div class="brand">
       <span>🌸</span>
@@ -467,10 +510,77 @@
     </div>
 
     <div class="guest-banner" id="guestBanner">
-      🛡️ <strong>CHẾ ĐỘ KHÁCH THAM QUAN</strong> — Các chức năng quản trị đã bị ẩn. Hãy bấm vào nút <strong>🔒 Chỉ Xem</strong> ở góc trên và nhập mật khẩu (<code>123456</code>) để mở khóa chỉnh sửa! 🌿🍃
+      🛡️ <strong>CHẾ ĐỘ KHÁCH THAM QUAN</strong> — Các chức năng quản trị đã bị ẩn. Bấm vào nút <strong>🔒 Chỉ Xem</strong> ở góc trên và nhập mật khẩu (<code>123456</code>) để mở khóa chỉnh sửa!
     </div>
 
-    <!-- Tab: Loại Hoa -->
+    <!-- Tab 1: Bảng Tin -->
+    <section id="tab-board" class="tab-content" style="display: none;">
+      <div class="page-header">
+        <h1 class="page-title">📰 Bảng Tin Hội</h1>
+        <p class="page-subtitle">Thông báo và cập nhật mới nhất của Hoa Viên Hội.</p>
+      </div>
+      <div class="placeholder-card">
+        Chào mừng các thành viên đến với <strong>FLOWER HỘI</strong>. Dữ liệu hoa và danh sách thành viên được đồng bộ trực tiếp từ Google Sheets.
+      </div>
+    </section>
+
+    <!-- Tab 2: Danh Sách Hoa (Bộ sưu tập dạng lưới + thống kê) -->
+    <section id="tab-list" class="tab-content" style="display: none;">
+      <div class="page-header">
+        <h1 class="page-title">📖 Danh Sách Hoa</h1>
+        <p class="page-subtitle">Tổng quan bộ sưu tập hoa theo từng phẩm chất.</p>
+      </div>
+
+      <div class="stats-grid" id="flowerStats"></div>
+
+      <div class="toolbar">
+        <input id="cardSearchInput" class="search-input" type="text" placeholder="Lọc nhanh tên hoa..." />
+        <div class="filters" id="cardGradeFilters">
+          <button class="filter-chip active" data-grade="ALL">Tất cả</button>
+          <button class="filter-chip" data-grade="Đỏ">Đỏ</button>
+          <button class="filter-chip" data-grade="Vàng">Vàng</button>
+          <button class="filter-chip" data-grade="Tím">Tím</button>
+          <button class="filter-chip" data-grade="Lam">Lam</button>
+          <button class="filter-chip" data-grade="Xanh">Xanh</button>
+        </div>
+      </div>
+
+      <div class="flower-cards" id="flowerCards"></div>
+    </section>
+
+    <!-- Tab 3: Thành Viên -->
+    <section id="tab-members" class="tab-content" style="display: none;">
+      <div class="page-header">
+        <h1 class="page-title" style="color: var(--accent-green);">👥 Quản Lý Thành Viên</h1>
+        <p class="page-subtitle">Danh sách các thành viên trong hội.</p>
+        <div class="counter-box">
+          <span>👤 Tổng thành viên:</span>
+          <strong id="memberCount">0</strong>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input id="memberSearchInput" class="search-input" type="text" placeholder="Tìm tên thành viên..." />
+      </div>
+
+      <form class="add-panel" id="addMemberForm">
+        <input id="newMemberName" class="search-input" type="text" placeholder="Nhập tên thành viên mới..." required />
+        <select id="newMemberRole" class="select-input">
+          <option value="Thành Viên">Thành Viên</option>
+          <option value="Phó Hội">Phó Hội</option>
+          <option value="Hội Trưởng">Hội Trưởng</option>
+        </select>
+        <button class="btn-primary" type="submit">+ Thêm thành viên</button>
+      </form>
+
+      <div class="list-head">
+        <span style="min-width: 28px; text-align: right;">STT</span>
+        <span>Thông tin thành viên</span>
+      </div>
+      <div class="item-list" id="memberList"></div>
+    </section>
+
+    <!-- Tab 4: Loại Hoa -->
     <section id="tab-types" class="tab-content">
       <div class="page-header">
         <h1 class="page-title">☰ Quản Lý Loại Hoa</h1>
@@ -483,12 +593,7 @@
       </div>
 
       <div class="toolbar">
-        <input
-          id="searchInput"
-          class="search-input"
-          type="text"
-          placeholder="Tìm tên loại hoa..."
-        />
+        <input id="searchInput" class="search-input" type="text" placeholder="Tìm tên loại hoa..." />
         <div class="filters" id="gradeFilters">
           <button class="filter-chip active" data-grade="ALL">Tất cả</button>
           <button class="filter-chip" data-grade="Đỏ">Đỏ</button>
@@ -500,13 +605,7 @@
       </div>
 
       <form class="add-panel" id="addFlowerForm">
-        <input
-          id="newFlowerName"
-          class="search-input"
-          type="text"
-          placeholder="Nhập tên loại hoa mới..."
-          required
-        />
+        <input id="newFlowerName" class="search-input" type="text" placeholder="Nhập tên loại hoa mới..." required />
         <select id="newFlowerGrade" class="select-input">
           <option value="Đỏ">Đỏ</option>
           <option value="Vàng">Vàng</option>
@@ -517,81 +616,63 @@
         <button class="btn-primary" type="submit">+ Thêm loại hoa</button>
       </form>
 
-      <div class="flower-list" id="flowerList"></div>
-    </section>
-
-    <!-- Các tab phụ để giữ đúng khung điều hướng -->
-    <section id="tab-board" class="tab-content" style="display: none;">
-      <div class="page-header">
-        <h1 class="page-title">📰 Bảng Tin Hội</h1>
-        <p class="page-subtitle">Thông báo và cập nhật mới nhất của Hoa Viên Hội.</p>
-      </div>
-      <div class="placeholder-card">
-        Chào mừng thành viên đến với <strong>FLOWER HỘI</strong>. Bạn có thể chuyển qua mục <strong>Loại Hoa</strong> để tra cứu hoặc lọc theo phẩm hoa.
-      </div>
-    </section>
-
-    <section id="tab-list" class="tab-content" style="display: none;">
-      <div class="page-header">
-        <h1 class="page-title">📖 Danh Sách Hoa</h1>
-        <p class="page-subtitle">Tổng hợp chi tiết bộ sưu tập hoa.</p>
-      </div>
-      <div class="placeholder-card">
-        Đang đồng bộ với mục <strong>Loại Hoa</strong>. Bạn có thể mở rộng thêm cột mô tả, nguồn nhận hoặc độ hiếm tại đây.
-      </div>
-    </section>
-
-    <section id="tab-members" class="tab-content" style="display: none;">
-      <div class="page-header">
-        <h1 class="page-title">👥 Thành Viên</h1>
-        <p class="page-subtitle">Danh sách hội viên tham gia Hoa Viên Hội.</p>
-      </div>
-      <div class="placeholder-card">
-        Khung sẵn sàng để gắn danh sách thành viên, vai trò và điểm đóng góp.
-      </div>
+      <div class="item-list" id="flowerList"></div>
     </section>
   </main>
 
   <script>
-    const STORAGE_KEY = "flower_hoi_demo_v1";
+    const API_URL = "https://script.google.com/macros/s/AKfycby5nkZ7IHSxYJiaGzv-2Ff5Po6xcBBPKdvYaKLXnRI-HFxVr9LGk0Q_CsbLdPfPKREBGA/exec";
     const ADMIN_PASS = "123456";
 
-    const DEFAULT_FLOWERS = [
-      { name: "Ngân Hà Chiếu Nhụy", grade: "Đỏ" },
-      { name: "Chép Vàng Vượt Sóng", grade: "Đỏ" },
-      { name: "Thiên Cung", grade: "Đỏ" },
-      { name: "Thanh Loan Bích Vũ", grade: "Đỏ" },
-      { name: "Có Rồng Ắt Linh", grade: "Đỏ" },
-      { name: "Gia Nguyệt - Neo Thuyền Câu Cá", grade: "Đỏ" },
-      { name: "Mai Nguyệt - Huyễn Âm", grade: "Đỏ" },
-      { name: "Đinh Hoa Đêm Mộng", grade: "Đỏ" },
-      { name: "Liễu Nguyệt - Én Hót Bên Đình", grade: "Đỏ" },
-      { name: "Hạnh Nguyệt - Nghỉ Dưới Bóng Hoa", grade: "Đỏ" },
-      { name: "Trái Tim Mộng Ảo", grade: "Đỏ" },
-      { name: "Đào Nguyệt - Vẫn Tịch Chước Hoa", grade: "Đỏ" },
-      { name: "Hươu Thần Chín Màu", grade: "Đỏ" },
-      { name: "Hoa Bay Như Mộng", grade: "Đỏ" },
-      { name: "Ngân Hà Chiếu Nhụy", grade: "Đỏ" },
-      { name: "Mộc Lan Ngọc Ngà", grade: "Vàng" },
-      { name: "Trái Tim Đá Quý", grade: "Vàng" },
-      { name: "Dạ Yến Thảo Lam", grade: "Tím" },
-      { name: "Dạ Yến Thảo Hồng", grade: "Lam" },
-      { name: "Bách Hợp Trắng", grade: "Xanh" }
-    ];
-
-    let flowers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFAULT_FLOWERS;
+    let flowers = [];
+    let members = [];
     let isAdmin = false;
     let selectedGrade = "ALL";
+    let cardSelectedGrade = "ALL";
 
     const flowerListEl = document.getElementById("flowerList");
+    const flowerCardsEl = document.getElementById("flowerCards");
+    const flowerStatsEl = document.getElementById("flowerStats");
+    const memberListEl = document.getElementById("memberList");
     const totalCountEl = document.getElementById("totalCount");
+    const memberCountEl = document.getElementById("memberCount");
+
     const searchInputEl = document.getElementById("searchInput");
+    const cardSearchInputEl = document.getElementById("cardSearchInput");
+    const memberSearchInputEl = document.getElementById("memberSearchInput");
+
     const lockBtnEl = document.getElementById("lockBtn");
     const guestBannerEl = document.getElementById("guestBanner");
-    const addPanelEl = document.getElementById("addFlowerForm");
+    const addFlowerFormEl = document.getElementById("addFlowerForm");
+    const addMemberFormEl = document.getElementById("addMemberForm");
 
-    function saveFlowers() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(flowers));
+    async function loadAllData() {
+      flowerListEl.innerHTML = `<div class="placeholder-card">⏳ Đang tải dữ liệu từ Cloud...</div>`;
+      memberListEl.innerHTML = `<div class="placeholder-card">⏳ Đang tải danh sách thành viên...</div>`;
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          flowers = data;
+          members = [];
+        } else {
+          flowers = data.flowers || [];
+          members = data.members || [];
+        }
+        renderFlowers();
+        renderFlowerCards();
+        renderMembers();
+      } catch (err) {
+        flowerListEl.innerHTML = `<div class="placeholder-card">❌ Không tải được dữ liệu. Kiểm tra lại link API_URL hoặc quyền truy cập Apps Script.</div>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
     }
 
     function getNameCounts(list) {
@@ -603,13 +684,14 @@
       return map;
     }
 
+    /* Render Tab: Loại Hoa */
     function renderFlowers() {
       totalCountEl.textContent = flowers.length;
       const keyword = searchInputEl.value.trim().toLowerCase();
       const counts = getNameCounts(flowers);
 
       const rows = flowers
-        .map((item, idx) => ({ ...item, stt: idx + 1, rawIndex: idx }))
+        .map((item, idx) => ({ ...item, stt: idx + 1 }))
         .filter((item) => {
           const matchGrade = selectedGrade === "ALL" || item.grade === selectedGrade;
           const matchText = !keyword || item.name.toLowerCase().includes(keyword);
@@ -625,18 +707,18 @@
         .map((item) => {
           const isDup = counts.get(item.name.trim().toLowerCase()) > 1;
           return `
-            <div class="flower-row">
-              <div class="flower-left">
-                <span class="flower-stt">${item.stt}</span>
-                <span class="flower-name">
+            <div class="item-row flower-row">
+              <div class="item-left">
+                <span class="item-stt">${item.stt}</span>
+                <span class="item-name">
                   <span>🌿</span>
                   <span>${escapeHtml(item.name)}</span>
                   ${isDup ? `<span class="dup-tag">Trùng tên</span>` : ""}
                 </span>
               </div>
-              <div class="flower-right">
+              <div class="item-right">
                 <span class="grade-badge grade-${escapeHtml(item.grade)}">${escapeHtml(item.grade)}</span>
-                <button class="del-btn" type="button" onclick="deleteFlower(${item.rawIndex})">Xóa</button>
+                <button class="del-btn" type="button" onclick="deleteItem('flower', ${item.row})">Xóa</button>
               </div>
             </div>
           `;
@@ -644,93 +726,8 @@
         .join("");
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;");
-    }
-
-    window.deleteFlower = function (index) {
-      if (!isAdmin) return;
-      flowers.splice(index, 1);
-      saveFlowers();
-      renderFlowers();
-    };
-
-    lockBtnEl.addEventListener("click", () => {
-      if (!isAdmin) {
-        const pass = prompt("Nhập mật khẩu mở khóa quản trị (mặc định: 123456):");
-        if (pass === ADMIN_PASS) {
-          isAdmin = true;
-          document.body.classList.add("admin-mode");
-          lockBtnEl.textContent = "🔓 Quản Trị";
-          lockBtnEl.classList.add("unlocked");
-          guestBannerEl.classList.add("hidden");
-          addPanelEl.classList.add("visible");
-        } else if (pass !== null) {
-          alert("Mật khẩu chưa đúng!");
-        }
-      } else {
-        isAdmin = false;
-        document.body.classList.remove("admin-mode");
-        lockBtnEl.textContent = "🔒 Chỉ Xem";
-        lockBtnEl.classList.remove("unlocked");
-        guestBannerEl.classList.remove("hidden");
-        addPanelEl.classList.remove("visible");
-      }
-    });
-
-    addPanelEl.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!isAdmin) return;
-      const nameInput = document.getElementById("newFlowerName");
-      const gradeInput = document.getElementById("newFlowerGrade");
-      const name = nameInput.value.trim();
-      if (!name) return;
-      flowers.push({ name, grade: gradeInput.value });
-      saveFlowers();
-      nameInput.value = "";
-      renderFlowers();
-    });
-
-    searchInputEl.addEventListener("input", renderFlowers);
-
-    document.querySelectorAll(".filter-chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        document.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("active"));
-        chip.classList.add("active");
-        selectedGrade = chip.dataset.grade;
-        renderFlowers();
-      });
-    });
-
-    document.querySelectorAll(".nav-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const target = btn.dataset.tab;
-        document.querySelectorAll(".tab-content").forEach((sec) => {
-          sec.style.display = sec.id === `tab-${target}` ? "block" : "none";
-        });
-      });
-    });
-
-    // Tạo cánh hoa rơi nhẹ
-    const petalLayer = document.getElementById("petalLayer");
-    const icons = ["🌸", "🌺", "🍃", "🍂"];
-    for (let i = 0; i < 16; i++) {
-      const span = document.createElement("span");
-      span.className = "petal";
-      span.textContent = icons[i % icons.length];
-      span.style.left = `${(i * 6.5) % 100}%`;
-      span.style.animationDuration = `${7 + (i % 6) * 1.5}s`;
-      span.style.animationDelay = `${(i % 5) * -1.4}s`;
-      petalLayer.appendChild(span);
-    }
-
-    renderFlowers();
-  </script>
-</body>
-</html>
+    /* Render Tab: Danh Sách Hoa (Lưới + Thống kê) */
+    function renderFlowerCards() {
+      const grades = ["Đỏ", "Vàng", "Tím", "Lam", "Xanh"];
+      flowerStatsEl.innerHTML = grades
+        .map((
