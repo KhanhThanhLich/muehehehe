@@ -36,7 +36,6 @@
       overflow-x: hidden;
     }
 
-    /* Ẩn các nút quản trị khi chưa đăng nhập Admin */
     body:not(.is-admin) .admin-only {
       display: none !important;
     }
@@ -180,38 +179,13 @@
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; color: #fff; }
     .section-title i { color: var(--green-bright); }
 
-    /* ================= BẢNG TIN HOA VIÊN (GIỐNG ẢNH MẪU) ================= */
-    .news-header {
-      margin-bottom: 24px;
-    }
+    /* ================= BẢNG TIN HOA VIÊN ================= */
+    .news-header { margin-bottom: 24px; }
+    .news-title { font-size: 28px; font-weight: 800; color: var(--green-neon); display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .news-subtitle { font-size: 14px; color: var(--text-muted); }
 
-    .news-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--green-neon);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 6px;
-    }
-
-    .news-subtitle {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    .news-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .news-left, .news-right {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .news-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
+    .news-left, .news-right { display: flex; flex-direction: column; gap: 16px; }
 
     .news-cover-box {
       width: 100%;
@@ -226,26 +200,9 @@
       position: relative;
     }
 
-    .news-cover-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .news-cover-placeholder {
-      color: #64748b;
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-    }
-
-    .news-cover-placeholder i {
-      font-size: 40px;
-      margin-bottom: 10px;
-      display: block;
-      color: rgba(52, 211, 153, 0.35);
-    }
+    .news-cover-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .news-cover-placeholder { color: #64748b; text-align: center; padding: 20px; font-size: 14px; }
+    .news-cover-placeholder i { font-size: 40px; margin-bottom: 10px; display: block; color: rgba(52, 211, 153, 0.35); }
 
     .btn-upload-cover {
       align-self: center;
@@ -278,7 +235,6 @@
       resize: vertical;
       outline: none;
     }
-
     .news-textarea:focus { border-color: var(--green-bright); }
     .news-textarea[readonly] { cursor: default; }
 
@@ -603,7 +559,7 @@
           <i class="fa-solid fa-lock" id="adminIcon"></i>
           <span id="adminText">Quyền Quản Trị</span>
         </button>
-        <div class="badge-cloud" onclick="loadFlowers()" title="Bấm để tải lại dữ liệu">
+        <div class="badge-cloud" onclick="loadFlowers(false)" title="Bấm để đồng bộ lại từ Google Sheets">
           <span class="dot-online" id="cloudDot"></span>
           <span id="cloudText">Cloud</span>
         </div>
@@ -612,7 +568,7 @@
 
     <section class="content-frame">
 
-      <!-- TAB 1: BẢNG TIN HOA VIÊN (GIỐNG ẢNH MẪU) -->
+      <!-- TAB 1: BẢNG TIN HOA VIÊN -->
       <div id="tab-dashboard" class="tab-view active">
         <div class="news-header">
           <div class="news-title"><i class="fa-solid fa-seedling"></i> Bảng Tin Hoa Viên</div>
@@ -769,6 +725,7 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
     const ADMIN_PASS = "123456"; // Đổi mật khẩu quản trị tại đây
+    const CACHE_KEY = "zero_garden_cache_v1";
 
     let isAdmin = false;
     let flowers = [];
@@ -777,6 +734,44 @@
     let currentFilter = "Tất cả";
     let selectedMemberName = "";
     let selectedMemberFilter = "Tất cả";
+
+    // ================= LOCALSTORAGE CACHE (HIỆN TỨC THÌ) =================
+    function saveLocalCache() {
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          flowers,
+          allMembers,
+          newsData,
+          updatedAt: Date.now()
+        }));
+      } catch (e) {
+        // Bỏ qua nếu bộ nhớ trình duyệt đầy
+      }
+    }
+
+    function hydrateFromCache() {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return false;
+        const cached = JSON.parse(raw);
+        if (Array.isArray(cached.flowers)) flowers = cached.flowers;
+        if (Array.isArray(cached.allMembers)) allMembers = cached.allMembers;
+        if (cached.newsData) newsData = cached.newsData;
+        renderAllViews();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Debounce helper để tìm kiếm mượt
+    function debounce(fn, delay = 150) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    }
 
     // ================= QUYỀN QUẢN TRỊ =================
     function applyAdminUI() {
@@ -814,7 +809,7 @@
       }
     };
 
-    // ================= BẢNG TIN (NÉN ẢNH & LƯU CLOUD) =================
+    // ================= BẢNG TIN =================
     function renderNews() {
       const imgEl = document.getElementById("newsCoverImg");
       const phEl = document.getElementById("newsCoverPlaceholder");
@@ -838,7 +833,6 @@
       reader.onload = (ev) => {
         const img = new Image();
         img.onload = () => {
-          // Tự động nén ảnh gọn dưới 50.000 ký tự để lưu được trực tiếp vào ô Google Sheets
           const canvas = document.createElement("canvas");
           const maxW = 640;
           const scale = img.width > maxW ? maxW / img.width : 1;
@@ -863,6 +857,7 @@
       if (!isAdmin) return alert("Bạn cần mở khóa Quyền Quản Trị!");
       const btn = document.getElementById("btnSaveNews");
       newsData.content = document.getElementById("newsContentInput").value;
+      saveLocalCache();
 
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
@@ -912,8 +907,8 @@
       });
     });
 
-    async function loadFlowers() {
-      setCloudStatus("syncing", "Đang tải...");
+    async function loadFlowers(silent = false) {
+      setCloudStatus("syncing", silent ? "Đang đồng bộ..." : "Đang tải...");
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
@@ -925,6 +920,7 @@
           allMembers = Array.isArray(data.members) ? data.members : [];
           if (data.news) newsData = data.news;
         }
+        saveLocalCache();
         renderAllViews();
         setCloudStatus("online", "Cloud");
       } catch (err) {
@@ -960,10 +956,18 @@
       if (!isAdmin) return;
       const name = prompt("Nhập tên thành viên mới cần thêm:");
       if (!name || !name.trim()) return;
-      const ok = await syncToSheet({ action: "addMember", name: name.trim() });
+      const cleanName = name.trim();
+
+      // Cập nhật giao diện & cache trước
+      if (!allMembers.some(m => m.toLowerCase() === cleanName.toLowerCase())) {
+        allMembers.push(cleanName);
+        saveLocalCache();
+        renderMembers();
+      }
+
+      const ok = await syncToSheet({ action: "addMember", name: cleanName });
       if (ok) {
-        await loadFlowers();
-        alert(`Đã thêm thành viên "${name.trim()}"!`);
+        loadFlowers(true); // Đồng bộ ngầm
       }
     }
 
@@ -990,7 +994,6 @@
     function renderList() {
       const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const container = document.getElementById("flowerList");
-      container.innerHTML = "";
 
       const filtered = flowers.filter(item => {
         const ownersArr = getOwnersArray(item.owners);
@@ -1007,32 +1010,31 @@
         return;
       }
 
-      filtered.forEach((item, index) => {
+      // Render 1 lần bằng HTML string thay vì appendChild từng dòng (nhanh hơn nhiều)
+      container.innerHTML = filtered.map((item, index) => {
         const ownersArr = getOwnersArray(item.owners);
         const ownersHtml = ownersArr
           .map(owner => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeHtml(owner).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(owner)}</span>`)
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
 
-        const row = document.createElement("div");
-        row.className = "flower-row";
-        row.onclick = () => { if (isAdmin) editFlower(item.id); };
-        row.innerHTML = `
-          <div class="col-stt">${index + 1}</div>
-          <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
-          <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
-          <div class="col-owners">${ownersHtml}</div>
-          <div class="col-actions admin-only">
-            <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
-              <i class="fa-solid fa-pen"></i> Sửa
-            </button>
-            <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
-              <i class="fa-solid fa-xmark"></i> Xóa
-            </button>
+        return `
+          <div class="flower-row" onclick="if(isAdmin) editFlower('${item.id}')">
+            <div class="col-stt">${index + 1}</div>
+            <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
+            <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
+            <div class="col-owners">${ownersHtml}</div>
+            <div class="col-actions admin-only">
+              <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
+                <i class="fa-solid fa-pen"></i> Sửa
+              </button>
+              <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
+                <i class="fa-solid fa-xmark"></i> Xóa
+              </button>
+            </div>
           </div>
         `;
-        container.appendChild(row);
-      });
+      }).join("");
 
       updateCounts();
     }
@@ -1179,8 +1181,8 @@
       });
     });
 
-    document.getElementById("searchInput").addEventListener("input", renderList);
-    document.getElementById("memberSearchInput").addEventListener("input", renderMembers);
+    document.getElementById("searchInput").addEventListener("input", debounce(renderList, 150));
+    document.getElementById("memberSearchInput").addEventListener("input", debounce(renderMembers, 150));
 
     // ================= POPUP TÍCH CHỌN THÀNH VIÊN =================
     const modal = document.getElementById("flowerModal");
@@ -1260,7 +1262,19 @@
 
       const ok = await syncToSheet(payload);
       if (ok) {
-        await loadFlowers();
+        if (editId) {
+          // Cập nhật ngay trên màn hình không cần chờ load lại
+          const idx = flowers.findIndex(f => String(f.id) === String(editId));
+          if (idx !== -1) flowers[idx] = { id: editId, name, rarity, owners };
+          saveLocalCache();
+          renderAllViews();
+        } else {
+          // Thêm mới: hiện tạm lên ngay rồi đồng bộ ngầm để lấy đúng ID dòng
+          flowers.push({ id: payload.data.id, name, rarity, owners });
+          saveLocalCache();
+          renderAllViews();
+          loadFlowers(true);
+        }
         modal.classList.remove("show");
       }
 
@@ -1273,13 +1287,27 @@
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách?`)) {
+        // Xóa ngay trên giao diện cho mượt, đồng thời gửi lệnh xóa & đồng bộ ngầm
+        const backup = [...flowers];
+        flowers = flowers.filter(f => String(f.id) !== String(id));
+        saveLocalCache();
+        renderAllViews();
+
         const ok = await syncToSheet({ action: "delete", id: item.id });
-        if (ok) await loadFlowers();
+        if (ok) {
+          loadFlowers(true); // Đồng bộ ngầm lại số thứ tự dòng
+        } else {
+          flowers = backup;
+          saveLocalCache();
+          renderAllViews();
+        }
       }
     };
 
+    // Khởi chạy: Hiện cache ngay lập tức -> đồng bộ ngầm từ Google Sheets
     applyAdminUI();
-    loadFlowers();
+    const hasCache = hydrateFromCache();
+    loadFlowers(hasCache);
   </script>
 </body>
 </html>
