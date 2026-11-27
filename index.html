@@ -36,6 +36,11 @@
       overflow-x: hidden;
     }
 
+    /* Ẩn các nút quản trị khi chưa đăng nhập Admin */
+    body:not(.is-admin) .admin-only {
+      display: none !important;
+    }
+
     /* ================= SIDEBAR ================= */
     .sidebar {
       width: 240px;
@@ -60,12 +65,7 @@
 
     .brand i { color: #f472b6; font-size: 22px; }
 
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
     .nav-item {
       display: flex;
@@ -83,12 +83,7 @@
     }
 
     .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-
-    .nav-item.active {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      font-weight: 600;
-    }
+    .nav-item.active { background: rgba(255, 255, 255, 0.08); color: #ffffff; font-weight: 600; }
 
     .nav-item.active::before {
       content: '';
@@ -130,8 +125,8 @@
     .header-actions { display: flex; align-items: center; gap: 12px; }
 
     .btn-admin {
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid var(--green-bright);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: #e2e8f0;
       padding: 8px 16px;
       border-radius: 999px;
@@ -144,7 +139,14 @@
       transition: all 0.2s;
     }
 
-    .btn-admin i { color: var(--green-bright); }
+    .btn-admin.unlocked {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: var(--green-bright);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.25);
+    }
+
+    .btn-admin.unlocked i { color: var(--green-bright); }
     .btn-admin:hover { background: rgba(34, 197, 94, 0.22); }
 
     .badge-cloud {
@@ -158,46 +160,149 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
     }
 
-    .dot-online {
-      width: 8px;
-      height: 8px;
-      background-color: var(--green-bright);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green-bright);
-    }
+    .dot-online { width: 8px; height: 8px; background-color: var(--green-bright); border-radius: 50%; box-shadow: 0 0 8px var(--green-bright); }
     .dot-syncing { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
     .dot-error { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
     .content-frame {
       border: 1.5px dashed var(--border-dashed);
       border-radius: 20px;
-      padding: 24px;
+      padding: 28px;
       background: rgba(20, 19, 36, 0.45);
     }
 
     .tab-view { display: none; }
     .tab-view.active { display: block; }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #fff;
-    }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; color: #fff; }
     .section-title i { color: var(--green-bright); }
 
-    /* ================= STATS CARDS ================= */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+    /* ================= BẢNG TIN HOA VIÊN (GIỐNG ẢNH MẪU) ================= */
+    .news-header {
       margin-bottom: 24px;
     }
+
+    .news-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--green-neon);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .news-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .news-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .news-left, .news-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .news-cover-box {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: rgba(15, 18, 32, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .news-cover-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .news-cover-placeholder {
+      color: #64748b;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    .news-cover-placeholder i {
+      font-size: 40px;
+      margin-bottom: 10px;
+      display: block;
+      color: rgba(52, 211, 153, 0.35);
+    }
+
+    .btn-upload-cover {
+      align-self: center;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px solid var(--green-bright);
+      color: #e2e8f0;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-upload-cover:hover { background: rgba(16, 185, 129, 0.22); }
+
+    .news-textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 280px;
+      background: rgba(16, 21, 36, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 20px;
+      color: #f8fafc;
+      font-size: 15px;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+    }
+
+    .news-textarea:focus { border-color: var(--green-bright); }
+    .news-textarea[readonly] { cursor: default; }
+
+    .btn-save-news {
+      align-self: flex-end;
+      background: linear-gradient(90deg, #1fd178, #2be585);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(44, 229, 131, 0.35);
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .btn-save-news:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-save-news:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ================= STATS CARDS ================= */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
 
     .stat-card {
       background: rgba(27, 26, 46, 0.8);
@@ -212,9 +317,7 @@
       align-items: center;
       gap: 6px;
     }
-
     .stat-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.2); }
-
     .stat-card.active {
       background: linear-gradient(180deg, rgba(34, 197, 94, 0.16) 0%, rgba(27, 26, 46, 0.9) 100%);
       border: 1.5px solid var(--green-bright);
@@ -226,11 +329,10 @@
     .icon-red { color: #ef4444; }
     .icon-yellow { color: #facc15; }
     .icon-purple { color: #c084fc; }
-
     .stat-count { font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.1; }
     .stat-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; }
 
-    /* ================= TOOLBAR ================= */
+    /* ================= TOOLBAR & TABLE ================= */
     .toolbar {
       background: rgba(24, 25, 43, 0.8);
       border: 1px solid var(--border-subtle);
@@ -255,11 +357,8 @@
       color: #fff;
       font-size: 13.5px;
       outline: none;
-      transition: border-color 0.2s;
     }
-
     .search-box input:focus { border-color: var(--green-bright); }
-    .search-box input::placeholder { color: #64748b; }
 
     .btn-add {
       background: linear-gradient(90deg, #10b981, #34d399);
@@ -274,12 +373,8 @@
       gap: 8px;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
-      transition: transform 0.15s, filter 0.15s;
     }
 
-    .btn-add:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
-    /* ================= TABLE ================= */
     .table-header {
       display: grid;
       grid-template-columns: 60px 2fr 120px 2.5fr 170px;
@@ -303,42 +398,22 @@
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 16px 20px;
-      cursor: pointer;
       transition: border-color 0.2s, background-color 0.2s;
     }
 
+    body.is-admin .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
     .col-stt { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
-
-    .col-name {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #ffffff;
-      transition: color 0.15s;
-    }
-    .flower-row:hover .col-name { color: var(--green-bright); }
+    .col-name { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 700; color: #ffffff; }
     .col-name i { color: var(--green-bright); font-size: 15px; }
 
-    .badge-rarity {
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      text-align: center;
-    }
-
+    .badge-rarity { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #ffffff; text-align: center; }
     .rarity-Đỏ { background: linear-gradient(90deg, #ef4444, #f43f5e); }
     .rarity-Vàng { background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1e1b4b; }
     .rarity-Tím { background: linear-gradient(90deg, #a855f7, #d946ef); }
 
     .col-owners { display: flex; flex-wrap: wrap; gap: 8px; }
-
     .owner-pill {
       background: rgba(16, 185, 129, 0.1);
       border: 1px solid rgba(52, 211, 153, 0.35);
@@ -351,58 +426,15 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      transition: background 0.15s;
     }
     .owner-pill:hover { background: rgba(16, 185, 129, 0.28); }
-    .owner-pill i { font-size: 11px; }
 
     .col-actions { display: flex; justify-content: flex-end; gap: 8px; }
-
-    .btn-action {
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-
+    .btn-action { padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
     .btn-edit { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; }
-    .btn-edit:hover { background: rgba(59, 130, 246, 0.25); }
     .btn-delete { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; }
-    .btn-delete:hover { background: rgba(239, 68, 68, 0.25); }
 
-    /* ================= DASHBOARD & MEMBER CARDS ================= */
-    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-
-    .dash-card {
-      background: rgba(27, 26, 46, 0.85);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .dash-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(52, 211, 153, 0.12);
-      color: var(--green-bright);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .dash-info h4 { font-size: 24px; font-weight: 800; color: #fff; }
-    .dash-info p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-
+    /* ================= MEMBER & CATEGORY CARDS ================= */
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
 
     .member-card {
@@ -416,96 +448,34 @@
       flex-direction: column;
       gap: 14px;
     }
-
-    .member-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--green-bright);
-      background: #1e2036;
-      box-shadow: 0 8px 24px rgba(52, 211, 153, 0.14);
-    }
+    .member-card:hover { transform: translateY(-3px); border-color: var(--green-bright); background: #1e2036; }
 
     .member-card-top { display: flex; align-items: center; gap: 12px; }
-
     .member-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 44px; height: 44px; border-radius: 12px;
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(139, 92, 246, 0.25));
       border: 1px solid rgba(52, 211, 153, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--green-bright);
-      font-size: 18px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-bright); font-size: 18px; flex-shrink: 0;
     }
-
     .member-name { font-size: 15.5px; font-weight: 700; color: #ffffff; }
     .member-total { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
     .member-total strong { color: var(--green-bright); }
     .member-mini-stats { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .mini-badge {
-      font-size: 11.5px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-subtle);
-    }
+    .mini-badge { font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-subtle); }
     .mini-red { color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
     .mini-yellow { color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
     .mini-purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
-
-    .member-card-footer {
-      font-size: 12px;
-      color: var(--green-bright);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
-    }
+    .member-card-footer { font-size: 12px; color: var(--green-bright); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
     .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-
-    .info-card {
-      background: var(--bg-row);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 18px;
-    }
-
-    .info-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .info-card-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .info-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; }
+    .info-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-subtle); }
     .info-card-count { background: rgba(52, 211, 153, 0.15); color: var(--green-bright); padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
     .tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .flower-tag { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); padding: 5px 10px; border-radius: 8px; font-size: 12.5px; color: #e2e8f0; display: inline-flex; align-items: center; gap: 6px; }
 
-    .flower-tag {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      color: #e2e8f0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: border-color 0.15s;
-    }
-    .flower-tag:hover { border-color: var(--green-bright); }
-
-    /* ================= POPUP CHỈNH SỬA NGƯỜI SỞ HỮU (GIỐNG ẢNH MẪU) ================= */
+    /* ================= POPUP CHỈNH SỬA NGƯỜI SỞ HỮU ================= */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -517,7 +487,6 @@
       z-index: 100;
       padding: 16px;
     }
-
     .modal-overlay.show { display: flex; }
 
     .modal-flower-edit {
@@ -530,258 +499,72 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
     }
 
-    .edit-modal-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 22px;
-    }
-
-    .edit-modal-title {
-      font-size: 21px;
-      font-weight: 800;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .edit-modal-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 4px 8px;
-      transition: color 0.15s;
-    }
-    .edit-modal-close:hover { color: #ffffff; }
-
-    .owner-section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .field-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #e2e8f0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .edit-modal-title { font-size: 21px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
+    .edit-modal-close { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; }
+    .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .field-label { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
 
     .btn-select-all {
-      background: var(--green-neon);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      padding: 7px 14px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
+      background: var(--green-neon); color: #ffffff; border: none; border-radius: 10px;
+      padding: 7px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer;
       box-shadow: 0 0 16px rgba(44, 229, 131, 0.45);
-      transition: filter 0.15s, transform 0.1s;
     }
-    .btn-select-all:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
     .owner-checklist-box {
-      background: #101522;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      padding: 10px;
-      max-height: 215px;
-      overflow-y: auto;
-      margin-bottom: 18px;
+      background: #101522; border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 10px; max-height: 215px; overflow-y: auto; margin-bottom: 18px;
     }
-
-    /* Thanh cuộn màu xanh lá giống ảnh mẫu */
     .owner-checklist-box::-webkit-scrollbar { width: 6px; }
-    .owner-checklist-box::-webkit-scrollbar-track { background: transparent; }
-    .owner-checklist-box::-webkit-scrollbar-thumb {
-      background: var(--green-neon);
-      border-radius: 999px;
-    }
+    .owner-checklist-box::-webkit-scrollbar-thumb { background: var(--green-neon); border-radius: 999px; }
 
-    .owner-check-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.15s;
-      user-select: none;
-    }
-
-    .owner-check-item:hover {
-      background: rgba(44, 229, 131, 0.12);
-    }
+    .owner-check-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; user-select: none; }
+    .owner-check-item:hover { background: rgba(44, 229, 131, 0.12); }
 
     .owner-check-item input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 5px;
-      background: #ffffff;
-      border: 2px solid #ffffff;
-      cursor: pointer;
-      position: relative;
-      flex-shrink: 0;
-      transition: all 0.15s;
+      appearance: none; -webkit-appearance: none; width: 20px; height: 20px;
+      border-radius: 5px; background: #ffffff; border: 2px solid #ffffff;
+      cursor: pointer; position: relative; flex-shrink: 0;
     }
-
-    .owner-check-item input[type="checkbox"]:checked {
-      background: var(--green-neon);
-      border-color: var(--green-neon);
-    }
-
+    .owner-check-item input[type="checkbox"]:checked { background: var(--green-neon); border-color: var(--green-neon); }
     .owner-check-item input[type="checkbox"]:checked::after {
-      content: '✔';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -52%);
-      color: #0b131e;
-      font-size: 13px;
-      font-weight: 900;
+      content: '✔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%);
+      color: #0b131e; font-size: 13px; font-weight: 900;
     }
-
-    .owner-check-item span {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #ffffff;
-    }
+    .owner-check-item span { font-size: 14.5px; font-weight: 700; color: #ffffff; }
 
     .edit-form-group { margin-bottom: 16px; }
     .edit-form-group .field-label { margin-bottom: 8px; }
-
-    .edit-input,
-    .edit-select {
-      width: 100%;
-      background: #101522;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 12px;
-      padding: 12px 14px;
-      color: #ffffff;
-      font-size: 14.5px;
-      font-weight: 600;
-      outline: none;
-      transition: border-color 0.2s;
+    .edit-input, .edit-select {
+      width: 100%; background: #101522; border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px; padding: 12px 14px; color: #ffffff; font-size: 14.5px; font-weight: 600; outline: none;
     }
-    .edit-input:focus,
-    .edit-select:focus { border-color: var(--green-neon); }
 
     .btn-cloud-submit {
-      width: 100%;
-      margin-top: 8px;
-      background: linear-gradient(90deg, #1fd178, #2be585);
-      color: #ffffff;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 20px;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
+      width: 100%; margin-top: 8px; background: linear-gradient(90deg, #1fd178, #2be585);
+      color: #ffffff; border: none; border-radius: 14px; padding: 14px 20px;
+      font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
+      display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
       box-shadow: 0 8px 25px rgba(44, 229, 131, 0.38);
-      transition: filter 0.15s, transform 0.1s;
     }
-    .btn-cloud-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
-    .btn-cloud-submit:disabled { opacity: 0.65; cursor: not-allowed; }
 
-    /* ================= MODAL XEM THẺ HOA THÀNH VIÊN ================= */
     .modal-wide {
-      background: #1b1a2e;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 720px;
-      max-height: 85vh;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
+      background: #1b1a2e; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px;
+      width: 100%; max-width: 720px; max-height: 85vh; padding: 24px; display: flex; flex-direction: column;
     }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .modal-close-icon {
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      color: #cbd5e1;
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-    .modal-close-icon:hover { background: rgba(239, 68, 68, 0.25); color: #f87171; }
-
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); }
+    .modal-close-icon { background: rgba(255, 255, 255, 0.08); border: none; color: #cbd5e1; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; font-size: 15px; }
     .modal-filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-
-    .modal-filter-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .modal-filter-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 6px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
     .modal-filter-btn.active { background: rgba(52, 211, 153, 0.18); border-color: var(--green-bright); color: #ffffff; }
-
-    .member-flowers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-      gap: 12px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .flower-mini-card {
-      background: #141326;
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      cursor: pointer;
-      transition: border-color 0.15s;
-    }
-    .flower-mini-card:hover { border-color: var(--green-bright); }
-
-    .flower-mini-card-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.35;
-    }
+    .member-flowers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 12px; overflow-y: auto; padding-right: 4px; }
+    .flower-mini-card { background: #141326; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .flower-mini-card-name { font-size: 14px; font-weight: 700; color: #ffffff; display: flex; align-items: flex-start; gap: 8px; }
     .flower-mini-card-name i { color: var(--green-bright); margin-top: 3px; }
 
     @media (max-width: 1024px) {
+      .news-layout { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .dashboard-grid { grid-template-columns: 1fr; }
       .table-header { display: none; }
       .flower-row { grid-template-columns: 1fr; gap: 10px; }
       .col-actions { justify-content: flex-start; }
@@ -803,8 +586,8 @@
       <span>ZERO GARDEN</span>
     </div>
     <ul class="nav-list">
-      <li class="nav-item" data-tab="dashboard"><i class="fa-solid fa-layer-group"></i> Bảng Tin</li>
-      <li class="nav-item active" data-tab="flowers"><i class="fa-solid fa-seedling"></i> Danh Sách Hoa</li>
+      <li class="nav-item active" data-tab="dashboard"><i class="fa-solid fa-layer-group"></i> Bảng Tin</li>
+      <li class="nav-item" data-tab="flowers"><i class="fa-solid fa-seedling"></i> Danh Sách Hoa</li>
       <li class="nav-item" data-tab="members"><i class="fa-solid fa-users"></i> Thành Viên</li>
       <li class="nav-item" data-tab="categories"><i class="fa-solid fa-list-ul"></i> Loại Hoa</li>
     </ul>
@@ -816,10 +599,11 @@
         👋 Chào mừng đến với <span>Zero Garden</span>
       </div>
       <div class="header-actions">
-        <button class="btn-admin" onclick="loadFlowers()">
-          <i class="fa-solid fa-rotate"></i> Làm mới
+        <button class="btn-admin" id="btnAdminAuth" onclick="toggleAdminAuth()">
+          <i class="fa-solid fa-lock" id="adminIcon"></i>
+          <span id="adminText">Quyền Quản Trị</span>
         </button>
-        <div class="badge-cloud" id="cloudBadge">
+        <div class="badge-cloud" onclick="loadFlowers()" title="Bấm để tải lại dữ liệu">
           <span class="dot-online" id="cloudDot"></span>
           <span id="cloudText">Cloud</span>
         </div>
@@ -828,38 +612,39 @@
 
     <section class="content-frame">
 
-      <!-- TAB 1: BẢNG TIN -->
-      <div id="tab-dashboard" class="tab-view">
-        <div class="section-title"><i class="fa-solid fa-layer-group"></i> Tổng Quan Hoa Viên</div>
-        <div class="dashboard-grid">
-          <div class="dash-card">
-            <div class="dash-icon"><i class="fa-solid fa-seedling"></i></div>
-            <div class="dash-info">
-              <h4 id="dash-total-flowers">0</h4>
-              <p>Tổng số loại hoa</p>
+      <!-- TAB 1: BẢNG TIN HOA VIÊN (GIỐNG ẢNH MẪU) -->
+      <div id="tab-dashboard" class="tab-view active">
+        <div class="news-header">
+          <div class="news-title"><i class="fa-solid fa-seedling"></i> Bảng Tin Hoa Viên</div>
+          <div class="news-subtitle">Khu vực cập nhật thông tin đồng bộ toàn nhóm.</div>
+        </div>
+
+        <div class="news-layout">
+          <div class="news-left">
+            <div class="news-cover-box" id="newsCoverBox">
+              <div class="news-cover-placeholder" id="newsCoverPlaceholder">
+                <i class="fa-regular fa-image"></i>
+                Chưa có ảnh bìa
+              </div>
+              <img id="newsCoverImg" src="" alt="Ảnh bìa Hoa Viên" style="display:none;" />
             </div>
+            <input type="file" id="newsFileInput" accept="image/*" style="display:none;" />
+            <button type="button" class="btn-upload-cover admin-only" onclick="document.getElementById('newsFileInput').click()">
+              <i class="fa-regular fa-image"></i> Tải ảnh bìa lên
+            </button>
           </div>
-          <div class="dash-card">
-            <div class="dash-icon"><i class="fa-solid fa-users"></i></div>
-            <div class="dash-info">
-              <h4 id="dash-total-members">0</h4>
-              <p>Thành viên hoa viên</p>
-            </div>
-          </div>
-          <div class="dash-card">
-            <div class="dash-icon"><i class="fa-solid fa-fire"></i></div>
-            <div class="dash-info">
-              <h4 id="dash-rare-flowers">0</h4>
-              <p>Hoa phẩm Đỏ &amp; Vàng (Cam)</p>
-            </div>
+
+          <div class="news-right">
+            <textarea id="newsContentInput" class="news-textarea" readonly placeholder="Nhập nội dung bảng tin..."></textarea>
+            <button type="button" class="btn-save-news admin-only" id="btnSaveNews" onclick="saveNewsToCloud()">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud
+            </button>
           </div>
         </div>
-        <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Hoa Mới Cập Nhật</div>
-        <div class="flower-list" id="recentFlowersList"></div>
       </div>
 
       <!-- TAB 2: DANH SÁCH HOA -->
-      <div id="tab-flowers" class="tab-view active">
+      <div id="tab-flowers" class="tab-view">
         <div class="stats-grid" id="statsGrid">
           <div class="stat-card active" data-filter="Tất cả">
             <i class="fa-solid fa-layer-group stat-icon icon-all"></i>
@@ -888,7 +673,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" placeholder="Tìm kiếm tên hoa, người sở hữu..." />
           </div>
-          <button class="btn-add" id="btnOpenAdd">
+          <button class="btn-add admin-only" id="btnOpenAdd">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Trồng Hoa Mới
           </button>
         </div>
@@ -898,11 +683,11 @@
           <div>TÊN HOA / VẬT PHẨM</div>
           <div>PHẨM HOA</div>
           <div>NGƯỜI SỞ HỮU</div>
-          <div>HÀNH ĐỘNG</div>
+          <div class="admin-only">HÀNH ĐỘNG</div>
         </div>
 
         <div class="flower-list" id="flowerList">
-          <div class="empty-state">Đang tải dữ liệu từ bumpyne</div>
+          <div class="empty-state">Đang tải dữ liệu từ Google Sheets...</div>
         </div>
       </div>
 
@@ -914,7 +699,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="memberSearchInput" placeholder="Tìm kiếm tên thành viên..." />
           </div>
-          <button class="btn-add" onclick="addNewMember()">
+          <button class="btn-add admin-only" onclick="addNewMember()">
             <i class="fa-solid fa-user-plus"></i> Thêm Thành Viên
           </button>
         </div>
@@ -930,28 +715,23 @@
     </section>
   </main>
 
-  <!-- Popup Chỉnh Sửa Người Sở Hữu / Trồng Hoa Mới (Giống ảnh mẫu) -->
+  <!-- Popup Chỉnh Sửa Người Sở Hữu / Trồng Hoa Mới -->
   <div class="modal-overlay" id="flowerModal">
     <div class="modal-flower-edit">
       <div class="edit-modal-top">
         <div class="edit-modal-title" id="modalTitle">✏️ Chỉnh Sửa Người Sở Hữu</div>
         <button class="edit-modal-close" id="btnCloseModalX"><i class="fa-solid fa-xmark"></i></button>
       </div>
-
       <input type="hidden" id="editId" value="" />
-
       <div class="owner-section-header">
         <div class="field-label">👤 Thuộc về ai?</div>
         <button type="button" class="btn-select-all" id="btnToggleSelectAll">Chọn tất cả</button>
       </div>
-
       <div class="owner-checklist-box" id="ownerChecklistBox"></div>
-
       <div class="edit-form-group">
         <label class="field-label">🌿 Hạt giống hoa</label>
         <input type="text" class="edit-input" id="flowerName" placeholder="Nhập tên hoa..." />
       </div>
-
       <div class="edit-form-group">
         <label class="field-label">🎨 Phẩm chất</label>
         <select class="edit-select" id="flowerRarity">
@@ -960,7 +740,6 @@
           <option value="Tím">Tím</option>
         </select>
       </div>
-
       <button type="button" class="btn-cloud-submit" id="btnSaveFlower">
         <i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY
       </button>
@@ -989,13 +768,117 @@
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
+    const ADMIN_PASS = "123456"; // Đổi mật khẩu quản trị tại đây
 
+    let isAdmin = false;
     let flowers = [];
     let allMembers = [];
+    let newsData = { image: "", content: "Chúc cả nhà một ngày thật vui vẻ !!!!" };
     let currentFilter = "Tất cả";
     let selectedMemberName = "";
     let selectedMemberFilter = "Tất cả";
 
+    // ================= QUYỀN QUẢN TRỊ =================
+    function applyAdminUI() {
+      document.body.classList.toggle("is-admin", isAdmin);
+      const btn = document.getElementById("btnAdminAuth");
+      const icon = document.getElementById("adminIcon");
+      const textarea = document.getElementById("newsContentInput");
+
+      if (isAdmin) {
+        btn.classList.add("unlocked");
+        icon.className = "fa-solid fa-lock-open";
+        textarea.removeAttribute("readonly");
+      } else {
+        btn.classList.remove("unlocked");
+        icon.className = "fa-solid fa-lock";
+        textarea.setAttribute("readonly", "true");
+      }
+    }
+
+    window.toggleAdminAuth = function() {
+      if (isAdmin) {
+        if (confirm("Khóa lại Quyền Quản Trị?")) {
+          isAdmin = false;
+          applyAdminUI();
+        }
+        return;
+      }
+      const pass = prompt("Nhập mật khẩu Quản Trị:");
+      if (pass === null) return;
+      if (pass === ADMIN_PASS) {
+        isAdmin = true;
+        applyAdminUI();
+      } else {
+        alert("Mật khẩu không đúng!");
+      }
+    };
+
+    // ================= BẢNG TIN (NÉN ẢNH & LƯU CLOUD) =================
+    function renderNews() {
+      const imgEl = document.getElementById("newsCoverImg");
+      const phEl = document.getElementById("newsCoverPlaceholder");
+      const textEl = document.getElementById("newsContentInput");
+
+      textEl.value = newsData.content || "";
+      if (newsData.image) {
+        imgEl.src = newsData.image;
+        imgEl.style.display = "block";
+        phEl.style.display = "none";
+      } else {
+        imgEl.style.display = "none";
+        phEl.style.display = "block";
+      }
+    }
+
+    document.getElementById("newsFileInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          // Tự động nén ảnh gọn dưới 50.000 ký tự để lưu được trực tiếp vào ô Google Sheets
+          const canvas = document.createElement("canvas");
+          const maxW = 640;
+          const scale = img.width > maxW ? maxW / img.width : 1;
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          let dataUrl = canvas.toDataURL("image/jpeg", 0.65);
+          if (dataUrl.length > 48000) {
+            dataUrl = canvas.toDataURL("image/jpeg", 0.45);
+          }
+          newsData.image = dataUrl;
+          renderNews();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    window.saveNewsToCloud = async function() {
+      if (!isAdmin) return alert("Bạn cần mở khóa Quyền Quản Trị!");
+      const btn = document.getElementById("btnSaveNews");
+      newsData.content = document.getElementById("newsContentInput").value;
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+      const ok = await syncToSheet({
+        action: "saveNews",
+        image: newsData.image,
+        content: newsData.content
+      });
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud';
+      if (ok) alert("Đã lưu Bảng Tin lên Cloud thành công!");
+    };
+
+    // ================= HELPER & LOAD DATA =================
     function getOwnersArray(owners) {
       return Array.isArray(owners)
         ? owners
@@ -1020,7 +903,6 @@
       label.textContent = text;
     }
 
-    // Chuyển đổi giữa 4 Tab ở Sidebar
     document.querySelectorAll(".nav-item").forEach(item => {
       item.addEventListener("click", () => {
         document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
@@ -1041,14 +923,13 @@
         } else {
           flowers = Array.isArray(data.flowers) ? data.flowers : [];
           allMembers = Array.isArray(data.members) ? data.members : [];
+          if (data.news) newsData = data.news;
         }
         renderAllViews();
         setCloudStatus("online", "Cloud");
       } catch (err) {
         console.error("Lỗi tải dữ liệu:", err);
         setCloudStatus("error", "Lỗi kết nối");
-        document.getElementById("flowerList").innerHTML =
-          '<div class="empty-state">Không thể tải dữ liệu từ bumpyne. Hãy kiểm tra lại quyền truy cập Apps Script.</div>';
       }
     }
 
@@ -1070,18 +951,19 @@
       } catch (err) {
         console.error("Lỗi đồng bộ:", err);
         setCloudStatus("error", "Lỗi lưu");
-        alert("Không thể lưu. Hãy kiểm tra lại quyền triển khai Apps Script.");
+        alert("Không thể lưu lên Google Sheets. Hãy kiểm tra lại quyền triển khai Apps Script.");
         return false;
       }
     }
 
     async function addNewMember() {
+      if (!isAdmin) return;
       const name = prompt("Nhập tên thành viên mới cần thêm:");
       if (!name || !name.trim()) return;
       const ok = await syncToSheet({ action: "addMember", name: name.trim() });
       if (ok) {
         await loadFlowers();
-        alert(`Đã thêm thành viên "${name.trim()}" vào cả 2 sheet và đồng bộ lên web!`);
+        alert(`Đã thêm thành viên "${name.trim()}"!`);
       }
     }
 
@@ -1092,8 +974,8 @@
     }
 
     function renderAllViews() {
+      renderNews();
       renderList();
-      renderDashboard();
       renderMembers();
       renderCategories();
     }
@@ -1105,7 +987,6 @@
       document.getElementById("count-purple").textContent = flowers.filter(f => f.rarity === "Tím").length;
     }
 
-    // Tab 2: Danh Sách Hoa
     function renderList() {
       const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const container = document.getElementById("flowerList");
@@ -1135,14 +1016,13 @@
 
         const row = document.createElement("div");
         row.className = "flower-row";
-        // Bấm vào dòng hoa -> mở ngay popup tích chọn thành viên giống ảnh mẫu
-        row.onclick = () => editFlower(item.id);
+        row.onclick = () => { if (isAdmin) editFlower(item.id); };
         row.innerHTML = `
           <div class="col-stt">${index + 1}</div>
           <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
           <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
           <div class="col-owners">${ownersHtml}</div>
-          <div class="col-actions">
+          <div class="col-actions admin-only">
             <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
               <i class="fa-solid fa-pen"></i> Sửa
             </button>
@@ -1157,39 +1037,6 @@
       updateCounts();
     }
 
-    // Tab 1: Bảng Tin
-    function renderDashboard() {
-      const membersList = getAllMemberNames();
-      const rareCount = flowers.filter(f => f.rarity === "Đỏ" || f.rarity === "Vàng").length;
-
-      document.getElementById("dash-total-flowers").textContent = flowers.length;
-      document.getElementById("dash-total-members").textContent = membersList.length;
-      document.getElementById("dash-rare-flowers").textContent = rareCount;
-
-      const recentContainer = document.getElementById("recentFlowersList");
-      const recent = flowers.slice(0, 5);
-      if (recent.length === 0) {
-        recentContainer.innerHTML = '<div class="empty-state">Chưa có dữ liệu hoa.</div>';
-        return;
-      }
-
-      recentContainer.innerHTML = recent.map((item, idx) => {
-        const ownersHtml = getOwnersArray(item.owners)
-          .map(o => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeHtml(o).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(o)}</span>`)
-          .join("");
-        const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
-        return `
-          <div class="flower-row" style="grid-template-columns: 50px 2fr 120px 2.5fr;" onclick="editFlower('${item.id}')">
-            <div class="col-stt">${idx + 1}</div>
-            <div class="col-name"><i class="fa-solid fa-leaf"></i> ${escapeHtml(item.name)}</div>
-            <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
-            <div class="col-owners">${ownersHtml}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    // Tab 3: Thành Viên
     function getMemberMap() {
       const memberMap = {};
       allMembers.forEach(m => { memberMap[m] = []; });
@@ -1262,9 +1109,7 @@
     function renderMemberModalContent() {
       const memberMap = getMemberMap();
       const list = memberMap[selectedMemberName] || [];
-      const filtered = selectedMemberFilter === "Tất cả"
-        ? list
-        : list.filter(f => f.rarity === selectedMemberFilter);
+      const filtered = selectedMemberFilter === "Tất cả" ? list : list.filter(f => f.rarity === selectedMemberFilter);
 
       document.getElementById("memberModalName").textContent = selectedMemberName;
       document.getElementById("memberModalSub").textContent = `Tổng cộng: ${list.length} loại hoa`;
@@ -1278,7 +1123,7 @@
       grid.innerHTML = filtered.map(f => {
         const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
         return `
-          <div class="flower-mini-card" onclick="closeMemberModal(); editFlower('${f.id}')">
+          <div class="flower-mini-card" onclick="if(isAdmin){closeMemberModal(); editFlower('${f.id}');}">
             <div class="flower-mini-card-name">
               <i class="fa-solid fa-leaf"></i>
               <span>${escapeHtml(f.name)}</span>
@@ -1302,7 +1147,6 @@
       if (e.target.id === "memberFlowersModal") closeMemberModal();
     });
 
-    // Tab 4: Loại Hoa
     function renderCategories() {
       const rarities = ["Đỏ", "Vàng", "Tím"];
       const grid = document.getElementById("categoriesGrid");
@@ -1318,7 +1162,7 @@
             </div>
             <div class="tag-list">
               ${list.length > 0
-                ? list.map(f => `<span class="flower-tag" onclick="editFlower('${f.id}')"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${escapeHtml(f.name)}</span>`).join("")
+                ? list.map(f => `<span class="flower-tag" onclick="if(isAdmin) editFlower('${f.id}')"><i class="fa-solid fa-leaf" style="color:#34d399;font-size:11px;"></i> ${escapeHtml(f.name)}</span>`).join("")
                 : '<span style="color:#64748b;font-size:13px;">Chưa có hoa phẩm này</span>'}
             </div>
           </div>
@@ -1347,12 +1191,6 @@
     function renderOwnerChecklist(selectedOwners = []) {
       const selectedLower = selectedOwners.map(s => s.toLowerCase());
       const members = getAllMemberNames();
-
-      if (members.length === 0) {
-        checklistBox.innerHTML = '<div style="color:#64748b; font-size:13px; padding:12px;">Chưa có thành viên nào.</div>';
-        return;
-      }
-
       checklistBox.innerHTML = members.map(m => {
         const checked = selectedLower.includes(m.toLowerCase()) ? "checked" : "";
         return `
@@ -1362,7 +1200,6 @@
           </label>
         `;
       }).join("");
-
       updateSelectAllButtonLabel();
       checklistBox.querySelectorAll(".owner-checkbox").forEach(cb => {
         cb.addEventListener("change", updateSelectAllButtonLabel);
@@ -1383,6 +1220,7 @@
     });
 
     document.getElementById("btnOpenAdd").addEventListener("click", () => {
+      if (!isAdmin) return;
       document.getElementById("modalTitle").textContent = "🌱 Trồng Hoa Mới";
       document.getElementById("editId").value = "";
       document.getElementById("flowerName").value = "";
@@ -1392,11 +1230,10 @@
     });
 
     document.getElementById("btnCloseModalX").addEventListener("click", () => modal.classList.remove("show"));
-    modal.addEventListener("click", (e) => {
-      if (e.target.id === "flowerModal") modal.classList.remove("show");
-    });
+    modal.addEventListener("click", (e) => { if (e.target.id === "flowerModal") modal.classList.remove("show"); });
 
     window.editFlower = function(id) {
+      if (!isAdmin) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       document.getElementById("modalTitle").textContent = "✏️ Chỉnh Sửa Người Sở Hữu";
@@ -1411,27 +1248,20 @@
       const name = document.getElementById("flowerName").value.trim();
       const rarity = document.getElementById("flowerRarity").value;
       const owners = Array.from(checklistBox.querySelectorAll(".owner-checkbox:checked")).map(cb => cb.value);
-
       if (!name) return alert("Vui lòng nhập tên hoa!");
 
       btnSave.disabled = true;
       btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU LÊN MÂY...';
 
       const editId = document.getElementById("editId").value;
-      if (!editId) {
-        const newFlower = { id: Date.now().toString(), name, rarity, owners };
-        const ok = await syncToSheet({ action: "add", data: newFlower });
-        if (ok) {
-          await loadFlowers();
-          modal.classList.remove("show");
-        }
-      } else {
-        const updatedFlower = { id: editId, name, rarity, owners };
-        const ok = await syncToSheet({ action: "edit", data: updatedFlower });
-        if (ok) {
-          await loadFlowers();
-          modal.classList.remove("show");
-        }
+      const payload = editId
+        ? { action: "edit", data: { id: editId, name, rarity, owners } }
+        : { action: "add", data: { id: Date.now().toString(), name, rarity, owners } };
+
+      const ok = await syncToSheet(payload);
+      if (ok) {
+        await loadFlowers();
+        modal.classList.remove("show");
       }
 
       btnSave.disabled = false;
@@ -1439,16 +1269,16 @@
     });
 
     window.deleteFlower = async function(id) {
+      if (!isAdmin) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách?`)) {
         const ok = await syncToSheet({ action: "delete", id: item.id });
-        if (ok) {
-          await loadFlowers();
-        }
+        if (ok) await loadFlowers();
       }
     };
 
+    applyAdminUI();
     loadFlowers();
   </script>
 </body>
