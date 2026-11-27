@@ -116,12 +116,14 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .welcome-text { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .welcome-text span { color: var(--green-bright); }
 
-    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     .btn-admin {
       background: rgba(255, 255, 255, 0.06);
@@ -147,6 +149,22 @@
 
     .btn-admin.unlocked i { color: var(--green-bright); }
     .btn-admin:hover { background: rgba(34, 197, 94, 0.22); }
+
+    .btn-migrate {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      color: #fde68a;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-migrate:hover { background: rgba(245, 158, 11, 0.25); }
 
     .badge-cloud {
       background: rgba(255, 255, 255, 0.05);
@@ -252,9 +270,7 @@
       align-items: center;
       gap: 8px;
       box-shadow: 0 6px 20px rgba(44, 229, 131, 0.35);
-      transition: filter 0.15s, transform 0.1s;
     }
-    .btn-save-news:hover { filter: brightness(1.08); transform: translateY(-1px); }
     .btn-save-news:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* ================= STATS CARDS ================= */
@@ -555,13 +571,16 @@
         👋 Chào mừng đến với <span>Zero Garden</span>
       </div>
       <div class="header-actions">
+        <button class="btn-migrate admin-only" id="btnMigrate" onclick="migrateFromSheets()">
+          <i class="fa-solid fa-file-import"></i> Nạp từ Sheets
+        </button>
         <button class="btn-admin" id="btnAdminAuth" onclick="toggleAdminAuth()">
           <i class="fa-solid fa-lock" id="adminIcon"></i>
           <span id="adminText">Quyền Quản Trị</span>
         </button>
-        <div class="badge-cloud" onclick="loadFlowers(false)" title="Bấm để đồng bộ lại từ Google Sheets">
+        <div class="badge-cloud" onclick="loadFromFirebase(false)" title="Firebase Realtime">
           <span class="dot-online" id="cloudDot"></span>
-          <span id="cloudText">Cloud</span>
+          <span id="cloudText">Firebase</span>
         </div>
       </div>
     </header>
@@ -572,7 +591,7 @@
       <div id="tab-dashboard" class="tab-view active">
         <div class="news-header">
           <div class="news-title"><i class="fa-solid fa-seedling"></i> Bảng Tin Hoa Viên</div>
-          <div class="news-subtitle">Khu vực cập nhật thông tin đồng bộ toàn nhóm.</div>
+          <div class="news-subtitle">Khu vực cập nhật thông tin đồng bộ realtime toàn nhóm.</div>
         </div>
 
         <div class="news-layout">
@@ -643,7 +662,7 @@
         </div>
 
         <div class="flower-list" id="flowerList">
-          <div class="empty-state">Đang tải dữ liệu từ Google Sheets...</div>
+          <div class="empty-state">Đang tải dữ liệu từ Firebase...</div>
         </div>
       </div>
 
@@ -723,9 +742,10 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
+    const FIREBASE_DB_URL = "https://bumpy-e2b9c-default-rtdb.asia-southeast1.firebasedatabase.app/zero_garden";
+    const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
     const ADMIN_PASS = "123456"; // Đổi mật khẩu quản trị tại đây
-    const CACHE_KEY = "zero_garden_cache_v1";
+    const CACHE_KEY = "zero_garden_fb_cache_v1";
 
     let isAdmin = false;
     let flowers = [];
@@ -735,18 +755,11 @@
     let selectedMemberName = "";
     let selectedMemberFilter = "Tất cả";
 
-    // ================= LOCALSTORAGE CACHE (HIỆN TỨC THÌ) =================
+    // ================= CACHE LOCALSTORAGE =================
     function saveLocalCache() {
       try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({
-          flowers,
-          allMembers,
-          newsData,
-          updatedAt: Date.now()
-        }));
-      } catch (e) {
-        // Bỏ qua nếu bộ nhớ trình duyệt đầy
-      }
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ flowers, allMembers, newsData }));
+      } catch (e) {}
     }
 
     function hydrateFromCache() {
@@ -764,7 +777,6 @@
       }
     }
 
-    // Debounce helper để tìm kiếm mượt
     function debounce(fn, delay = 150) {
       let timer;
       return (...args) => {
@@ -809,6 +821,119 @@
       }
     };
 
+    // ================= FIREBASE REALTIME =================
+    function applyDatabaseSnapshot(data) {
+      if (!data) return;
+      flowers = Array.isArray(data.flowers) ? data.flowers.filter(Boolean) : [];
+      allMembers = Array.isArray(data.members) ? data.members.filter(Boolean) : [];
+      if (data.news) newsData = data.news;
+      saveLocalCache();
+      renderAllViews();
+    }
+
+    async function loadFromFirebase(silent = false) {
+      setCloudStatus("syncing", silent ? "Đang đồng bộ..." : "Đang tải...");
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}.json`);
+        const data = await res.json();
+        if (data) {
+          applyDatabaseSnapshot(data);
+        } else {
+          document.getElementById("flowerList").innerHTML =
+            '<div class="empty-state">Firebase đang trống. Hãy mở Quyền Quản Trị và bấm nút <strong>Nạp từ Sheets</strong> ở góc trên phải để chuyển dữ liệu sang!</div>';
+        }
+        setCloudStatus("online", "Firebase");
+      } catch (err) {
+        console.error("Lỗi tải Firebase:", err);
+        setCloudStatus("error", "Lỗi kết nối");
+      }
+    }
+
+    async function saveToFirebase(path, payload) {
+      setCloudStatus("syncing", "Đang lưu...");
+      try {
+        const url = path ? `${FIREBASE_DB_URL}/${path}.json` : `${FIREBASE_DB_URL}.json`;
+        const res = await fetch(url, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        setCloudStatus("online", "Đã lưu");
+        setTimeout(() => setCloudStatus("online", "Firebase"), 1200);
+        return true;
+      } catch (err) {
+        console.error("Lỗi lưu Firebase:", err);
+        setCloudStatus("error", "Lỗi lưu");
+        alert("Không thể lưu lên Firebase. Hãy kiểm tra lại Rules của Realtime Database.");
+        return false;
+      }
+    }
+
+    // Lắng nghe thay đổi Realtime từ Firebase (tự động cập nhật không cần F5)
+    function startRealtimeListener() {
+      try {
+        const evtSource = new EventSource(`${FIREBASE_DB_URL}.json`);
+        evtSource.addEventListener("put", (e) => {
+          try {
+            const msg = JSON.parse(e.data);
+            if (msg.path === "/" && msg.data) {
+              applyDatabaseSnapshot(msg.data);
+            } else if (msg.path === "/flowers") {
+              flowers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : [];
+              saveLocalCache();
+              renderAllViews();
+            } else if (msg.path === "/members") {
+              allMembers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : [];
+              saveLocalCache();
+              renderMembers();
+            } else if (msg.path === "/news" && msg.data) {
+              newsData = msg.data;
+              saveLocalCache();
+              renderNews();
+            }
+          } catch (err) {}
+        });
+      } catch (e) {}
+    }
+
+    // ================= NẠP DỮ LIỆU 1 CHẠM TỪ GOOGLE SHEETS SANG FIREBASE =================
+    window.migrateFromSheets = async function() {
+      if (!isAdmin) return alert("Cần mở Quyền Quản Trị!");
+      if (!confirm("Lấy toàn bộ dữ liệu Hoa, Thành Viên và Bảng Tin từ Google Sheets cũ đổ sang Firebase?")) return;
+
+      const btn = document.getElementById("btnMigrate");
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang nạp...';
+      setCloudStatus("syncing", "Đang nạp Sheets...");
+
+      try {
+        const res = await fetch(OLD_SHEET_API_URL);
+        const data = await res.json();
+        const sheetFlowers = Array.isArray(data) ? data : (data.flowers || []);
+        const sheetMembers = Array.isArray(data.members) ? data.members : [];
+        const sheetNews = data.news || newsData;
+
+        const fullPayload = {
+          flowers: sheetFlowers,
+          members: sheetMembers,
+          news: sheetNews
+        };
+
+        const ok = await saveToFirebase("", fullPayload);
+        if (ok) {
+          applyDatabaseSnapshot(fullPayload);
+          alert(`Chuyển dữ liệu thành công! Đã nạp ${sheetFlowers.length} loại hoa và ${sheetMembers.length} thành viên sang Firebase.`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Lỗi khi đọc dữ liệu từ Google Sheets cũ.");
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-file-import"></i> Nạp từ Sheets';
+    };
+
     // ================= BẢNG TIN =================
     function renderNews() {
       const imgEl = document.getElementById("newsCoverImg");
@@ -833,19 +958,15 @@
       reader.onload = (ev) => {
         const img = new Image();
         img.onload = () => {
+          // Firebase lưu ảnh thoải mái hơn Google Sheets, giữ độ nét đẹp (max 1000px)
           const canvas = document.createElement("canvas");
-          const maxW = 640;
+          const maxW = 1000;
           const scale = img.width > maxW ? maxW / img.width : 1;
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          let dataUrl = canvas.toDataURL("image/jpeg", 0.65);
-          if (dataUrl.length > 48000) {
-            dataUrl = canvas.toDataURL("image/jpeg", 0.45);
-          }
-          newsData.image = dataUrl;
+          newsData.image = canvas.toDataURL("image/jpeg", 0.82);
           renderNews();
         };
         img.src = ev.target.result;
@@ -861,19 +982,13 @@
 
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
-
-      const ok = await syncToSheet({
-        action: "saveNews",
-        image: newsData.image,
-        content: newsData.content
-      });
-
+      const ok = await saveToFirebase("news", newsData);
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud';
-      if (ok) alert("Đã lưu Bảng Tin lên Cloud thành công!");
+      if (ok) alert("Đã lưu Bảng Tin lên Firebase thành công!");
     };
 
-    // ================= HELPER & LOAD DATA =================
+    // ================= HELPER & UI =================
     function getOwnersArray(owners) {
       return Array.isArray(owners)
         ? owners
@@ -907,67 +1022,16 @@
       });
     });
 
-    async function loadFlowers(silent = false) {
-      setCloudStatus("syncing", silent ? "Đang đồng bộ..." : "Đang tải...");
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          flowers = data;
-          allMembers = [];
-        } else {
-          flowers = Array.isArray(data.flowers) ? data.flowers : [];
-          allMembers = Array.isArray(data.members) ? data.members : [];
-          if (data.news) newsData = data.news;
-        }
-        saveLocalCache();
-        renderAllViews();
-        setCloudStatus("online", "Cloud");
-      } catch (err) {
-        console.error("Lỗi tải dữ liệu:", err);
-        setCloudStatus("error", "Lỗi kết nối");
-      }
-    }
-
-    async function syncToSheet(payload) {
-      setCloudStatus("syncing", "Đang lưu...");
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.status === "success") {
-          setCloudStatus("online", "Đã lưu");
-          setTimeout(() => setCloudStatus("online", "Cloud"), 1500);
-          return true;
-        }
-        throw new Error(result.message || "Lỗi không xác định");
-      } catch (err) {
-        console.error("Lỗi đồng bộ:", err);
-        setCloudStatus("error", "Lỗi lưu");
-        alert("Không thể lưu lên Google Sheets. Hãy kiểm tra lại quyền triển khai Apps Script.");
-        return false;
-      }
-    }
-
     async function addNewMember() {
       if (!isAdmin) return;
       const name = prompt("Nhập tên thành viên mới cần thêm:");
       if (!name || !name.trim()) return;
       const cleanName = name.trim();
-
-      // Cập nhật giao diện & cache trước
       if (!allMembers.some(m => m.toLowerCase() === cleanName.toLowerCase())) {
         allMembers.push(cleanName);
         saveLocalCache();
         renderMembers();
-      }
-
-      const ok = await syncToSheet({ action: "addMember", name: cleanName });
-      if (ok) {
-        loadFlowers(true); // Đồng bộ ngầm
+        await saveToFirebase("members", allMembers);
       }
     }
 
@@ -1010,7 +1074,6 @@
         return;
       }
 
-      // Render 1 lần bằng HTML string thay vì appendChild từng dòng (nhanh hơn nhiều)
       container.innerHTML = filtered.map((item, index) => {
         const ownersArr = getOwnersArray(item.owners);
         const ownersHtml = ownersArr
@@ -1256,27 +1319,17 @@
       btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU LÊN MÂY...';
 
       const editId = document.getElementById("editId").value;
-      const payload = editId
-        ? { action: "edit", data: { id: editId, name, rarity, owners } }
-        : { action: "add", data: { id: Date.now().toString(), name, rarity, owners } };
-
-      const ok = await syncToSheet(payload);
-      if (ok) {
-        if (editId) {
-          // Cập nhật ngay trên màn hình không cần chờ load lại
-          const idx = flowers.findIndex(f => String(f.id) === String(editId));
-          if (idx !== -1) flowers[idx] = { id: editId, name, rarity, owners };
-          saveLocalCache();
-          renderAllViews();
-        } else {
-          // Thêm mới: hiện tạm lên ngay rồi đồng bộ ngầm để lấy đúng ID dòng
-          flowers.push({ id: payload.data.id, name, rarity, owners });
-          saveLocalCache();
-          renderAllViews();
-          loadFlowers(true);
-        }
-        modal.classList.remove("show");
+      if (editId) {
+        const idx = flowers.findIndex(f => String(f.id) === String(editId));
+        if (idx !== -1) flowers[idx] = { id: editId, name, rarity, owners };
+      } else {
+        flowers.push({ id: "fl_" + Date.now(), name, rarity, owners });
       }
+
+      saveLocalCache();
+      renderAllViews();
+      const ok = await saveToFirebase("flowers", flowers);
+      if (ok) modal.classList.remove("show");
 
       btnSave.disabled = false;
       btnSave.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY';
@@ -1287,27 +1340,18 @@
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách?`)) {
-        // Xóa ngay trên giao diện cho mượt, đồng thời gửi lệnh xóa & đồng bộ ngầm
-        const backup = [...flowers];
         flowers = flowers.filter(f => String(f.id) !== String(id));
         saveLocalCache();
         renderAllViews();
-
-        const ok = await syncToSheet({ action: "delete", id: item.id });
-        if (ok) {
-          loadFlowers(true); // Đồng bộ ngầm lại số thứ tự dòng
-        } else {
-          flowers = backup;
-          saveLocalCache();
-          renderAllViews();
-        }
+        await saveToFirebase("flowers", flowers);
       }
     };
 
-    // Khởi chạy: Hiện cache ngay lập tức -> đồng bộ ngầm từ Google Sheets
+    // Khởi chạy: Hiện cache tức thì -> tải Firebase -> bật lắng nghe Realtime
     applyAdminUI();
     const hasCache = hydrateFromCache();
-    loadFlowers(hasCache);
+    loadFromFirebase(hasCache);
+    startRealtimeListener();
   </script>
 </body>
 </html>
