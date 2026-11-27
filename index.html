@@ -516,14 +516,14 @@
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
       padding: 18px;
+      cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       gap: 14px;
       position: relative;
     }
-    body.role-super .member-card { cursor: pointer; }
-    body.role-super .member-card:hover { transform: translateY(-3px); border-color: var(--green-bright); background: #1e2036; }
+    .member-card:hover { transform: translateY(-3px); border-color: var(--green-bright); background: #1e2036; }
 
     .btn-edit-role {
       position: absolute;
@@ -1163,7 +1163,7 @@
     const PASS_MOD = "bumpy";
     const PASS_SUPER = "bumpyne";
 
-    const CACHE_KEY = "zero_garden_fb_cache_v9";
+    const CACHE_KEY = "zero_garden_fb_cache_v10";
 
     let adminLevel = "";
     let flowers = [];
@@ -1343,7 +1343,7 @@
     const recruitModal = document.getElementById("recruitModal");
 
     window.openRecruitModal = function(editMemberName = "") {
-      if (!canManageFlowersAndMembers()) return;
+      if (!canManageAll()) return;
       const oldInput = document.getElementById("recruitOldName");
       const nameInput = document.getElementById("recruitNameInput");
       const roleSelect = document.getElementById("recruitRoleSelect");
@@ -1789,7 +1789,7 @@
         ` : "";
 
         return `
-          <div class="member-card" onclick="if(canManageAll()) openMemberModal('${safeName}')">
+          <div class="member-card" onclick="openMemberModal('${safeName}')">
             <button type="button" class="btn-edit-role super-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
               <i class="fa-solid fa-pen"></i>
             </button>
@@ -1815,7 +1815,6 @@
     }
 
     window.openMemberModal = function(memberName) {
-      if (!canManageAll()) return;
       selectedMemberName = memberName;
       selectedMemberFilter = "Tất cả";
       document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
@@ -1847,7 +1846,7 @@
       grid.innerHTML = filtered.map(f => {
         const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
         return `
-          <div class="flower-mini-card" onclick="if(canManageAll()){closeMemberModal(); editFlower('${f.id}');}">
+          <div class="flower-mini-card" onclick="if(canManageFlowersAndMembers()){closeMemberModal(); editFlower('${f.id}');}">
             <div class="flower-mini-card-name">
               ${renderFlowerIconHtml(f, "flower-thumb-sm")}
               <span>${escapeHtml(f.name)}</span>
