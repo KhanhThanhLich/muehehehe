@@ -580,14 +580,83 @@
       border-radius: 22px;
       width: 100%;
       max-width: 440px;
-      padding: 28px 26px 24px;
+      padding: 26px 26px 24px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
     }
 
-    .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-    .edit-modal-title { font-size: 21px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
+    .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .edit-modal-title { font-size: 20px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
     .edit-modal-close { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; }
     .edit-modal-close:hover { color: #ffffff; }
+
+    /* ================= KHUNG ẢNH HOA TRONG POPUP SỬA ================= */
+    .edit-flower-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 4px 0 20px;
+    }
+
+    .flower-showcase-frame {
+      width: 108px;
+      height: 108px;
+      border-radius: 24px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .flower-showcase-frame.frame-Đỏ {
+      background: linear-gradient(135deg, #ff4d4d 0%, #f43f5e 50%, #fbbf24 100%);
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .flower-showcase-frame.frame-Vàng {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #fef08a 100%);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .flower-showcase-frame.frame-Tím {
+      background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #ec4899 100%);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .flower-showcase-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: #0f1422;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(15, 20, 34, 0.85);
+    }
+
+    .flower-showcase-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .flower-showcase-inner i {
+      font-size: 38px;
+      color: var(--green-bright);
+    }
+
+    .flower-showcase-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+
     .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .field-label { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
 
@@ -599,7 +668,11 @@
 
     .owner-checklist-box {
       background: #101522; border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px; padding: 10px; max-height: 200px; overflow-y: auto; margin-bottom: 16px;
+      border-radius: 14px; padding: 10px; max-height: 200px; overflow-y: auto; margin-bottom: 18px;
+      transition: max-height 0.2s ease;
+    }
+    .owner-checklist-box.expanded {
+      max-height: 310px;
     }
     .owner-checklist-box::-webkit-scrollbar { width: 6px; }
     .owner-checklist-box::-webkit-scrollbar-thumb { background: var(--green-neon); border-radius: 999px; }
@@ -629,7 +702,7 @@
     .edit-input::placeholder { color: #64748b; font-weight: 500; }
 
     .btn-cloud-submit {
-      width: 100%; margin-top: 8px; background: linear-gradient(90deg, #1fd178, #2be585);
+      width: 100%; margin-top: 6px; background: linear-gradient(90deg, #1fd178, #2be585);
       color: #ffffff; border: none; border-radius: 14px; padding: 14px 20px;
       font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
       display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
@@ -818,27 +891,41 @@
         <button class="edit-modal-close" id="btnCloseModalX"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="editId" value="" />
+
+      <!-- Khung ảnh hoa phát sáng theo phẩm (chỉ hiện khi Sửa) -->
+      <div class="edit-flower-showcase" id="editFlowerShowcase" style="display:none;">
+        <div class="flower-showcase-frame frame-Đỏ" id="editFlowerFrame">
+          <div class="flower-showcase-inner" id="editFlowerImgWrap"></div>
+        </div>
+        <div class="flower-showcase-name" id="editFlowerTitle"></div>
+      </div>
+
       <div class="owner-section-header">
         <div class="field-label">👤 Thuộc về ai?</div>
         <button type="button" class="btn-select-all" id="btnToggleSelectAll">Chọn tất cả</button>
       </div>
       <div class="owner-checklist-box" id="ownerChecklistBox"></div>
-      <div class="edit-form-group">
-        <label class="field-label">🌿 Hạt giống hoa</label>
-        <input type="text" class="edit-input" id="flowerName" placeholder="Nhập tên hoa..." />
+
+      <!-- 3 ô thông tin chỉ hiện khi Trồng Hoa Mới -->
+      <div id="flowerMetaFields">
+        <div class="edit-form-group">
+          <label class="field-label">🌿 Hạt giống hoa</label>
+          <input type="text" class="edit-input" id="flowerName" placeholder="Nhập tên hoa..." />
+        </div>
+        <div class="edit-form-group">
+          <label class="field-label">🎨 Phẩm chất</label>
+          <select class="edit-select" id="flowerRarity">
+            <option value="Đỏ">Đỏ</option>
+            <option value="Vàng">Vàng (Cam)</option>
+            <option value="Tím">Tím</option>
+          </select>
+        </div>
+        <div class="edit-form-group">
+          <label class="field-label">🖼️ Link ảnh hoa (tùy chọn)</label>
+          <input type="text" class="edit-input" id="flowerImage" placeholder="https://..." />
+        </div>
       </div>
-      <div class="edit-form-group">
-        <label class="field-label">🎨 Phẩm chất</label>
-        <select class="edit-select" id="flowerRarity">
-          <option value="Đỏ">Đỏ</option>
-          <option value="Vàng">Vàng (Cam)</option>
-          <option value="Tím">Tím</option>
-        </select>
-      </div>
-      <div class="edit-form-group">
-        <label class="field-label">🖼️ Link ảnh hoa (tùy chọn)</label>
-        <input type="text" class="edit-input" id="flowerImage" placeholder="https://..." />
-      </div>
+
       <button type="button" class="btn-cloud-submit" id="btnSaveFlower">
         <i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY
       </button>
@@ -1520,6 +1607,8 @@
     const btnSave = document.getElementById("btnSaveFlower");
     const checklistBox = document.getElementById("ownerChecklistBox");
     const btnToggleAll = document.getElementById("btnToggleSelectAll");
+    const showcaseBox = document.getElementById("editFlowerShowcase");
+    const metaFieldsBox = document.getElementById("flowerMetaFields");
 
     function renderOwnerChecklist(selectedOwners = []) {
       const selectedLower = selectedOwners.map(s => s.toLowerCase());
@@ -1559,6 +1648,9 @@
       document.getElementById("flowerName").value = "";
       document.getElementById("flowerRarity").value = "Tím";
       document.getElementById("flowerImage").value = "";
+      showcaseBox.style.display = "none";
+      metaFieldsBox.style.display = "block";
+      checklistBox.classList.remove("expanded");
       renderOwnerChecklist([]);
       modal.classList.add("show");
     });
@@ -1570,11 +1662,27 @@
       if (!isAdmin) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
+
       document.getElementById("modalTitle").textContent = "✏️ Chỉnh Sửa Người Sở Hữu";
       document.getElementById("editId").value = item.id;
       document.getElementById("flowerName").value = item.name;
       document.getElementById("flowerRarity").value = item.rarity;
       document.getElementById("flowerImage").value = getFlowerImageUrl(item);
+
+      // Hiện khung ảnh hoa có viền phát sáng theo phẩm, ẩn 3 ô thông tin và mở rộng danh sách chọn người
+      const frameEl = document.getElementById("editFlowerFrame");
+      frameEl.className = `flower-showcase-frame frame-${item.rarity}`;
+
+      const imgUrl = getFlowerImageUrl(item);
+      document.getElementById("editFlowerImgWrap").innerHTML = imgUrl
+        ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
+
+      document.getElementById("editFlowerTitle").textContent = item.name;
+      showcaseBox.style.display = "flex";
+      metaFieldsBox.style.display = "none";
+      checklistBox.classList.add("expanded");
+
       renderOwnerChecklist(getOwnersArray(item.owners));
       modal.classList.add("show");
     };
@@ -1592,7 +1700,7 @@
       const editId = document.getElementById("editId").value;
       if (editId) {
         const idx = flowers.findIndex(f => String(f.id) === String(editId));
-        if (idx !== -1) flowers[idx] = { id: editId, name, rarity, owners, image };
+        if (idx !== -1) flowers[idx] = { ...flowers[idx], id: editId, name, rarity, owners, image };
       } else {
         flowers.push({ id: "fl_" + Date.now(), name, rarity, owners, image });
       }
