@@ -122,6 +122,7 @@
     .col-name { font-size: 14.5px; font-weight: 700; color: #fff; }
     .col-name span { word-break: keep-all; overflow-wrap: break-word; line-height: 1.35; }
     .col-name i { color: var(--green-bright); font-size: 15px; }
+    .col-rarity { display: flex; align-items: center; justify-content: flex-start; }
 
     .flower-thumb { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.45); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
     .flower-thumb-sm { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
@@ -267,22 +268,26 @@
     @media (max-width: 1024px) {
       .news-layout { grid-template-columns: minmax(0, 1fr); }
       .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .table-header { display: none; }
-      .flower-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-      .col-actions { justify-content: flex-start; }
+      .table-header, body:not(.role-super) .table-header { display: none; }
+      .flower-row, body:not(.role-super) .flower-row { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; }
+      .col-owners { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid var(--border-subtle); }
+      .col-actions { grid-column: 1 / -1; justify-content: flex-end; }
     }
     @media (max-width: 768px) {
-      body { flex-direction: column; width: 100%; max-width: 100vw; overflow-x: hidden; }
+      body { flex-direction: column; }
       .sidebar { width: 100%; padding: 12px 14px; }
       .nav-list { flex-direction: row; overflow-x: auto; gap: 6px; }
       .nav-item { flex-shrink: 0; white-space: nowrap; padding: 9px 12px; font-size: 13px; }
       .main-wrapper { width: 100%; padding: 12px; }
       .top-header { padding: 12px 14px; }
       .content-frame { padding: 14px; border-radius: 16px; }
-      .flower-row { grid-template-columns: 34px minmax(0, 1fr) auto; padding: 12px 14px; gap: 8px 10px; }
-      .col-name { font-size: 14px; }
+      .flower-row, body:not(.role-super) .flower-row { grid-template-columns: 28px minmax(0, 1fr) auto; padding: 12px 14px; gap: 10px 8px; }
+      .col-stt { font-size: 12.5px; }
+      .col-name { font-size: 14px; gap: 8px; }
       .flower-thumb { width: 34px; height: 34px; }
+      .badge-rarity { padding: 3px 10px; font-size: 11px; }
       .col-owners { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid var(--border-subtle); gap: 6px; }
+      .owner-pill { padding: 4px 10px; font-size: 12px; }
       .col-actions { grid-column: 1 / -1; justify-content: flex-end; }
       .flower-view-title-32 { font-size: 24px; }
     }
@@ -534,7 +539,7 @@
     const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
     const PASS_MOD = "321444";
     const PASS_SUPER = "bumpyne";
-    const CACHE_KEY = "zero_garden_fb_cache_v20";
+    const CACHE_KEY = "zero_garden_fb_cache_v21";
 
     let adminLevel = "";
     let flowers = [];
@@ -916,7 +921,7 @@
           <div class="flower-row" onclick="if(canManageMod()) editFlower('${item.id}')">
             <div class="col-stt">${idx + 1}</div>
             <div class="col-name">${renderFlowerIconHtml(item, "flower-thumb")} <span>${escapeHtml(item.name)}</span></div>
-            <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabelText(item.rarity)}</span></div>
+            <div class="col-rarity"><span class="badge-rarity rarity-${item.rarity}">${rarityLabelText(item.rarity)}</span></div>
             <div class="col-owners">${ownersHtml}</div>
             ${actionHtml}
           </div>`;
