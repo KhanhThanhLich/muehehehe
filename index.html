@@ -41,7 +41,7 @@
       display: none !important;
     }
 
-    /* Quyền cấp 2 (bumpyne): quản lý toàn bộ */
+    /* Quyền cấp 2 (bumpyne): quản lý toàn bộ (Bảng Tin, Nạp từ Sheets, nút Firebase, sửa link ảnh ở Loại Hoa) */
     body:not(.role-super) .super-only {
       display: none !important;
     }
@@ -366,9 +366,6 @@
       letter-spacing: 0.6px;
       text-transform: uppercase;
     }
-    body:not(.role-super) .table-header {
-      grid-template-columns: 60px 2fr 120px 2.5fr;
-    }
     .table-header div:last-child { text-align: right; }
 
     .flower-list { display: flex; flex-direction: column; gap: 12px; }
@@ -384,12 +381,8 @@
       padding: 14px 20px;
       transition: border-color 0.2s, background-color 0.2s;
     }
-    body:not(.role-super) .flower-row {
-      grid-template-columns: 60px 2fr 120px 2.5fr;
-    }
 
-    body.role-mod .flower-row,
-    body.role-super .flower-row { cursor: pointer; }
+    body.is-admin-row-clickable .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
     .col-stt { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
@@ -978,7 +971,7 @@
           <div>TÊN HOA / VẬT PHẨM</div>
           <div>PHẨM HOA</div>
           <div>NGƯỜI SỞ HỮU</div>
-          <div class="super-only">HÀNH ĐỘNG</div>
+          <div class="mod-only">HÀNH ĐỘNG</div>
         </div>
 
         <div class="flower-list" id="flowerList">
@@ -1018,7 +1011,7 @@
     </section>
   </main>
 
-  <!-- Popup Xem Ảnh Hoa Có Viền + Tên 32px -->
+  <!-- Popup Xem Ảnh Hoa Có Viền + Tên 32px (Dành cho Cấp 1 / Người Xem ở Loại Hoa) -->
   <div class="modal-overlay" id="flowerDetailModal">
     <div class="modal-flower-view">
       <div class="edit-modal-top" style="margin-bottom:14px;">
@@ -1163,7 +1156,7 @@
     const PASS_MOD = "bumpy";
     const PASS_SUPER = "bumpyne";
 
-    const CACHE_KEY = "zero_garden_fb_cache_v10";
+    const CACHE_KEY = "zero_garden_fb_cache_v7";
 
     let adminLevel = "";
     let flowers = [];
@@ -1236,7 +1229,7 @@
       return `<i class="fa-solid fa-leaf" style="color:#34d399;"></i>`;
     }
 
-    // ================= POPUP XEM HOA =================
+    // ================= POPUP XEM HOA (CẤP 1 / NGƯỜI XEM Ở LOẠI HOA) =================
     const detailModal = document.getElementById("flowerDetailModal");
 
     window.openFlowerDetailModal = function(id) {
@@ -1343,7 +1336,7 @@
     const recruitModal = document.getElementById("recruitModal");
 
     window.openRecruitModal = function(editMemberName = "") {
-      if (!canManageAll()) return;
+      if (!canManageFlowersAndMembers()) return;
       const oldInput = document.getElementById("recruitOldName");
       const nameInput = document.getElementById("recruitNameInput");
       const roleSelect = document.getElementById("recruitRoleSelect");
@@ -1408,6 +1401,7 @@
     function applyAdminUI() {
       document.body.classList.toggle("role-mod", adminLevel === "mod");
       document.body.classList.toggle("role-super", adminLevel === "super");
+      document.body.classList.toggle("is-admin-row-clickable", canManageFlowersAndMembers());
 
       const btn = document.getElementById("btnAdminAuth");
       const icon = document.getElementById("adminIcon");
@@ -1432,7 +1426,6 @@
       }
 
       renderList();
-      renderMembers();
       renderCategories();
     }
 
@@ -1689,15 +1682,15 @@
     function updateCounts() {
       const ownedFlowers = flowers.filter(hasAnyOwner);
       document.getElementById("count-all").textContent = ownedFlowers.length;
-      document.getElementById("count-red").textContent = flowers.filter(f => f.rarity === "Đỏ").length;
-      document.getElementById("count-yellow").textContent = flowers.filter(f => f.rarity === "Vàng").length;
-      document.getElementById("count-purple").textContent = flowers.filter(f => f.rarity === "Tím").length;
+      document.getElementById("count-red").textContent = ownedFlowers.filter(f => f.rarity === "Đỏ").length;
+      document.getElementById("count-yellow").textContent = ownedFlowers.filter(f => f.rarity === "Vàng").length;
+      document.getElementById("count-purple").textContent = ownedFlowers.filter(f => f.rarity === "Tím").length;
     }
 
     function renderList() {
       const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const container = document.getElementById("flowerList");
-      const isSuper = canManageAll();
+      const showActionCol = canManageFlowersAndMembers();
 
       const filtered = flowers.filter(item => {
         if (!hasAnyOwner(item)) return false;
@@ -1722,7 +1715,7 @@
           .join("");
         const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
 
-        const actionHtml = isSuper ? `
+        const actionHtml = showActionCol ? `
           <div class="col-actions">
             <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
               <i class="fa-solid fa-pen"></i> Sửa
@@ -1762,7 +1755,6 @@
     function renderMembers() {
       const keyword = (document.getElementById("memberSearchInput").value || "").toLowerCase().trim();
       const memberMap = getMemberMap();
-      const isSuper = canManageAll();
 
       const entries = Object.entries(memberMap)
         .filter(([name]) => name.toLowerCase().includes(keyword))
@@ -1781,16 +1773,9 @@
         const safeName = escapeHtml(memberName).replace(/'/g, "\\'");
         const roleHtml = renderRoleBadgeHtml(memberName);
 
-        const footerHtml = isSuper ? `
-          <div class="member-card-footer">
-            <span>Xem thẻ hoa</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-        ` : "";
-
         return `
           <div class="member-card" onclick="openMemberModal('${safeName}')">
-            <button type="button" class="btn-edit-role super-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
+            <button type="button" class="btn-edit-role mod-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
               <i class="fa-solid fa-pen"></i>
             </button>
             <div class="member-card-top">
@@ -1808,7 +1793,10 @@
               <span class="mini-badge mini-yellow">Vàng: ${yellowCount}</span>
               <span class="mini-badge mini-purple">Tím: ${purpleCount}</span>
             </div>
-            ${footerHtml}
+            <div class="member-card-footer">
+              <span>Xem thẻ hoa</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
           </div>
         `;
       }).join("");
@@ -2038,7 +2026,7 @@
     });
 
     window.deleteFlower = async function(id) {
-      if (!canManageAll()) return;
+      if (!canManageFlowersAndMembers()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách?`)) {
