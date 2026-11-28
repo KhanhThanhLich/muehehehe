@@ -21,116 +21,448 @@
       --text-muted: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Be Vietnam Pro', sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
-    body:not(.role-mod):not(.role-super) .mod-only { display: none !important; }
-    body:not(.role-super) .super-only { display: none !important; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Quyền cấp 1 (mod): quản lý Danh Sách Hoa & Thành Viên */
+    body:not(.role-mod):not(.role-super) .mod-only {
+      display: none !important;
+    }
+
+    /* Quyền cấp 2 (super): quản lý toàn bộ */
+    body:not(.role-super) .super-only {
+      display: none !important;
+    }
 
     /* ================= SIDEBAR ================= */
-    .sidebar { width: 240px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-subtle); padding: 24px 16px; display: flex; flex-direction: column; flex-shrink: 0; }
-    .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 32px; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
+    .sidebar {
+      width: 240px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px 32px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
     .brand i { color: #f472b6; font-size: 22px; }
+
     .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; position: relative; user-select: none; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      user-select: none;
+    }
+
     .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-    .nav-item.active { background: rgba(255, 255, 255, 0.08); color: #fff; font-weight: 600; }
-    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 24px; background-color: var(--green-bright); border-radius: 0 4px 4px 0; box-shadow: 0 0 10px var(--green-bright); }
+    .nav-item.active { background: rgba(255, 255, 255, 0.08); color: #ffffff; font-weight: 600; }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 24px;
+      background-color: var(--green-bright);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 0 10px var(--green-bright);
+    }
+
     .nav-item i { width: 18px; text-align: center; font-size: 15px; }
 
     /* ================= MAIN CONTENT ================= */
-    .main-wrapper { flex: 1; padding: 24px 32px; background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 55%), var(--bg-main); overflow-y: auto; }
-    .top-header { background-color: rgba(27, 26, 46, 0.85); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .main-wrapper {
+      flex: 1;
+      padding: 24px 32px;
+      background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 55%), var(--bg-main);
+      overflow-y: auto;
+    }
+
+    .top-header {
+      background-color: rgba(27, 26, 46, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
     .welcome-text { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .welcome-text span { color: var(--green-bright); }
+
     .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    .btn-admin { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); color: #e2e8f0; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
-    .btn-admin.unlocked { background: rgba(34, 197, 94, 0.15); border-color: var(--green-bright); color: #fff; box-shadow: 0 0 14px rgba(52, 211, 153, 0.25); }
+    .btn-admin {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-admin.unlocked {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: var(--green-bright);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.25);
+    }
+
     .btn-admin.unlocked i { color: var(--green-bright); }
     .btn-admin:hover { background: rgba(34, 197, 94, 0.22); }
 
-    .btn-migrate { background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(251, 191, 36, 0.5); color: #fde68a; padding: 8px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .btn-migrate {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      color: #fde68a;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
     .btn-migrate:hover { background: rgba(245, 158, 11, 0.25); }
 
-    .badge-cloud { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; color: #cbd5e1; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .badge-cloud {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
     .dot-online { width: 8px; height: 8px; background-color: var(--green-bright); border-radius: 50%; box-shadow: 0 0 8px var(--green-bright); }
     .dot-syncing { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
     .dot-error { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
-    .content-frame { border: 1.5px dashed var(--border-dashed); border-radius: 20px; padding: 28px; background: rgba(20, 19, 36, 0.45); }
+    .content-frame {
+      border: 1.5px dashed var(--border-dashed);
+      border-radius: 20px;
+      padding: 28px;
+      background: rgba(20, 19, 36, 0.45);
+    }
+
     .tab-view { display: none; }
     .tab-view.active { display: block; }
+
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; color: #fff; }
     .section-title i { color: var(--green-bright); }
 
-    /* ================= BẢNG TIN ================= */
+    /* ================= BẢNG TIN HOA VIÊN ================= */
     .news-header { margin-bottom: 24px; }
     .news-title { font-size: 28px; font-weight: 800; color: var(--green-neon); display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
     .news-subtitle { font-size: 14px; color: var(--text-muted); }
+
     .news-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
     .news-left, .news-right { display: flex; flex-direction: column; gap: 16px; }
-    .news-cover-box { width: 100%; aspect-ratio: 4 / 3; background: rgba(15, 18, 32, 0.85); border: 1px solid var(--border-subtle); border-radius: 18px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+
+    .news-cover-box {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: rgba(15, 18, 32, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
     .news-cover-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .news-cover-placeholder { color: #64748b; text-align: center; padding: 20px; font-size: 14px; }
     .news-cover-placeholder i { font-size: 40px; margin-bottom: 10px; display: block; color: rgba(52, 211, 153, 0.35); }
-    .btn-upload-cover { align-self: center; background: rgba(16, 185, 129, 0.1); border: 1.5px solid var(--green-bright); color: #e2e8f0; padding: 10px 22px; border-radius: 12px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+
+    .btn-upload-cover {
+      align-self: center;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px solid var(--green-bright);
+      color: #e2e8f0;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
     .btn-upload-cover:hover { background: rgba(16, 185, 129, 0.22); }
-    .news-textarea { width: 100%; flex: 1; min-height: 280px; background: rgba(16, 21, 36, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; padding: 20px; color: #f8fafc; font-size: 15px; line-height: 1.6; resize: vertical; outline: none; }
+
+    .news-textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 280px;
+      background: rgba(16, 21, 36, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 20px;
+      color: #f8fafc;
+      font-size: 15px;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+    }
     .news-textarea:focus { border-color: var(--green-bright); }
     .news-textarea[readonly] { cursor: default; }
-    .btn-save-news { align-self: flex-end; background: linear-gradient(90deg, #1fd178, #2be585); color: #fff; border: none; border-radius: 12px; padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(44, 229, 131, 0.35); }
+
+    .btn-save-news {
+      align-self: flex-end;
+      background: linear-gradient(90deg, #1fd178, #2be585);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(44, 229, 131, 0.35);
+    }
     .btn-save-news:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* ================= STATS & LIST ================= */
+    /* ================= STATS CARDS ================= */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-    .stat-card { background: rgba(27, 26, 46, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+    .stat-card {
+      background: rgba(27, 26, 46, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
     .stat-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.2); }
-    .stat-card.active { background: linear-gradient(180deg, rgba(34, 197, 94, 0.16) 0%, rgba(27, 26, 46, 0.9) 100%); border: 1.5px solid var(--green-bright); box-shadow: 0 0 20px rgba(52, 211, 153, 0.2); }
+    .stat-card.active {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.16) 0%, rgba(27, 26, 46, 0.9) 100%);
+      border: 1.5px solid var(--green-bright);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.2);
+    }
+
     .stat-icon { font-size: 20px; margin-bottom: 4px; }
     .icon-all { color: #34d399; }
     .icon-red { color: #ef4444; }
     .icon-yellow { color: #facc15; }
     .icon-purple { color: #c084fc; }
-    .stat-count { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.1; }
+    .stat-count { font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.1; }
     .stat-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; }
 
-    .toolbar { background: rgba(24, 25, 43, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    /* ================= TOOLBAR & TABLE ================= */
+    .toolbar {
+      background: rgba(24, 25, 43, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
     .search-box { position: relative; flex: 1; max-width: 440px; min-width: 220px; }
     .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
-    .search-box input { width: 100%; background: rgba(15, 16, 28, 0.8); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; padding: 10px 16px 10px 40px; color: #fff; font-size: 13.5px; outline: none; }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(15, 16, 28, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 11px 16px 11px 42px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+    }
     .search-box input:focus { border-color: var(--green-bright); }
 
-    .btn-add, .btn-add-sm { background: linear-gradient(90deg, #10b981, #34d399); color: #fff; border: none; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); transition: filter 0.15s, transform 0.1s; }
-    .btn-add { padding: 11px 22px; font-size: 13.5px; gap: 8px; }
-    .btn-add-sm { padding: 8px 16px; font-size: 12.5px; }
-    .btn-add:hover, .btn-add-sm:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-add {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 22px;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .btn-add:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
-    .table-header, .flower-row { display: grid; grid-template-columns: 60px 2fr 120px 2.5fr 170px; align-items: center; }
-    body:not(.role-super) .table-header, body:not(.role-super) .flower-row { grid-template-columns: 60px 2fr 120px 2.5fr; }
-    .table-header { padding: 0 20px 12px; font-size: 11.5px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.6px; text-transform: uppercase; }
+    .btn-add-sm {
+      background: linear-gradient(90deg, #10b981, #34d399);
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35);
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .btn-add-sm:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 60px 2fr 120px 2.5fr 170px;
+      padding: 0 20px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    body:not(.role-super) .table-header {
+      grid-template-columns: 60px 2fr 120px 2.5fr;
+    }
     .table-header div:last-child { text-align: right; }
 
     .flower-list { display: flex; flex-direction: column; gap: 12px; }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
-    .flower-row { background-color: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px 20px; transition: border-color 0.2s, background-color 0.2s; }
-    body.role-mod .flower-row, body.role-super .flower-row { cursor: pointer; }
+
+    .flower-row {
+      display: grid;
+      grid-template-columns: 60px 2fr 120px 2.5fr 170px;
+      align-items: center;
+      background-color: var(--bg-row);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px 20px;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    body:not(.role-super) .flower-row {
+      grid-template-columns: 60px 2fr 120px 2.5fr;
+    }
+
+    body.role-mod .flower-row,
+    body.role-super .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
     .col-stt { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
-    .col-name { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 700; color: #fff; }
+    .col-name { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 700; color: #ffffff; }
     .col-name i { color: var(--green-bright); font-size: 15px; }
 
-    .flower-thumb { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.45); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
-    .flower-thumb-sm { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
-    .flower-thumb-cat { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); background: rgba(255, 255, 255, 0.05); flex-shrink: 0; }
+    /* ================= ẢNH HOA ================= */
+    .flower-thumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(52, 211, 153, 0.45);
+      background: rgba(255, 255, 255, 0.06);
+      flex-shrink: 0;
+    }
 
-    .badge-rarity { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; text-align: center; }
+    .flower-thumb-sm {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid rgba(52, 211, 153, 0.4);
+      background: rgba(255, 255, 255, 0.06);
+      flex-shrink: 0;
+    }
+
+    .flower-thumb-cat {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1.5px solid rgba(52, 211, 153, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+    }
+
+    .badge-rarity { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #ffffff; text-align: center; }
     .rarity-Đỏ { background: linear-gradient(90deg, #ef4444, #f43f5e); }
     .rarity-Vàng { background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1e1b4b; }
     .rarity-Tím { background: linear-gradient(90deg, #a855f7, #d946ef); }
 
     .col-owners { display: flex; flex-wrap: wrap; gap: 8px; }
-    .owner-pill { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(52, 211, 153, 0.35); color: #6ee7b7; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .owner-pill {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      color: #6ee7b7;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
     .owner-pill:hover { background: rgba(16, 185, 129, 0.28); }
 
     .col-actions { display: flex; justify-content: flex-end; gap: 8px; }
@@ -138,24 +470,111 @@
     .btn-edit { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; }
     .btn-delete { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; }
 
-    /* ================= VAI VẾ ================= */
-    .role-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 0.2px; white-space: nowrap; line-height: 1.35; background: linear-gradient(180deg, #ff6347 0%, #ea472a 100%); border: 2px solid #f6d55c; box-shadow: 0 0 0 1.5px #7c4a2d, 0 2px 6px rgba(0, 0, 0, 0.35); text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25); }
-    .role-badge.role-pho { background: linear-gradient(180deg, #a855f7 0%, #7e22ce 100%); border-color: #f6d55c; box-shadow: 0 0 0 1.5px #5b21b6, 0 2px 6px rgba(0, 0, 0, 0.35); }
-    .role-badge.role-quanly { background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%); border-color: #93c5fd; box-shadow: 0 0 0 1.5px #1e3a8a, 0 2px 6px rgba(0, 0, 0, 0.35); }
-    .role-badge.role-tinhanh { background: linear-gradient(180deg, #10b981 0%, #059669 100%); border-color: #fde68a; box-shadow: 0 0 0 1.5px #065f46, 0 2px 6px rgba(0, 0, 0, 0.35); }
-    .role-badge.role-thanhvien { background: rgba(148, 163, 184, 0.16); border: 1px solid rgba(148, 163, 184, 0.35); color: #cbd5e1; font-weight: 600; box-shadow: none; text-shadow: none; }
+    /* ================= HUY HIỆU VAI VẾ ================= */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      line-height: 1.35;
+      background: linear-gradient(180deg, #ff6347 0%, #ea472a 100%);
+      border: 2px solid #f6d55c;
+      box-shadow: 0 0 0 1.5px #7c4a2d, 0 2px 6px rgba(0, 0, 0, 0.35);
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    }
 
-    /* ================= THÀNH VIÊN & LOẠI HOA ================= */
-    .members-header-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+    .role-badge.role-pho {
+      background: linear-gradient(180deg, #a855f7 0%, #7e22ce 100%);
+      border-color: #f6d55c;
+      box-shadow: 0 0 0 1.5px #5b21b6, 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    .role-badge.role-quanly {
+      background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 1.5px #1e3a8a, 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    .role-badge.role-tinhanh {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      border-color: #fde68a;
+      box-shadow: 0 0 0 1.5px #065f46, 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    .role-badge.role-thanhvien {
+      background: rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #cbd5e1;
+      font-weight: 600;
+      box-shadow: none;
+      text-shadow: none;
+    }
+
+    /* ================= MEMBER & CATEGORY CARDS ================= */
+    .members-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .member-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 14px; position: relative; }
+
+    .member-card {
+      background: var(--bg-row);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
     .member-card:hover { transform: translateY(-3px); border-color: var(--green-bright); background: #1e2036; }
-    .btn-edit-role { position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-    .btn-edit-role:hover { background: rgba(246, 213, 92, 0.2); border-color: #f6d55c; color: #f6d55c; }
+
+    .btn-edit-role {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .btn-edit-role:hover {
+      background: rgba(246, 213, 92, 0.2);
+      border-color: #f6d55c;
+      color: #f6d55c;
+    }
+
     .member-card-top { display: flex; align-items: center; gap: 12px; padding-right: 28px; }
-    .member-avatar { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(139, 92, 246, 0.25)); border: 1px solid rgba(52, 211, 153, 0.35); display: flex; align-items: center; justify-content: center; color: var(--green-bright); font-size: 18px; flex-shrink: 0; }
+    .member-avatar {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(139, 92, 246, 0.25));
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-bright); font-size: 18px; flex-shrink: 0;
+    }
     .member-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .member-name { font-size: 15.5px; font-weight: 700; color: #fff; }
+    .member-name { font-size: 15.5px; font-weight: 700; color: #ffffff; }
     .member-total { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
     .member-total strong { color: var(--green-bright); }
     .member-mini-stats { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -165,108 +584,402 @@
     .mini-purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
     .member-card-footer { font-size: 12px; color: var(--green-bright); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
-    .categories-grid { display: grid; grid-template-columns: repeat(3, minmax(280px, 1fr)); gap: 18px; align-items: start; }
-    .info-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; }
-    .info-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle); }
-    .info-card-count { background: rgba(52, 211, 153, 0.15); color: var(--green-bright); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; }
-    .cat-flower-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    .cat-flower-item { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-subtle); padding: 10px 14px; border-radius: 12px; font-size: 14px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 54px; cursor: pointer; transition: border-color 0.15s, background-color 0.15s, transform 0.15s; }
-    .cat-flower-item:hover { border-color: rgba(52, 211, 153, 0.45); background: rgba(255, 255, 255, 0.07); transform: translateX(2px); }
-    .cat-flower-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .cat-flower-name { line-height: 1.35; word-break: break-word; }
-    .btn-edit-cat-img { background: rgba(59, 130, 246, 0.14); border: 1px solid rgba(96, 165, 250, 0.35); color: #93c5fd; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 12.5px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .btn-edit-cat-img:hover { background: rgba(59, 130, 246, 0.3); color: #fff; }
+    /* ================= MỤC LOẠI HOA: MỖI DÒNG 1 HOA, THẲNG HÀNG ================= */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+    .info-card {
+      background: var(--bg-row);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .info-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .info-card-count {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--green-bright);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .cat-flower-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .cat-flower-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 54px;
+      cursor: pointer;
+      transition: border-color 0.15s, background-color 0.15s, transform 0.15s;
+    }
+    .cat-flower-item:hover {
+      border-color: rgba(52, 211, 153, 0.45);
+      background: rgba(255, 255, 255, 0.07);
+      transform: translateX(2px);
+    }
+    .cat-flower-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+    .cat-flower-name {
+      line-height: 1.35;
+      word-break: break-word;
+    }
+    .btn-edit-cat-img {
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: #93c5fd;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .btn-edit-cat-img:hover {
+      background: rgba(59, 130, 246, 0.3);
+      color: #ffffff;
+    }
 
     /* ================= POPUPS ================= */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(5, 7, 15, 0.78); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 15, 0.78);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
     .modal-overlay.show { display: flex; }
-    #flowerModal { z-index: 120; }
 
-    .modal-flower-edit { background: #131826; border: 1.5px dashed rgba(44, 229, 131, 0.45); border-radius: 22px; width: 100%; max-width: 440px; padding: 26px 26px 24px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65); }
-    .modal-flower-view { background: #131826; border: 1.5px dashed rgba(44, 229, 131, 0.45); border-radius: 24px; width: 100%; max-width: 420px; padding: 26px 24px 30px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7); text-align: center; }
+    #flowerModal {
+      z-index: 120;
+    }
+
+    .modal-flower-edit {
+      background: #131826;
+      border: 1.5px dashed rgba(44, 229, 131, 0.45);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 440px;
+      padding: 26px 26px 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .modal-flower-view {
+      background: #131826;
+      border: 1.5px dashed rgba(44, 229, 131, 0.45);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      padding: 26px 24px 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
 
     .edit-modal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-    .edit-modal-title { font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .edit-modal-title { font-size: 20px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 10px; }
     .edit-modal-close { background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; }
-    .edit-modal-close:hover { color: #fff; }
+    .edit-modal-close:hover { color: #ffffff; }
 
-    .edit-flower-showcase { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; margin: 4px 0 20px; }
-    .flower-showcase-frame { width: 112px; height: 112px; border-radius: 24px; padding: 4px; display: flex; align-items: center; justify-content: center; }
-    .flower-showcase-frame.lg { width: 148px; height: 148px; border-radius: 28px; padding: 5px; }
-    .flower-showcase-frame.frame-Đỏ { background: linear-gradient(135deg, #ff4d4d 0%, #f43f5e 50%, #fbbf24 100%); box-shadow: 0 0 26px rgba(239, 68, 68, 0.6); }
-    .flower-showcase-frame.frame-Vàng { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #fef08a 100%); box-shadow: 0 0 26px rgba(245, 158, 11, 0.6); }
-    .flower-showcase-frame.frame-Tím { background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #ec4899 100%); box-shadow: 0 0 26px rgba(168, 85, 247, 0.6); }
-    .flower-showcase-inner { width: 100%; height: 100%; border-radius: 20px; background: #0f1422; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(15, 20, 34, 0.85); }
-    .flower-showcase-frame.lg .flower-showcase-inner { border-radius: 23px; }
-    .flower-showcase-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .flower-showcase-inner i { font-size: 42px; color: var(--green-bright); }
-    .flower-showcase-name { font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
-    .flower-view-title-32 { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.25; margin-top: 14px; word-break: break-word; }
+    /* ================= KHUNG ẢNH HOA CÓ VIỀN ================= */
+    .edit-flower-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 4px 0 20px;
+    }
+
+    .flower-showcase-frame {
+      width: 112px;
+      height: 112px;
+      border-radius: 24px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .flower-showcase-frame.lg {
+      width: 148px;
+      height: 148px;
+      border-radius: 28px;
+      padding: 5px;
+    }
+
+    .flower-showcase-frame.frame-Đỏ {
+      background: linear-gradient(135deg, #ff4d4d 0%, #f43f5e 50%, #fbbf24 100%);
+      box-shadow: 0 0 26px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .flower-showcase-frame.frame-Vàng {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #fef08a 100%);
+      box-shadow: 0 0 26px rgba(245, 158, 11, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .flower-showcase-frame.frame-Tím {
+      background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #ec4899 100%);
+      box-shadow: 0 0 26px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .flower-showcase-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: #0f1422;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(15, 20, 34, 0.85);
+    }
+
+    .flower-showcase-frame.lg .flower-showcase-inner {
+      border-radius: 23px;
+    }
+
+    .flower-showcase-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .flower-showcase-inner i {
+      font-size: 42px;
+      color: var(--green-bright);
+    }
+
+    .flower-showcase-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+
+    .flower-view-title-32 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-top: 14px;
+      word-break: break-word;
+    }
 
     .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .field-label { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
-    .btn-select-all { background: var(--green-neon); color: #fff; border: none; border-radius: 10px; padding: 7px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer; box-shadow: 0 0 16px rgba(44, 229, 131, 0.45); }
 
-    .owner-checklist-box { background: #101522; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 10px; max-height: 175px; overflow-y: auto; margin-bottom: 16px; }
-    .owner-checklist-box.expanded { max-height: 310px; }
-    .owner-checklist-box::-webkit-scrollbar, .warehouse-picker-box::-webkit-scrollbar { width: 6px; }
-    .owner-checklist-box::-webkit-scrollbar-thumb, .warehouse-picker-box::-webkit-scrollbar-thumb { background: var(--green-neon); border-radius: 999px; }
+    .btn-select-all {
+      background: var(--green-neon); color: #ffffff; border: none; border-radius: 10px;
+      padding: 7px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 0 16px rgba(44, 229, 131, 0.45);
+    }
+
+    .owner-checklist-box {
+      background: #101522; border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 10px; max-height: 185px; overflow-y: auto; margin-bottom: 16px;
+      transition: max-height 0.2s ease;
+    }
+    .owner-checklist-box.expanded {
+      max-height: 310px;
+    }
+    .owner-checklist-box::-webkit-scrollbar { width: 6px; }
+    .owner-checklist-box::-webkit-scrollbar-thumb { background: var(--green-neon); border-radius: 999px; }
 
     .owner-check-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; user-select: none; }
     .owner-check-item:hover { background: rgba(44, 229, 131, 0.12); }
-    .owner-check-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border-radius: 5px; background: #fff; border: 2px solid #fff; cursor: pointer; position: relative; flex-shrink: 0; }
+
+    .owner-check-item input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none; width: 20px; height: 20px;
+      border-radius: 5px; background: #ffffff; border: 2px solid #ffffff;
+      cursor: pointer; position: relative; flex-shrink: 0;
+    }
     .owner-check-item input[type="checkbox"]:checked { background: var(--green-neon); border-color: var(--green-neon); }
-    .owner-check-item input[type="checkbox"]:checked::after { content: '✔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); color: #0b131e; font-size: 13px; font-weight: 900; }
-    .owner-check-item span { font-size: 14.5px; font-weight: 700; color: #fff; }
+    .owner-check-item input[type="checkbox"]:checked::after {
+      content: '✔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%);
+      color: #0b131e; font-size: 13px; font-weight: 900;
+    }
+    .owner-check-item span { font-size: 14.5px; font-weight: 700; color: #ffffff; }
 
-    .warehouse-filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .w-filter-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-subtle); color: #cbd5e1; padding: 5px 11px; border-radius: 999px; font-size: 11.5px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-    .w-filter-btn:hover { border-color: rgba(255, 255, 255, 0.28); color: #fff; }
-    .w-filter-btn.active[data-wfilter="Tất cả"] { background: rgba(52, 211, 153, 0.22); border-color: var(--green-bright); color: #fff; }
-    .w-filter-btn.active[data-wfilter="Đỏ"] { background: rgba(239, 68, 68, 0.25); border-color: #f87171; color: #fca5a5; }
-    .w-filter-btn.active[data-wfilter="Vàng"] { background: rgba(245, 158, 11, 0.25); border-color: #fbbf24; color: #fde68a; }
-    .w-filter-btn.active[data-wfilter="Tím"] { background: rgba(168, 85, 247, 0.25); border-color: #c084fc; color: #e9d5ff; }
+    /* ================= CHỌN HOA TỪ KHO LOẠI HOA ================= */
+    .warehouse-picker-box {
+      background: #101522;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 8px;
+      max-height: 185px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      transition: max-height 0.2s ease;
+    }
+    .warehouse-picker-box.tall {
+      max-height: 310px;
+    }
+    .warehouse-picker-box::-webkit-scrollbar { width: 6px; }
+    .warehouse-picker-box::-webkit-scrollbar-thumb { background: var(--green-neon); border-radius: 999px; }
 
-    .warehouse-picker-box { background: #101522; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 8px; max-height: 165px; overflow-y: auto; margin-bottom: 16px; }
-    .warehouse-picker-box.tall { max-height: 285px; }
-    .warehouse-option { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: background-color 0.15s; }
-    .warehouse-option:hover { background: rgba(44, 229, 131, 0.12); }
-    .warehouse-option.selected { background: rgba(44, 229, 131, 0.2); border: 1px solid rgba(44, 229, 131, 0.5); }
-    .warehouse-option-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
-    .warehouse-option-name { font-size: 13.5px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .warehouse-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .warehouse-option:hover {
+      background: rgba(44, 229, 131, 0.12);
+    }
+    .warehouse-option.selected {
+      background: rgba(44, 229, 131, 0.2);
+      border: 1px solid rgba(44, 229, 131, 0.5);
+    }
+    .warehouse-option-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .warehouse-option-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .edit-form-group { margin-bottom: 14px; }
     .edit-form-group .field-label { margin-bottom: 6px; }
-    .edit-input, .edit-select { width: 100%; background: #101522; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 14px; font-weight: 600; outline: none; }
+    .edit-input, .edit-select {
+      width: 100%; background: #101522; border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px; padding: 11px 14px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none;
+    }
     .edit-input:focus, .edit-select:focus { border-color: var(--green-neon); }
+    .edit-input::placeholder { color: #64748b; font-weight: 500; }
 
-    .btn-cloud-submit { width: 100%; margin-top: 6px; background: linear-gradient(90deg, #1fd178, #2be585); color: #fff; border: none; border-radius: 14px; padding: 14px 20px; font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 8px 25px rgba(44, 229, 131, 0.38); }
+    .btn-cloud-submit {
+      width: 100%; margin-top: 6px; background: linear-gradient(90deg, #1fd178, #2be585);
+      color: #ffffff; border: none; border-radius: 14px; padding: 14px 20px;
+      font-size: 15px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
+      display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+      box-shadow: 0 8px 25px rgba(44, 229, 131, 0.38);
+      transition: filter 0.15s, transform 0.1s;
+    }
     .btn-cloud-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
-    .modal-wide { background: #1b1a2e; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; width: 100%; max-width: 720px; max-height: 85vh; padding: 24px; display: flex; flex-direction: column; }
+    .modal-wide {
+      background: #1b1a2e; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px;
+      width: 100%; max-width: 720px; max-height: 85vh; padding: 24px; display: flex; flex-direction: column;
+    }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); }
     .modal-header-right { display: flex; align-items: center; gap: 10px; }
     .modal-close-icon { background: rgba(255, 255, 255, 0.08); border: none; color: #cbd5e1; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; font-size: 15px; }
-    .modal-close-icon:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+    .modal-close-icon:hover { background: rgba(255, 255, 255, 0.16); color: #ffffff; }
     .modal-filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .modal-filter-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 6px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
-    .modal-filter-btn.active { background: rgba(52, 211, 153, 0.18); border-color: var(--green-bright); color: #fff; }
+    .modal-filter-btn.active { background: rgba(52, 211, 153, 0.18); border-color: var(--green-bright); color: #ffffff; }
     .member-flowers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; overflow-y: auto; padding-right: 4px; }
-    .flower-mini-card { background: #141326; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; position: relative; }
-    .btn-remove-member-flower { position: absolute; top: 10px; right: 10px; background: rgba(239, 68, 68, 0.14); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; width: 26px; height: 26px; border-radius: 7px; cursor: pointer; font-size: 11.5px; display: inline-flex; align-items: center; justify-content: center; }
-    .btn-remove-member-flower:hover { background: rgba(239, 68, 68, 0.32); color: #fff; }
-    .flower-mini-card-name { font-size: 14px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; line-height: 1.35; padding-right: 26px; }
+    .flower-mini-card {
+      background: #141326;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+    .btn-remove-member-flower {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 11.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .btn-remove-member-flower:hover {
+      background: rgba(239, 68, 68, 0.32);
+      color: #ffffff;
+    }
+    .flower-mini-card-name { font-size: 14px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px; line-height: 1.35; padding-right: 26px; }
     .flower-mini-card-name i { color: var(--green-bright); }
 
-    @media (max-width: 1120px) { .categories-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 1024px) { .news-layout { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .table-header { display: none; } .flower-row { grid-template-columns: 1fr; gap: 10px; } .col-actions { justify-content: flex-start; } }
-    @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; padding: 16px; } .nav-list { flex-direction: row; overflow-x: auto; } .main-wrapper { padding: 16px; } .flower-view-title-32 { font-size: 24px; } }
+    @media (max-width: 1120px) {
+      .categories-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 1024px) {
+      .news-layout { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .table-header { display: none; }
+      .flower-row { grid-template-columns: 1fr; gap: 10px; }
+      .col-actions { justify-content: flex-start; }
+    }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; padding: 16px; }
+      .nav-list { flex-direction: row; overflow-x: auto; }
+      .main-wrapper { padding: 16px; }
+      .flower-view-title-32 { font-size: 24px; }
+    }
   </style>
 </head>
 <body>
 
   <aside class="sidebar">
-    <div class="brand"><i class="fa-solid fa-fan"></i><span>ZERO GARDEN</span></div>
+    <div class="brand">
+      <i class="fa-solid fa-fan"></i>
+      <span>ZERO GARDEN</span>
+    </div>
     <ul class="nav-list">
       <li class="nav-item active" data-tab="dashboard"><i class="fa-solid fa-layer-group"></i> Bảng Tin</li>
       <li class="nav-item" data-tab="flowers"><i class="fa-solid fa-seedling"></i> Danh Sách Hoa</li>
@@ -277,31 +990,40 @@
 
   <main class="main-wrapper">
     <header class="top-header">
-      <div class="welcome-text">👋 Chào mừng đến với <span>Zero Garden</span></div>
+      <div class="welcome-text">
+        👋 Chào mừng đến với <span>Zero Garden</span>
+      </div>
       <div class="header-actions">
         <button class="btn-migrate super-only" id="btnMigrate" onclick="migrateFromSheets()">
           <i class="fa-solid fa-file-import"></i> Nạp từ Sheets
         </button>
         <button class="btn-admin" id="btnAdminAuth" onclick="toggleAdminAuth()">
-          <i class="fa-solid fa-lock" id="adminIcon"></i><span id="adminText">Quyền Quản Trị</span>
+          <i class="fa-solid fa-lock" id="adminIcon"></i>
+          <span id="adminText">Quyền Quản Trị</span>
         </button>
         <div class="badge-cloud super-only" onclick="loadFromFirebase(false)" title="Firebase Realtime">
-          <span class="dot-online" id="cloudDot"></span><span id="cloudText">Firebase</span>
+          <span class="dot-online" id="cloudDot"></span>
+          <span id="cloudText">Firebase</span>
         </div>
       </div>
     </header>
 
     <section class="content-frame">
-      <!-- TAB 1: BẢNG TIN -->
+
+      <!-- TAB 1: BẢNG TIN HOA VIÊN -->
       <div id="tab-dashboard" class="tab-view active">
         <div class="news-header">
           <div class="news-title"><i class="fa-solid fa-seedling"></i> Bảng Tin Hoa Viên</div>
           <div class="news-subtitle">Khu vực cập nhật thông tin đồng bộ realtime toàn nhóm.</div>
         </div>
+
         <div class="news-layout">
           <div class="news-left">
             <div class="news-cover-box" id="newsCoverBox">
-              <div class="news-cover-placeholder" id="newsCoverPlaceholder"><i class="fa-regular fa-image"></i>Chưa có ảnh bìa</div>
+              <div class="news-cover-placeholder" id="newsCoverPlaceholder">
+                <i class="fa-regular fa-image"></i>
+                Chưa có ảnh bìa
+              </div>
               <img id="newsCoverImg" src="" alt="Ảnh bìa Hoa Viên" style="display:none;" />
             </div>
             <input type="file" id="newsFileInput" accept="image/*" style="display:none;" />
@@ -309,6 +1031,7 @@
               <i class="fa-regular fa-image"></i> Tải ảnh bìa lên
             </button>
           </div>
+
           <div class="news-right">
             <textarea id="newsContentInput" class="news-textarea" readonly placeholder="Nhập nội dung bảng tin..."></textarea>
             <button type="button" class="btn-save-news super-only" id="btnSaveNews" onclick="saveNewsToCloud()">
@@ -321,29 +1044,58 @@
       <!-- TAB 2: DANH SÁCH HOA -->
       <div id="tab-flowers" class="tab-view">
         <div class="stats-grid" id="statsGrid">
-          <div class="stat-card active" data-filter="Tất cả"><i class="fa-solid fa-layer-group stat-icon icon-all"></i><div class="stat-count" id="count-all">0</div><div class="stat-label">TẤT CẢ</div></div>
-          <div class="stat-card" data-filter="Đỏ"><i class="fa-solid fa-fire stat-icon icon-red"></i><div class="stat-count" id="count-red">0</div><div class="stat-label">ĐỎ</div></div>
-          <div class="stat-card" data-filter="Vàng"><i class="fa-solid fa-star stat-icon icon-yellow"></i><div class="stat-count" id="count-yellow">0</div><div class="stat-label">VÀNG (CAM)</div></div>
-          <div class="stat-card" data-filter="Tím"><i class="fa-solid fa-moon stat-icon icon-purple"></i><div class="stat-count" id="count-purple">0</div><div class="stat-label">TÍM</div></div>
+          <div class="stat-card active" data-filter="Tất cả">
+            <i class="fa-solid fa-layer-group stat-icon icon-all"></i>
+            <div class="stat-count" id="count-all">0</div>
+            <div class="stat-label">TẤT CẢ</div>
+          </div>
+          <div class="stat-card" data-filter="Đỏ">
+            <i class="fa-solid fa-fire stat-icon icon-red"></i>
+            <div class="stat-count" id="count-red">0</div>
+            <div class="stat-label">ĐỎ</div>
+          </div>
+          <div class="stat-card" data-filter="Vàng">
+            <i class="fa-solid fa-star stat-icon icon-yellow"></i>
+            <div class="stat-count" id="count-yellow">0</div>
+            <div class="stat-label">VÀNG (CAM)</div>
+          </div>
+          <div class="stat-card" data-filter="Tím">
+            <i class="fa-solid fa-moon stat-icon icon-purple"></i>
+            <div class="stat-count" id="count-purple">0</div>
+            <div class="stat-label">TÍM</div>
+          </div>
         </div>
+
         <div class="toolbar">
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" placeholder="Tìm kiếm tên hoa, người sở hữu..." />
           </div>
-          <button class="btn-add mod-only" id="btnOpenAdd"><i class="fa-solid fa-wand-magic-sparkles"></i> Trồng Hoa Mới</button>
+          <button class="btn-add mod-only" id="btnOpenAdd">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Trồng Hoa Mới
+          </button>
         </div>
+
         <div class="table-header">
-          <div>STT</div><div>TÊN HOA / VẬT PHẨM</div><div>PHẨM HOA</div><div>NGƯỜI SỞ HỮU</div><div class="super-only">HÀNH ĐỘNG</div>
+          <div>STT</div>
+          <div>TÊN HOA / VẬT PHẨM</div>
+          <div>PHẨM HOA</div>
+          <div>NGƯỜI SỞ HỮU</div>
+          <div class="super-only">HÀNH ĐỘNG</div>
         </div>
-        <div class="flower-list" id="flowerList"><div class="empty-state">Đang tải dữ liệu từ Firebase...</div></div>
+
+        <div class="flower-list" id="flowerList">
+          <div class="empty-state">Đang tải dữ liệu từ Firebase...</div>
+        </div>
       </div>
 
       <!-- TAB 3: THÀNH VIÊN -->
       <div id="tab-members" class="tab-view">
         <div class="members-header-top">
           <div class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-users"></i> Quản Lý Thành Viên</div>
-          <button class="btn-add mod-only" onclick="openRecruitModal()"><i class="fa-solid fa-user-plus"></i> Chiêu Mộ Thành Viên</button>
+          <button class="btn-add mod-only" onclick="openRecruitModal()">
+            <i class="fa-solid fa-user-plus"></i> Chiêu Mộ Thành Viên
+          </button>
         </div>
         <div class="toolbar">
           <div class="search-box">
@@ -354,7 +1106,7 @@
         <div class="members-grid" id="membersGrid"></div>
       </div>
 
-      <!-- TAB 4: LOẠI HOA -->
+      <!-- TAB 4: LOẠI HOA (KHO HOA) -->
       <div id="tab-categories" class="tab-view">
         <div class="section-title"><i class="fa-solid fa-list-ul"></i> Kho Loại Hoa Theo Phẩm Hoa</div>
         <div class="toolbar">
@@ -365,48 +1117,48 @@
         </div>
         <div class="categories-grid" id="categoriesGrid"></div>
       </div>
+
     </section>
   </main>
 
-  <!-- Popup Xem Chi Tiết Hoa -->
+  <!-- Popup Xem Ảnh Hoa Có Viền + Tên 32px -->
   <div class="modal-overlay" id="flowerDetailModal">
     <div class="modal-flower-view">
       <div class="edit-modal-top" style="margin-bottom:14px;">
         <div class="edit-modal-title" style="font-size:16px; color:#94a3b8;">🌸 Chi Tiết Bông Hoa</div>
-        <button class="edit-modal-close" onclick="setModalVisible('flowerDetailModal', false)"><i class="fa-solid fa-xmark"></i></button>
+        <button class="edit-modal-close" onclick="closeFlowerDetailModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="edit-flower-showcase" style="margin:8px 0 0;">
-        <div class="flower-showcase-frame lg frame-Tím" id="viewFlowerFrame"><div class="flower-showcase-inner" id="viewFlowerImgWrap"></div></div>
+        <div class="flower-showcase-frame lg frame-Tím" id="viewFlowerFrame">
+          <div class="flower-showcase-inner" id="viewFlowerImgWrap"></div>
+        </div>
         <div class="flower-view-title-32" id="viewFlowerName32"></div>
       </div>
     </div>
   </div>
 
-  <!-- Popup Trồng Hoa Mới / Thêm Hoa Cho Thành Viên / Sửa Người Sở Hữu -->
+  <!-- Popup Chỉnh Sửa Người Sở Hữu / Trồng Hoa Mới / Thêm Hoa Cho Thành Viên -->
   <div class="modal-overlay" id="flowerModal">
     <div class="modal-flower-edit">
       <div class="edit-modal-top">
         <div class="edit-modal-title" id="modalTitle">✏️ Chỉnh Sửa Người Sở Hữu</div>
-        <button class="edit-modal-close" onclick="setModalVisible('flowerModal', false)"><i class="fa-solid fa-xmark"></i></button>
+        <button class="edit-modal-close" id="btnCloseModalX"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="editId" value="" />
 
       <div class="edit-flower-showcase" id="editFlowerShowcase" style="display:none;">
-        <div class="flower-showcase-frame frame-Đỏ" id="editFlowerFrame"><div class="flower-showcase-inner" id="editFlowerImgWrap"></div></div>
+        <div class="flower-showcase-frame frame-Đỏ" id="editFlowerFrame">
+          <div class="flower-showcase-inner" id="editFlowerImgWrap"></div>
+        </div>
         <div class="flower-showcase-name" id="editFlowerTitle"></div>
       </div>
 
+      <!-- Mục 1: Chọn tên hoa từ Kho Loại Hoa -->
       <div id="flowerWarehouseSection" style="display:none;">
         <div class="field-label" style="margin-bottom:8px;">🌿 Chọn tên hoa từ kho Loại Hoa</div>
         <div class="search-box" style="max-width:100%; margin-bottom:8px;">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="warehouseSearchInput" placeholder="Tìm hoa trong kho Loại Hoa..." oninput="renderWarehousePicker()" />
-        </div>
-        <div class="warehouse-filter-bar" id="warehouseFilterBar">
-          <button type="button" class="w-filter-btn active" data-wfilter="Tất cả">Tất cả</button>
-          <button type="button" class="w-filter-btn" data-wfilter="Đỏ">Đỏ</button>
-          <button type="button" class="w-filter-btn" data-wfilter="Vàng">Cam</button>
-          <button type="button" class="w-filter-btn" data-wfilter="Tím">Tím</button>
         </div>
         <div class="warehouse-picker-box" id="warehousePickerBox"></div>
         <input type="hidden" id="flowerName" value="" />
@@ -414,6 +1166,7 @@
         <input type="hidden" id="flowerImage" value="" />
       </div>
 
+      <!-- Mục 2: Thuộc về ai? -->
       <div id="ownerSelectionSection">
         <div class="owner-section-header">
           <div class="field-label">👤 Thuộc về ai?</div>
@@ -428,16 +1181,18 @@
     </div>
   </div>
 
-  <!-- Popup Sửa Link Ảnh (Cấp 2) -->
+  <!-- Popup Chỉnh Sửa Link Ảnh Hoa (Cấp 2) -->
   <div class="modal-overlay" id="flowerImageModal">
     <div class="modal-flower-edit">
       <div class="edit-modal-top">
         <div class="edit-modal-title">🖼️ Chỉnh Sửa Link Ảnh</div>
-        <button class="edit-modal-close" onclick="setModalVisible('flowerImageModal', false)"><i class="fa-solid fa-xmark"></i></button>
+        <button class="edit-modal-close" onclick="closeFlowerImageModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="imgEditFlowerId" value="" />
       <div class="edit-flower-showcase" style="margin-top:0; margin-bottom:16px;">
-        <div class="flower-showcase-frame frame-Tím" id="imgPreviewFrame"><div class="flower-showcase-inner" id="imgPreviewWrap"></div></div>
+        <div class="flower-showcase-frame frame-Tím" id="imgPreviewFrame">
+          <div class="flower-showcase-inner" id="imgPreviewWrap"></div>
+        </div>
         <div class="flower-showcase-name" id="imgEditFlowerName"></div>
       </div>
       <div class="edit-form-group">
@@ -450,12 +1205,12 @@
     </div>
   </div>
 
-  <!-- Popup Chiêu Mộ / Cập Nhật Tên & Vai Vế Thành Viên -->
+  <!-- Popup Chiêu Mộ Thành Viên -->
   <div class="modal-overlay" id="recruitModal">
     <div class="modal-flower-edit">
       <div class="edit-modal-top">
         <div class="edit-modal-title" id="recruitModalTitle">👤 Chiêu Mộ Thành Viên</div>
-        <button class="edit-modal-close" onclick="setModalVisible('recruitModal', false)"><i class="fa-solid fa-xmark"></i></button>
+        <button class="edit-modal-close" onclick="closeRecruitModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="recruitOldName" value="" />
       <div class="edit-form-group">
@@ -478,7 +1233,7 @@
     </div>
   </div>
 
-  <!-- Popup Thẻ Hoa Của Thành Viên -->
+  <!-- Popup Xem Thẻ Hoa Của Thành Viên -->
   <div class="modal-overlay" id="memberFlowersModal">
     <div class="modal-wide">
       <div class="modal-header">
@@ -490,8 +1245,10 @@
           <div id="memberModalSub" style="font-size:13px; color:#94a3b8; margin-top:4px;"></div>
         </div>
         <div class="modal-header-right">
-          <button type="button" class="btn-add-sm mod-only" onclick="openAddFlowerForSelectedMember()"><i class="fa-solid fa-plus"></i> Thêm Hoa</button>
-          <button class="modal-close-icon" onclick="setModalVisible('memberFlowersModal', false)"><i class="fa-solid fa-xmark"></i></button>
+          <button type="button" class="btn-add-sm mod-only" onclick="openAddFlowerForSelectedMember()">
+            <i class="fa-solid fa-plus"></i> Thêm Hoa
+          </button>
+          <button class="modal-close-icon" onclick="closeMemberModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
       <div class="modal-filter-bar" id="memberModalFilters">
@@ -507,91 +1264,111 @@
   <script>
     const FIREBASE_DB_URL = "https://bumpy-e2b9c-default-rtdb.asia-southeast1.firebasedatabase.app/zero_garden";
     const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
+
     const PASS_MOD = "321444";
     const PASS_SUPER = "bumpyne";
-    const CACHE_KEY = "zero_garden_fb_cache_v18";
+
+    const CACHE_KEY = "zero_garden_fb_cache_v16";
 
     let adminLevel = "";
-    let flowers = [];
-    let flowerCatalog = [];
+    let flowers = [];          // Danh sách hoa sở hữu của các thành viên (trên Danh Sách Hoa)
+    let flowerCatalog = [];    // Kho hoa gốc tại trang Loại Hoa
     let allMembers = [];
     let memberRoles = {};
     let flowerImages = {};
     let newsData = { image: "", content: "Chúc cả nhà một ngày thật vui vẻ !!!!" };
-
     let currentFilter = "Tất cả";
     let selectedMemberName = "";
     let selectedMemberFilter = "Tất cả";
     let selectedWarehouseFlowerId = "";
     let warehouseForMemberName = "";
-    let warehouseRarityFilter = "Tất cả";
 
-    const canManageMod = () => adminLevel === "mod" || adminLevel === "super";
-    const canManageSuper = () => adminLevel === "super";
-    const getOwnersArray = (owners) => Array.isArray(owners) ? owners : String(owners || "").split(",").map(s => s.trim()).filter(Boolean);
-    const hasAnyOwner = (item) => getOwnersArray(item && item.owners).length > 0;
-    const rarityLabelText = (r) => r === "Vàng" ? "Vàng (Cam)" : r;
-    const escapeHtml = (str) => String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-    const escapeJsStr = (str) => escapeHtml(str).replace(/'/g, "\\'");
-    const debounce = (fn, delay = 140) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), delay); }; };
+    function canManageFlowersAndMembers() {
+      return adminLevel === "mod" || adminLevel === "super";
+    }
 
-    window.setModalVisible = function(id, show) {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle("show", Boolean(show));
-    };
+    function canManageAll() {
+      return adminLevel === "super";
+    }
 
-    document.querySelectorAll(".modal-overlay").forEach(ov => {
-      ov.addEventListener("click", (e) => { if (e.target === ov) ov.classList.remove("show"); });
-    });
-
-    // ================= CACHE & CHUẨN HÓA KHO HOA =================
+    // ================= CACHE LOCALSTORAGE =================
     function saveLocalCache() {
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ flowers, flowerCatalog, allMembers, memberRoles, flowerImages, newsData })); } catch (e) {}
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          flowers, flowerCatalog, allMembers, memberRoles, flowerImages, newsData
+        }));
+      } catch (e) {}
     }
 
     function hydrateFromCache() {
       try {
         const raw = localStorage.getItem(CACHE_KEY);
         if (!raw) return false;
-        const c = JSON.parse(raw);
-        flowers = Array.isArray(c.flowers) ? c.flowers : [];
-        flowerCatalog = Array.isArray(c.flowerCatalog) ? c.flowerCatalog : [];
-        allMembers = Array.isArray(c.allMembers) ? c.allMembers : [];
-        memberRoles = (c.memberRoles && typeof c.memberRoles === "object") ? c.memberRoles : {};
-        flowerImages = (c.flowerImages && typeof c.flowerImages === "object") ? c.flowerImages : {};
-        if (c.newsData) newsData = c.newsData;
+        const cached = JSON.parse(raw);
+        if (Array.isArray(cached.flowers)) flowers = cached.flowers;
+        if (Array.isArray(cached.flowerCatalog)) flowerCatalog = cached.flowerCatalog;
+        if (Array.isArray(cached.allMembers)) allMembers = cached.allMembers;
+        if (cached.memberRoles && typeof cached.memberRoles === "object") memberRoles = cached.memberRoles;
+        if (cached.flowerImages && typeof cached.flowerImages === "object") flowerImages = cached.flowerImages;
+        if (cached.newsData) newsData = cached.newsData;
         normalizeCatalogAndOwned();
         renderAllViews();
         return true;
-      } catch (e) { return false; }
+      } catch (e) {
+        return false;
+      }
     }
 
+    function debounce(fn, delay = 150) {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    // Chuẩn hóa kho hoa Loại Hoa và danh sách hoa sở hữu trên Danh Sách Hoa
     function normalizeCatalogAndOwned() {
-      const catalogMap = new Map();
       const ownedList = [];
+      const catalogMap = new Map();
 
       (Array.isArray(flowerCatalog) ? flowerCatalog : []).forEach(c => {
         if (!c || !c.name) return;
-        const clean = String(c.name).trim();
-        const key = clean.toLowerCase();
-        catalogMap.set(key, { id: c.id || ("cat_" + key), name: clean, rarity: c.rarity || "Tím", image: c.image || "" });
+        const key = String(c.name).trim().toLowerCase();
+        catalogMap.set(key, {
+          id: c.id || ("cat_" + key),
+          name: String(c.name).trim(),
+          rarity: c.rarity || "Tím",
+          image: c.image || ""
+        });
       });
 
       (Array.isArray(flowers) ? flowers : []).forEach(f => {
         if (!f || !f.name) return;
-        const clean = String(f.name).trim();
-        const key = clean.toLowerCase();
+        const cleanName = String(f.name).trim();
+        const key = cleanName.toLowerCase();
         const ownersArr = getOwnersArray(f.owners);
 
         if (!catalogMap.has(key)) {
-          catalogMap.set(key, { id: f.id || ("cat_" + key), name: clean, rarity: f.rarity || "Tím", image: f.image || "" });
+          catalogMap.set(key, {
+            id: f.id || ("cat_" + key),
+            name: cleanName,
+            rarity: f.rarity || "Tím",
+            image: f.image || ""
+          });
         } else if (f.image && !catalogMap.get(key).image) {
           catalogMap.get(key).image = f.image;
         }
 
         if (ownersArr.length > 0) {
           const catInfo = catalogMap.get(key);
-          ownedList.push({ id: f.id || ("fl_" + key), name: clean, rarity: f.rarity || catInfo.rarity || "Tím", owners: ownersArr, image: f.image || catInfo.image || "" });
+          ownedList.push({
+            id: f.id || ("fl_" + key),
+            name: cleanName,
+            rarity: f.rarity || catInfo.rarity || "Tím",
+            owners: ownersArr,
+            image: f.image || catInfo.image || ""
+          });
         }
       });
 
@@ -599,16 +1376,21 @@
       flowers = ownedList;
     }
 
-    function findFlowerById(id) {
-      return flowers.find(f => String(f.id) === String(id)) || flowerCatalog.find(c => String(c.id) === String(id));
-    }
-
+    // ================= ẢNH HOA HELPER =================
     function getFlowerImageUrl(item) {
-      if (item && item.image && !item.image.includes("flower-placeholder")) return item.image;
+      if (item && item.image && !item.image.includes("flower-placeholder")) {
+        return item.image;
+      }
       const key = String((item && item.name) || "").trim().toLowerCase();
-      if (flowerImages[key] && !flowerImages[key].includes("flower-placeholder")) return flowerImages[key];
+      const mapped = flowerImages[key];
+      if (mapped && !mapped.includes("flower-placeholder")) {
+        return mapped;
+      }
       const inCat = flowerCatalog.find(c => String(c.name || "").trim().toLowerCase() === key);
-      return (inCat && inCat.image && !inCat.image.includes("flower-placeholder")) ? inCat.image : "";
+      if (inCat && inCat.image && !inCat.image.includes("flower-placeholder")) {
+        return inCat.image;
+      }
+      return "";
     }
 
     function renderFlowerIconHtml(item, sizeClass = "flower-thumb") {
@@ -619,19 +1401,191 @@
       return `<i class="fa-solid fa-leaf" style="color:#34d399;"></i>`;
     }
 
+    function findFlowerById(id) {
+      return flowers.find(f => String(f.id) === String(id)) ||
+             flowerCatalog.find(c => String(c.id) === String(id));
+    }
+
+    // ================= POPUP XEM HOA =================
+    const detailModal = document.getElementById("flowerDetailModal");
+
+    window.openFlowerDetailModal = function(id) {
+      const item = findFlowerById(id);
+      if (!item) return;
+
+      document.getElementById("viewFlowerFrame").className = `flower-showcase-frame lg frame-${item.rarity}`;
+      const url = getFlowerImageUrl(item);
+      document.getElementById("viewFlowerImgWrap").innerHTML = url
+        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
+      document.getElementById("viewFlowerName32").textContent = item.name;
+      detailModal.classList.add("show");
+    };
+
+    window.closeFlowerDetailModal = function() {
+      detailModal.classList.remove("show");
+    };
+
+    detailModal.addEventListener("click", (e) => {
+      if (e.target.id === "flowerDetailModal") closeFlowerDetailModal();
+    });
+
+    // ================= POPUP SỬA LINK ẢNH (CẤP 2) =================
+    const imgModal = document.getElementById("flowerImageModal");
+
+    window.openFlowerImageModal = function(id) {
+      if (!canManageAll()) return;
+      const item = findFlowerById(id);
+      if (!item) return;
+
+      document.getElementById("imgEditFlowerId").value = item.id;
+      document.getElementById("imgEditFlowerName").textContent = item.name;
+      document.getElementById("imgPreviewFrame").className = `flower-showcase-frame frame-${item.rarity}`;
+      const currentUrl = getFlowerImageUrl(item);
+      document.getElementById("imgEditUrlInput").value = currentUrl;
+      updateImagePreviewBox();
+      imgModal.classList.add("show");
+    };
+
+    window.closeFlowerImageModal = function() {
+      imgModal.classList.remove("show");
+    };
+
+    imgModal.addEventListener("click", (e) => {
+      if (e.target.id === "flowerImageModal") closeFlowerImageModal();
+    });
+
+    window.updateImagePreviewBox = function() {
+      const url = document.getElementById("imgEditUrlInput").value.trim();
+      document.getElementById("imgPreviewWrap").innerHTML = url
+        ? `<img src="${escapeHtml(url)}" alt="Preview" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
+    };
+
+    window.saveFlowerImageOnly = async function() {
+      if (!canManageAll()) return;
+      const id = document.getElementById("imgEditFlowerId").value;
+      const newUrl = document.getElementById("imgEditUrlInput").value.trim();
+      const target = findFlowerById(id);
+      if (!target) return;
+
+      const btn = document.getElementById("btnSaveFlowerImage");
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
+
+      const nameKey = String(target.name || "").trim().toLowerCase();
+      flowerCatalog = flowerCatalog.map(c =>
+        String(c.id) === String(id) || String(c.name || "").trim().toLowerCase() === nameKey
+          ? { ...c, image: newUrl }
+          : c
+      );
+      flowers = flowers.map(f =>
+        String(f.id) === String(id) || String(f.name || "").trim().toLowerCase() === nameKey
+          ? { ...f, image: newUrl }
+          : f
+      );
+
+      if (nameKey) {
+        if (newUrl) flowerImages[nameKey] = newUrl;
+        else delete flowerImages[nameKey];
+      }
+
+      saveLocalCache();
+      renderAllViews();
+
+      await saveToFirebase("categories", flowerCatalog);
+      await saveToFirebase("flowers", flowers);
+      await saveToFirebase("flower_images", flowerImages);
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> LƯU LINK ẢNH';
+      closeFlowerImageModal();
+    };
+
+    // ================= HUY HIỆU VAI VẾ =================
     function renderRoleBadgeHtml(memberName) {
       const role = String(memberRoles[memberName] || "").trim();
       if (!role) return "";
       const lower = role.toLowerCase();
       let cls = "role-badge";
-      if (lower.includes("hội phó") || lower.includes("phó")) cls += " role-pho";
-      else if (lower.includes("quản lý") || lower.includes("quản")) cls += " role-quanly";
-      else if (lower.includes("tinh anh")) cls += " role-tinhanh";
-      else if (lower.includes("thành viên")) cls += " role-thanhvien";
+      if (lower.includes("hội phó") || lower.includes("phó")) {
+        cls += " role-pho";
+      } else if (lower.includes("quản lý") || lower.includes("quản")) {
+        cls += " role-quanly";
+      } else if (lower.includes("tinh anh")) {
+        cls += " role-tinhanh";
+      } else if (lower.includes("thành viên")) {
+        cls += " role-thanhvien";
+      }
       return `<span class="${cls}">${escapeHtml(role)}</span>`;
     }
 
-    // ================= QUYỀN QUẢN TRỊ =================
+    // ================= POPUP CHIÊU MỘ / SỬA VAI VẾ =================
+    const recruitModal = document.getElementById("recruitModal");
+
+    window.openRecruitModal = function(editMemberName = "") {
+      if (!canManageFlowersAndMembers()) return;
+      const oldInput = document.getElementById("recruitOldName");
+      const nameInput = document.getElementById("recruitNameInput");
+      const roleSelect = document.getElementById("recruitRoleSelect");
+      const titleEl = document.getElementById("recruitModalTitle");
+      const btnSubmit = document.getElementById("btnRecruitSubmit");
+
+      if (editMemberName) {
+        titleEl.textContent = "✏️ Cập Nhật Vai Vế";
+        oldInput.value = editMemberName;
+        nameInput.value = editMemberName;
+        nameInput.setAttribute("readonly", "true");
+        roleSelect.value = memberRoles[editMemberName] || "Thành Viên";
+        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> LƯU THAY ĐỔI';
+      } else {
+        titleEl.textContent = "👤 Chiêu Mộ Thành Viên";
+        oldInput.value = "";
+        nameInput.value = "";
+        nameInput.removeAttribute("readonly");
+        roleSelect.value = "Thành Viên";
+        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> KẾT NẠP';
+      }
+
+      recruitModal.classList.add("show");
+      if (!editMemberName) nameInput.focus();
+    };
+
+    window.closeRecruitModal = function() {
+      recruitModal.classList.remove("show");
+    };
+
+    recruitModal.addEventListener("click", (e) => {
+      if (e.target.id === "recruitModal") closeRecruitModal();
+    });
+
+    window.submitRecruitMember = async function() {
+      if (!canManageFlowersAndMembers()) return;
+      const name = document.getElementById("recruitNameInput").value.trim();
+      const role = document.getElementById("recruitRoleSelect").value;
+      const btn = document.getElementById("btnRecruitSubmit");
+
+      if (!name) return alert("Vui lòng nhập danh xưng thành viên!");
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
+
+      if (!allMembers.some(m => m.toLowerCase() === name.toLowerCase())) {
+        allMembers.push(name);
+      }
+      memberRoles[name] = role;
+
+      saveLocalCache();
+      renderMembers();
+
+      await saveToFirebase("members", allMembers);
+      await saveToFirebase("roles", memberRoles);
+
+      btn.disabled = false;
+      closeRecruitModal();
+    };
+
+    // ================= QUYỀN QUẢN TRỊ 2 CẤP BẬC =================
     function applyAdminUI() {
       document.body.classList.toggle("role-mod", adminLevel === "mod");
       document.body.classList.toggle("role-super", adminLevel === "super");
@@ -642,42 +1596,52 @@
       const textarea = document.getElementById("newsContentInput");
 
       if (adminLevel === "super") {
-        btn.classList.add("unlocked"); icon.className = "fa-solid fa-crown"; text.textContent = "Quản Trị Toàn Quyền"; textarea.removeAttribute("readonly");
+        btn.classList.add("unlocked");
+        icon.className = "fa-solid fa-crown";
+        text.textContent = "Quản Trị Toàn Quyền";
+        textarea.removeAttribute("readonly");
       } else if (adminLevel === "mod") {
-        btn.classList.add("unlocked"); icon.className = "fa-solid fa-lock-open"; text.textContent = "Quản Trị (Hoa & TV)"; textarea.setAttribute("readonly", "true");
+        btn.classList.add("unlocked");
+        icon.className = "fa-solid fa-lock-open";
+        text.textContent = "Quản Trị (Hoa & TV)";
+        textarea.setAttribute("readonly", "true");
       } else {
-        btn.classList.remove("unlocked"); icon.className = "fa-solid fa-lock"; text.textContent = "Quyền Quản Trị"; textarea.setAttribute("readonly", "true");
+        btn.classList.remove("unlocked");
+        icon.className = "fa-solid fa-lock";
+        text.textContent = "Quyền Quản Trị";
+        textarea.setAttribute("readonly", "true");
       }
 
       renderList();
       renderMembers();
       renderCategories();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) {
+        renderMemberModalContent();
+      }
     }
 
     window.toggleAdminAuth = function() {
       if (adminLevel) {
-        if (confirm("Khóa lại Quyền Quản Trị?")) { adminLevel = ""; applyAdminUI(); }
+        if (confirm("Khóa lại Quyền Quản Trị?")) {
+          adminLevel = "";
+          applyAdminUI();
+        }
         return;
       }
       const pass = prompt("Nhập mật khẩu Quản Trị:");
       if (pass === null) return;
-      if (pass === PASS_SUPER) { adminLevel = "super"; applyAdminUI(); }
-      else if (pass === PASS_MOD) { adminLevel = "mod"; applyAdminUI(); }
-      else alert("Mật khẩu không đúng!");
+      if (pass === PASS_SUPER) {
+        adminLevel = "super";
+        applyAdminUI();
+      } else if (pass === PASS_MOD) {
+        adminLevel = "mod";
+        applyAdminUI();
+      } else {
+        alert("Mật khẩu không đúng!");
+      }
     };
 
     // ================= FIREBASE REALTIME =================
-    function setCloudStatus(status, text) {
-      const dot = document.getElementById("cloudDot");
-      const label = document.getElementById("cloudText");
-      if (!dot || !label) return;
-      dot.className = "dot-online";
-      if (status === "syncing") dot.classList.add("dot-syncing");
-      if (status === "error") dot.classList.add("dot-error");
-      label.textContent = text;
-    }
-
     function applyDatabaseSnapshot(data) {
       if (!data) return;
       flowers = Array.isArray(data.flowers) ? data.flowers.filter(Boolean) : [];
@@ -690,7 +1654,9 @@
       normalizeCatalogAndOwned();
       saveLocalCache();
       renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) {
+        renderMemberModalContent();
+      }
     }
 
     async function loadFromFirebase(silent = false) {
@@ -698,11 +1664,15 @@
       try {
         const res = await fetch(`${FIREBASE_DB_URL}.json`);
         const data = await res.json();
-        if (data) applyDatabaseSnapshot(data);
-        else document.getElementById("flowerList").innerHTML = '<div class="empty-state">Firebase đang trống. Hãy mở quyền quản trị toàn quyền và bấm <strong>Nạp từ Sheets</strong>!</div>';
+        if (data) {
+          applyDatabaseSnapshot(data);
+        } else {
+          document.getElementById("flowerList").innerHTML =
+            '<div class="empty-state">Firebase đang trống. Hãy mở quyền quản trị toàn quyền và bấm <strong>Nạp từ Sheets</strong>!</div>';
+        }
         setCloudStatus("online", "Firebase");
       } catch (err) {
-        console.error(err);
+        console.error("Lỗi tải Firebase:", err);
         setCloudStatus("error", "Lỗi kết nối");
       }
     }
@@ -711,13 +1681,17 @@
       setCloudStatus("syncing", "Đang lưu...");
       try {
         const url = path ? `${FIREBASE_DB_URL}/${path}.json` : `${FIREBASE_DB_URL}.json`;
-        const res = await fetch(url, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        const res = await fetch(url, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
         if (!res.ok) throw new Error("HTTP " + res.status);
         setCloudStatus("online", "Đã lưu");
         setTimeout(() => setCloudStatus("online", "Firebase"), 1200);
         return true;
       } catch (err) {
-        console.error(err);
+        console.error("Lỗi lưu Firebase:", err);
         setCloudStatus("error", "Lỗi lưu");
         alert("Không thể lưu lên Firebase. Hãy kiểm tra lại Rules của Realtime Database.");
         return false;
@@ -730,50 +1704,98 @@
         evtSource.addEventListener("put", (e) => {
           try {
             const msg = JSON.parse(e.data);
-            if (msg.path === "/" && msg.data) applyDatabaseSnapshot(msg.data);
-            else if (msg.path === "/flowers") { flowers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); }
-            else if (msg.path === "/categories") { flowerCatalog = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; normalizeCatalogAndOwned(); saveLocalCache(); renderCategories(); }
-            else if (msg.path === "/members") { allMembers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; saveLocalCache(); renderMembers(); }
-            else if (msg.path === "/roles") { memberRoles = (msg.data && typeof msg.data === "object") ? msg.data : {}; saveLocalCache(); renderMembers(); }
-            else if (msg.path === "/flower_images") { flowerImages = (msg.data && typeof msg.data === "object") ? msg.data : {}; saveLocalCache(); renderAllViews(); }
-            else if (msg.path === "/news" && msg.data) { newsData = msg.data; saveLocalCache(); renderNews(); }
+            if (msg.path === "/" && msg.data) {
+              applyDatabaseSnapshot(msg.data);
+            } else if (msg.path === "/flowers") {
+              flowers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : [];
+              normalizeCatalogAndOwned();
+              saveLocalCache();
+              renderAllViews();
+              if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) {
+                renderMemberModalContent();
+              }
+            } else if (msg.path === "/categories") {
+              flowerCatalog = Array.isArray(msg.data) ? msg.data.filter(Boolean) : [];
+              normalizeCatalogAndOwned();
+              saveLocalCache();
+              renderCategories();
+            } else if (msg.path === "/members") {
+              allMembers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : [];
+              saveLocalCache();
+              renderMembers();
+            } else if (msg.path === "/roles") {
+              memberRoles = (msg.data && typeof msg.data === "object") ? msg.data : {};
+              saveLocalCache();
+              renderMembers();
+            } else if (msg.path === "/flower_images") {
+              flowerImages = (msg.data && typeof msg.data === "object") ? msg.data : {};
+              saveLocalCache();
+              renderAllViews();
+            } else if (msg.path === "/news" && msg.data) {
+              newsData = msg.data;
+              saveLocalCache();
+              renderNews();
+            }
           } catch (err) {}
         });
       } catch (e) {}
     }
 
+    // ================= NẠP DỮ LIỆU TỪ GOOGLE SHEETS =================
     window.migrateFromSheets = async function() {
-      if (!canManageSuper()) return alert("Cần quyền quản trị toàn quyền!");
+      if (!canManageAll()) return alert("Cần quyền quản trị toàn quyền!");
       if (!confirm("Lấy toàn bộ dữ liệu Hoa, Thành Viên và Bảng Tin từ Google Sheets cũ đổ sang Firebase?")) return;
+
       const btn = document.getElementById("btnMigrate");
-      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang nạp...';
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang nạp...';
+      setCloudStatus("syncing", "Đang nạp Sheets...");
+
       try {
-        const data = await (await fetch(OLD_SHEET_API_URL)).json();
+        const res = await fetch(OLD_SHEET_API_URL);
+        const data = await res.json();
         const sheetFlowers = Array.isArray(data) ? data : (data.flowers || []);
+        const sheetMembers = Array.isArray(data.members) ? data.members : [];
+        const sheetNews = data.news || newsData;
+
         const fullPayload = {
           flowers: sheetFlowers,
           categories: flowerCatalog.length > 0 ? flowerCatalog : sheetFlowers,
-          members: Array.isArray(data.members) ? data.members : [],
+          members: sheetMembers,
           roles: memberRoles,
           flower_images: flowerImages,
-          news: data.news || newsData
+          news: sheetNews
         };
-        if (await saveToFirebase("", fullPayload)) {
+
+        const ok = await saveToFirebase("", fullPayload);
+        if (ok) {
           applyDatabaseSnapshot(fullPayload);
-          alert(`Chuyển dữ liệu thành công! Đã nạp ${sheetFlowers.length} loại hoa sang Firebase.`);
+          alert(`Chuyển dữ liệu thành công! Đã nạp ${sheetFlowers.length} loại hoa và ${sheetMembers.length} thành viên sang Firebase.`);
         }
-      } catch (err) { alert("Lỗi khi đọc dữ liệu từ Google Sheets cũ."); }
-      btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-file-import"></i> Nạp từ Sheets';
+      } catch (err) {
+        console.error(err);
+        alert("Lỗi khi đọc dữ liệu từ Google Sheets cũ.");
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-file-import"></i> Nạp từ Sheets';
     };
 
     // ================= BẢNG TIN =================
     function renderNews() {
       const imgEl = document.getElementById("newsCoverImg");
       const phEl = document.getElementById("newsCoverPlaceholder");
-      document.getElementById("newsContentInput").value = newsData.content || "";
-      imgEl.src = newsData.image || "";
-      imgEl.style.display = newsData.image ? "block" : "none";
-      phEl.style.display = newsData.image ? "none" : "block";
+      const textEl = document.getElementById("newsContentInput");
+
+      textEl.value = newsData.content || "";
+      if (newsData.image) {
+        imgEl.src = newsData.image;
+        imgEl.style.display = "block";
+        phEl.style.display = "none";
+      } else {
+        imgEl.style.display = "none";
+        phEl.style.display = "block";
+      }
     }
 
     document.getElementById("newsFileInput").addEventListener("change", (e) => {
@@ -784,9 +1806,12 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement("canvas");
-          const scale = img.width > 1000 ? 1000 / img.width : 1;
-          canvas.width = img.width * scale; canvas.height = img.height * scale;
-          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+          const maxW = 1000;
+          const scale = img.width > maxW ? maxW / img.width : 1;
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           newsData.image = canvas.toDataURL("image/jpeg", 0.82);
           renderNews();
         };
@@ -796,16 +1821,49 @@
     });
 
     window.saveNewsToCloud = async function() {
-      if (!canManageSuper()) return alert("Bạn cần quyền quản trị toàn quyền để sửa Bảng Tin!");
+      if (!canManageAll()) return alert("Bạn cần quyền quản trị toàn quyền để sửa Bảng Tin!");
       const btn = document.getElementById("btnSaveNews");
       newsData.content = document.getElementById("newsContentInput").value;
-      saveLocalCache(); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+      saveLocalCache();
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
       const ok = await saveToFirebase("news", newsData);
-      btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud';
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu Bản Tin Lên Cloud';
       if (ok) alert("Đã lưu Bảng Tin lên Firebase thành công!");
     };
 
-    // ================= RENDER DANH SÁCH HOA & THỐNG KÊ =================
+    // ================= HELPER & UI =================
+    function getOwnersArray(owners) {
+      return Array.isArray(owners)
+        ? owners
+        : String(owners || "").split(",").map(s => s.trim()).filter(Boolean);
+    }
+
+    function hasAnyOwner(item) {
+      return getOwnersArray(item && item.owners).length > 0;
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function setCloudStatus(status, text) {
+      const dot = document.getElementById("cloudDot");
+      const label = document.getElementById("cloudText");
+      if (!dot || !label) return;
+      dot.className = "dot-online";
+      if (status === "syncing") dot.classList.add("dot-syncing");
+      if (status === "error") dot.classList.add("dot-error");
+      label.textContent = text;
+    }
+
     document.querySelectorAll(".nav-item").forEach(item => {
       item.addEventListener("click", () => {
         document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
@@ -828,24 +1886,28 @@
       renderCategories();
     }
 
+    // Thống kê tổng hợp toàn bộ hoa mà thành viên hội đang có trên trang Danh Sách Hoa
     function updateCounts() {
-      const owned = flowers.filter(hasAnyOwner);
-      document.getElementById("count-all").textContent = owned.length;
-      document.getElementById("count-red").textContent = owned.filter(f => f.rarity === "Đỏ").length;
-      document.getElementById("count-yellow").textContent = owned.filter(f => f.rarity === "Vàng").length;
-      document.getElementById("count-purple").textContent = owned.filter(f => f.rarity === "Tím").length;
+      const ownedFlowers = flowers.filter(hasAnyOwner);
+      document.getElementById("count-all").textContent = ownedFlowers.length;
+      document.getElementById("count-red").textContent = ownedFlowers.filter(f => f.rarity === "Đỏ").length;
+      document.getElementById("count-yellow").textContent = ownedFlowers.filter(f => f.rarity === "Vàng").length;
+      document.getElementById("count-purple").textContent = ownedFlowers.filter(f => f.rarity === "Tím").length;
     }
 
     function renderList() {
       const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
       const container = document.getElementById("flowerList");
-      const isSuper = canManageSuper();
+      const isSuper = canManageAll();
 
       const filtered = flowers.filter(item => {
         if (!hasAnyOwner(item)) return false;
         const ownersArr = getOwnersArray(item.owners);
-        return (currentFilter === "Tất cả" || item.rarity === currentFilter) &&
-          (String(item.name || "").toLowerCase().includes(keyword) || ownersArr.some(o => o.toLowerCase().includes(keyword)));
+        const matchRarity = currentFilter === "Tất cả" || item.rarity === currentFilter;
+        const matchSearch =
+          String(item.name || "").toLowerCase().includes(keyword) ||
+          ownersArr.some(o => o.toLowerCase().includes(keyword));
+        return matchRarity && matchSearch;
       });
 
       if (filtered.length === 0) {
@@ -854,282 +1916,290 @@
         return;
       }
 
-      container.innerHTML = filtered.map((item, idx) => {
-        const ownersHtml = getOwnersArray(item.owners)
-          .map(o => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeJsStr(o)}')"><i class="fa-regular fa-user"></i> ${escapeHtml(o)}</span>`)
+      container.innerHTML = filtered.map((item, index) => {
+        const ownersArr = getOwnersArray(item.owners);
+        const ownersHtml = ownersArr
+          .map(owner => `<span class="owner-pill" onclick="event.stopPropagation(); openMemberModal('${escapeHtml(owner).replace(/'/g, "\\'")}')"><i class="fa-regular fa-user"></i> ${escapeHtml(owner)}</span>`)
           .join("");
+        const rarityLabel = item.rarity === "Vàng" ? "Vàng (Cam)" : item.rarity;
+
         const actionHtml = isSuper ? `
           <div class="col-actions">
-            <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')"><i class="fa-solid fa-pen"></i> Sửa</button>
-            <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')"><i class="fa-solid fa-xmark"></i> Xóa</button>
-          </div>` : "";
+            <button class="btn-action btn-edit" onclick="event.stopPropagation(); editFlower('${item.id}')">
+              <i class="fa-solid fa-pen"></i> Sửa
+            </button>
+            <button class="btn-action btn-delete" onclick="event.stopPropagation(); deleteFlower('${item.id}')">
+              <i class="fa-solid fa-xmark"></i> Xóa
+            </button>
+          </div>
+        ` : "";
 
         return `
-          <div class="flower-row" onclick="if(canManageMod()) editFlower('${item.id}')">
-            <div class="col-stt">${idx + 1}</div>
+          <div class="flower-row" onclick="if(canManageFlowersAndMembers()) editFlower('${item.id}')">
+            <div class="col-stt">${index + 1}</div>
             <div class="col-name">${renderFlowerIconHtml(item, "flower-thumb")} <span>${escapeHtml(item.name)}</span></div>
-            <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabelText(item.rarity)}</span></div>
+            <div><span class="badge-rarity rarity-${item.rarity}">${rarityLabel}</span></div>
             <div class="col-owners">${ownersHtml}</div>
             ${actionHtml}
-          </div>`;
+          </div>
+        `;
       }).join("");
 
       updateCounts();
     }
 
-    // ================= RENDER THÀNH VIÊN =================
     function getMemberMap() {
-      const map = {};
-      allMembers.forEach(m => { map[m] = []; });
-      flowers.forEach(f => getOwnersArray(f.owners).forEach(o => { (map[o] = map[o] || []).push(f); }));
-      return map;
+      const memberMap = {};
+      allMembers.forEach(m => { memberMap[m] = []; });
+      flowers.forEach(f => {
+        getOwnersArray(f.owners).forEach(owner => {
+          if (!memberMap[owner]) memberMap[owner] = [];
+          memberMap[owner].push(f);
+        });
+      });
+      return memberMap;
     }
 
     function renderMembers() {
       const keyword = (document.getElementById("memberSearchInput").value || "").toLowerCase().trim();
-      const entries = Object.entries(getMemberMap()).filter(([n]) => n.toLowerCase().includes(keyword)).sort((a, b) => b[1].length - a[1].length);
+      const memberMap = getMemberMap();
+      const isSuper = canManageAll();
+
+      const entries = Object.entries(memberMap)
+        .filter(([name]) => name.toLowerCase().includes(keyword))
+        .sort((a, b) => b[1].length - a[1].length);
+
       const grid = document.getElementById("membersGrid");
-      const isSuper = canManageSuper();
+      if (entries.length === 0) {
+        grid.innerHTML = '<div class="empty-state">Không tìm thấy thành viên nào.</div>';
+        return;
+      }
 
-      if (entries.length === 0) { grid.innerHTML = '<div class="empty-state">Không tìm thấy thành viên nào.</div>'; return; }
+      grid.innerHTML = entries.map(([memberName, list]) => {
+        const redCount = list.filter(f => f.rarity === "Đỏ").length;
+        const yellowCount = list.filter(f => f.rarity === "Vàng").length;
+        const purpleCount = list.filter(f => f.rarity === "Tím").length;
+        const safeName = escapeHtml(memberName).replace(/'/g, "\\'");
+        const roleHtml = renderRoleBadgeHtml(memberName);
 
-      grid.innerHTML = entries.map(([name, list]) => {
-        const red = list.filter(f => f.rarity === "Đỏ").length;
-        const yellow = list.filter(f => f.rarity === "Vàng").length;
-        const purple = list.filter(f => f.rarity === "Tím").length;
-        const safeName = escapeJsStr(name);
+        const footerHtml = isSuper ? `
+          <div class="member-card-footer">
+            <span>Xem thẻ hoa</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        ` : "";
 
         return `
           <div class="member-card" onclick="openMemberModal('${safeName}')">
-            <button type="button" class="btn-edit-role super-only" title="Cập nhật tên & vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" class="btn-edit-role super-only" title="Cập nhật vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')">
+              <i class="fa-solid fa-pen"></i>
+            </button>
             <div class="member-card-top">
               <div class="member-avatar"><i class="fa-solid fa-user"></i></div>
               <div>
-                <div class="member-name-row"><span class="member-name">${escapeHtml(name)}</span>${renderRoleBadgeHtml(name)}</div>
+                <div class="member-name-row">
+                  <span class="member-name">${escapeHtml(memberName)}</span>
+                  ${roleHtml}
+                </div>
                 <div class="member-total">Đang sở hữu <strong>${list.length}</strong> loại hoa</div>
               </div>
             </div>
             <div class="member-mini-stats">
-              <span class="mini-badge mini-red">Đỏ: ${red}</span>
-              <span class="mini-badge mini-yellow">Vàng: ${yellow}</span>
-              <span class="mini-badge mini-purple">Tím: ${purple}</span>
+              <span class="mini-badge mini-red">Đỏ: ${redCount}</span>
+              <span class="mini-badge mini-yellow">Vàng: ${yellowCount}</span>
+              <span class="mini-badge mini-purple">Tím: ${purpleCount}</span>
             </div>
-            ${isSuper ? '<div class="member-card-footer"><span>Xem thẻ hoa</span><i class="fa-solid fa-arrow-right"></i></div>' : ""}
-          </div>`;
+            ${footerHtml}
+          </div>
+        `;
       }).join("");
     }
 
     window.openMemberModal = function(memberName) {
       selectedMemberName = memberName;
       selectedMemberFilter = "Tất cả";
-      document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(b => b.classList.toggle("active", b.dataset.mfilter === "Tất cả"));
+      document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mfilter === "Tất cả");
+      });
       renderMemberModalContent();
-      setModalVisible("memberFlowersModal", true);
+      document.getElementById("memberFlowersModal").classList.add("show");
+    };
+
+    window.closeMemberModal = function() {
+      document.getElementById("memberFlowersModal").classList.remove("show");
     };
 
     window.removeFlowerFromMember = async function(flowerId, memberName) {
-      if (!canManageMod()) return;
+      if (!canManageFlowersAndMembers()) return;
       const idx = flowers.findIndex(f => String(f.id) === String(flowerId));
       if (idx === -1) return;
-      const nextOwners = getOwnersArray(flowers[idx].owners).filter(o => o.toLowerCase() !== String(memberName).toLowerCase());
-      if (nextOwners.length > 0) flowers[idx] = { ...flowers[idx], owners: nextOwners };
-      else flowers.splice(idx, 1);
 
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); renderMemberModalContent();
+      const currentOwners = getOwnersArray(flowers[idx].owners);
+      const nextOwners = currentOwners.filter(o => o.toLowerCase() !== String(memberName).toLowerCase());
+      if (nextOwners.length > 0) {
+        flowers[idx] = { ...flowers[idx], owners: nextOwners };
+      } else {
+        flowers.splice(idx, 1);
+      }
+
+      saveLocalCache();
+      renderAllViews();
+      renderMemberModalContent();
       await saveToFirebase("flowers", flowers);
     };
 
     function renderMemberModalContent() {
-      const list = getMemberMap()[selectedMemberName] || [];
+      const memberMap = getMemberMap();
+      const list = memberMap[selectedMemberName] || [];
       const filtered = selectedMemberFilter === "Tất cả" ? list : list.filter(f => f.rarity === selectedMemberFilter);
-      const canEdit = canManageMod();
-      const safeMember = escapeJsStr(selectedMemberName);
+      const canEdit = canManageFlowersAndMembers();
+      const safeMember = escapeHtml(selectedMemberName).replace(/'/g, "\\'");
 
       document.getElementById("memberModalName").textContent = selectedMemberName;
       document.getElementById("memberModalRole").innerHTML = renderRoleBadgeHtml(selectedMemberName);
       document.getElementById("memberModalSub").textContent = `Tổng cộng: ${list.length} loại hoa`;
 
       const grid = document.getElementById("memberModalGrid");
-      if (filtered.length === 0) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Không có hoa nào thuộc mục này.</div>'; return; }
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Không có hoa nào thuộc mục này.</div>';
+        return;
+      }
 
       grid.innerHTML = filtered.map(f => {
-        const delBtn = canEdit ? `<button type="button" class="btn-remove-member-flower" title="Xóa hoa khỏi thành viên" onclick="event.stopPropagation(); removeFlowerFromMember('${f.id}', '${safeMember}')"><i class="fa-solid fa-xmark"></i></button>` : "";
+        const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
+        const removeBtnHtml = canEdit
+          ? `<button type="button" class="btn-remove-member-flower" title="Xóa hoa khỏi thành viên" onclick="event.stopPropagation(); removeFlowerFromMember('${f.id}', '${safeMember}')"><i class="fa-solid fa-xmark"></i></button>`
+          : "";
         return `
-          <div class="flower-mini-card" onclick="if(canManageSuper()){setModalVisible('memberFlowersModal', false); editFlower('${f.id}');}">
-            ${delBtn}
-            <div class="flower-mini-card-name">${renderFlowerIconHtml(f, "flower-thumb-sm")}<span>${escapeHtml(f.name)}</span></div>
-            <div><span class="badge-rarity rarity-${f.rarity}">${rarityLabelText(f.rarity)}</span></div>
-          </div>`;
+          <div class="flower-mini-card" onclick="if(canManageAll()){closeMemberModal(); editFlower('${f.id}');}">
+            ${removeBtnHtml}
+            <div class="flower-mini-card-name">
+              ${renderFlowerIconHtml(f, "flower-thumb-sm")}
+              <span>${escapeHtml(f.name)}</span>
+            </div>
+            <div><span class="badge-rarity rarity-${f.rarity}">${rarityLabel}</span></div>
+          </div>
+        `;
       }).join("");
     }
 
-    // ================= RENDER KHO LOẠI HOA =================
+    document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedMemberFilter = btn.dataset.mfilter;
+        renderMemberModalContent();
+      });
+    });
+
+    document.getElementById("memberFlowersModal").addEventListener("click", (e) => {
+      if (e.target.id === "memberFlowersModal") closeMemberModal();
+    });
+
     function renderCategories() {
       const keyword = (document.getElementById("categorySearchInput")?.value || "").toLowerCase().trim();
-      const isSuper = canManageSuper();
+      const rarities = ["Đỏ", "Vàng", "Tím"];
+      const grid = document.getElementById("categoriesGrid");
+      const isSuper = canManageAll();
 
-      document.getElementById("categoriesGrid").innerHTML = ["Đỏ", "Vàng", "Tím"].map(rarity => {
-        const list = flowerCatalog.filter(f => f.rarity === rarity && (!keyword || String(f.name || "").toLowerCase().includes(keyword)));
+      grid.innerHTML = rarities.map(rarity => {
+        const list = flowerCatalog.filter(f =>
+          f.rarity === rarity &&
+          (!keyword || String(f.name || "").toLowerCase().includes(keyword))
+        );
+        const title = rarity === "Vàng" ? "Phẩm Vàng (Cam)" : `Phẩm ${rarity}`;
+
         const itemsHtml = list.length > 0
           ? `<div class="cat-flower-list">` + list.map(f => {
-              const imgBtn = isSuper ? `<button type="button" class="btn-edit-cat-img" title="Chỉnh sửa link ảnh" onclick="event.stopPropagation(); openFlowerImageModal('${f.id}')"><i class="fa-solid fa-image"></i></button>` : "";
-              return `<div class="cat-flower-item" onclick="openFlowerDetailModal('${f.id}')"><div class="cat-flower-left">${renderFlowerIconHtml(f, "flower-thumb-cat")}<span class="cat-flower-name">${escapeHtml(f.name)}</span></div>${imgBtn}</div>`;
+              const editImgBtn = isSuper
+                ? `<button type="button" class="btn-edit-cat-img" title="Chỉnh sửa link ảnh" onclick="event.stopPropagation(); openFlowerImageModal('${f.id}')"><i class="fa-solid fa-image"></i></button>`
+                : "";
+              return `
+                <div class="cat-flower-item" onclick="openFlowerDetailModal('${f.id}')">
+                  <div class="cat-flower-left">
+                    ${renderFlowerIconHtml(f, "flower-thumb-cat")}
+                    <span class="cat-flower-name">${escapeHtml(f.name)}</span>
+                  </div>
+                  ${editImgBtn}
+                </div>
+              `;
             }).join("") + `</div>`
           : '<div style="color:#64748b;font-size:13px;padding:8px 0;">Không có hoa phù hợp trong kho.</div>';
 
         return `
           <div class="info-card">
-            <div class="info-card-header"><span class="badge-rarity rarity-${rarity}">${rarity === "Vàng" ? "Phẩm Vàng (Cam)" : `Phẩm ${rarity}`}</span><div class="info-card-count">${list.length} loại</div></div>
+            <div class="info-card-header">
+              <div class="info-card-title"><span class="badge-rarity rarity-${rarity}">${title}</span></div>
+              <div class="info-card-count">${list.length} loại</div>
+            </div>
             ${itemsHtml}
-          </div>`;
+          </div>
+        `;
       }).join("");
     }
 
-    window.openFlowerDetailModal = function(id) {
-      const item = findFlowerById(id);
-      if (!item) return;
-      document.getElementById("viewFlowerFrame").className = `flower-showcase-frame lg frame-${item.rarity}`;
-      const url = getFlowerImageUrl(item);
-      document.getElementById("viewFlowerImgWrap").innerHTML = url ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">` : `<i class="fa-solid fa-leaf"></i>`;
-      document.getElementById("viewFlowerName32").textContent = item.name;
-      setModalVisible("flowerDetailModal", true);
-    };
+    document.querySelectorAll(".stat-card").forEach(card => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        currentFilter = card.dataset.filter;
+        renderList();
+      });
+    });
 
-    window.openFlowerImageModal = function(id) {
-      if (!canManageSuper()) return;
-      const item = findFlowerById(id);
-      if (!item) return;
-      document.getElementById("imgEditFlowerId").value = item.id;
-      document.getElementById("imgEditFlowerName").textContent = item.name;
-      document.getElementById("imgPreviewFrame").className = `flower-showcase-frame frame-${item.rarity}`;
-      document.getElementById("imgEditUrlInput").value = getFlowerImageUrl(item);
-      updateImagePreviewBox();
-      setModalVisible("flowerImageModal", true);
-    };
+    document.getElementById("searchInput").addEventListener("input", debounce(renderList, 150));
+    document.getElementById("memberSearchInput").addEventListener("input", debounce(renderMembers, 150));
+    document.getElementById("categorySearchInput").addEventListener("input", debounce(renderCategories, 150));
 
-    window.updateImagePreviewBox = function() {
-      const url = document.getElementById("imgEditUrlInput").value.trim();
-      document.getElementById("imgPreviewWrap").innerHTML = url ? `<img src="${escapeHtml(url)}" alt="Preview" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">` : `<i class="fa-solid fa-leaf"></i>`;
-    };
-
-    window.saveFlowerImageOnly = async function() {
-      if (!canManageSuper()) return;
-      const id = document.getElementById("imgEditFlowerId").value;
-      const newUrl = document.getElementById("imgEditUrlInput").value.trim();
-      const target = findFlowerById(id);
-      if (!target) return;
-
-      const btn = document.getElementById("btnSaveFlowerImage");
-      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
-      const nameKey = String(target.name || "").trim().toLowerCase();
-      flowerCatalog = flowerCatalog.map(c => (String(c.id) === String(id) || String(c.name || "").trim().toLowerCase() === nameKey) ? { ...c, image: newUrl } : c);
-      flowers = flowers.map(f => (String(f.id) === String(id) || String(f.name || "").trim().toLowerCase() === nameKey) ? { ...f, image: newUrl } : f);
-      if (nameKey) { if (newUrl) flowerImages[nameKey] = newUrl; else delete flowerImages[nameKey]; }
-
-      saveLocalCache(); renderAllViews();
-      await saveToFirebase("categories", flowerCatalog);
-      await saveToFirebase("flowers", flowers);
-      await saveToFirebase("flower_images", flowerImages);
-
-      btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> LƯU LINK ẢNH';
-      setModalVisible("flowerImageModal", false);
-    };
-
-    // ================= CHIÊU MỘ / SỬA TÊN & VAI VẾ =================
-    window.openRecruitModal = function(editMemberName = "") {
-      if (!canManageMod()) return;
-      const nameInput = document.getElementById("recruitNameInput");
-      const roleSelect = document.getElementById("recruitRoleSelect");
-      const titleEl = document.getElementById("recruitModalTitle");
-      const btnSubmit = document.getElementById("btnRecruitSubmit");
-
-      if (editMemberName) {
-        titleEl.textContent = "✏️ Cập Nhật Vai Vế";
-        document.getElementById("recruitOldName").value = editMemberName;
-        nameInput.value = editMemberName;
-        // Cấp 2 được phép chỉnh sửa tên; cấp 1 khóa tên
-        if (canManageSuper()) nameInput.removeAttribute("readonly");
-        else nameInput.setAttribute("readonly", "true");
-        roleSelect.value = memberRoles[editMemberName] || "Thành Viên";
-        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> LƯU THAY ĐỔI';
-      } else {
-        titleEl.textContent = "👤 Chiêu Mộ Thành Viên";
-        document.getElementById("recruitOldName").value = "";
-        nameInput.value = "";
-        nameInput.removeAttribute("readonly");
-        roleSelect.value = "Thành Viên";
-        btnSubmit.innerHTML = '<i class="fa-solid fa-user-check"></i> KẾT NẠP';
-      }
-      setModalVisible("recruitModal", true);
-      if (!editMemberName || canManageSuper()) nameInput.focus();
-    };
-
-    window.submitRecruitMember = async function() {
-      if (!canManageMod()) return;
-      const oldName = document.getElementById("recruitOldName").value.trim();
-      const newName = document.getElementById("recruitNameInput").value.trim();
-      const role = document.getElementById("recruitRoleSelect").value;
-      if (!newName) return alert("Vui lòng nhập danh xưng thành viên!");
-
-      const btn = document.getElementById("btnRecruitSubmit");
-      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
-
-      const isRename = Boolean(oldName && canManageSuper() && oldName !== newName);
-      if (isRename) {
-        const oldLower = oldName.toLowerCase();
-        allMembers = allMembers.map(m => m.toLowerCase() === oldLower ? newName : m);
-        if (!allMembers.some(m => m.toLowerCase() === newName.toLowerCase())) allMembers.push(newName);
-        delete memberRoles[oldName];
-
-        flowers = flowers.map(f => {
-          const arr = getOwnersArray(f.owners);
-          const replaced = arr.map(o => o.toLowerCase() === oldLower ? newName : o);
-          return { ...f, owners: Array.from(new Set(replaced)) };
-        });
-
-        if (selectedMemberName.toLowerCase() === oldLower) selectedMemberName = newName;
-      } else if (!allMembers.some(m => m.toLowerCase() === newName.toLowerCase())) {
-        allMembers.push(newName);
-      }
-
-      memberRoles[newName] = role;
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
-
-      await saveToFirebase("members", allMembers);
-      await saveToFirebase("roles", memberRoles);
-      if (isRename) await saveToFirebase("flowers", flowers);
-
-      btn.disabled = false; setModalVisible("recruitModal", false);
-    };
-
-    // ================= POPUP CHỌN HOA TỪ KHO LOẠI HOA =================
+    // ================= POPUP TÍCH CHỌN HOA TỪ KHO LOẠI HOA & THÀNH VIÊN =================
+    const modal = document.getElementById("flowerModal");
+    const btnSave = document.getElementById("btnSaveFlower");
     const checklistBox = document.getElementById("ownerChecklistBox");
+    const ownerSection = document.getElementById("ownerSelectionSection");
     const btnToggleAll = document.getElementById("btnToggleSelectAll");
+    const showcaseBox = document.getElementById("editFlowerShowcase");
+    const warehouseSection = document.getElementById("flowerWarehouseSection");
     const warehousePickerBox = document.getElementById("warehousePickerBox");
 
     function renderWarehousePicker() {
       const kw = (document.getElementById("warehouseSearchInput")?.value || "").toLowerCase().trim();
       const targetLower = warehouseForMemberName.toLowerCase();
 
-      const list = flowerCatalog.filter(catItem => {
-        if (warehouseRarityFilter !== "Tất cả" && catItem.rarity !== warehouseRarityFilter) return false;
-        if (kw && !String(catItem.name || "").toLowerCase().includes(kw)) return false;
-        const ownedEntry = flowers.find(f => String(f.name || "").trim().toLowerCase() === String(catItem.name || "").trim().toLowerCase());
+      // Lấy trực tiếp từ kho trang Loại Hoa (flowerCatalog)
+      const availableFlowers = flowerCatalog.filter(catItem => {
+        const matchKw = !kw || String(catItem.name || "").toLowerCase().includes(kw);
+        if (!matchKw) return false;
+
+        const key = String(catItem.name || "").trim().toLowerCase();
+        const ownedEntry = flowers.find(f => String(f.name || "").trim().toLowerCase() === key);
         const ownersArr = ownedEntry ? getOwnersArray(ownedEntry.owners) : [];
-        return targetLower ? !ownersArr.some(o => o.toLowerCase() === targetLower) : ownersArr.length === 0;
+
+        if (targetLower) {
+          // Thêm cho thành viên: hiển thị những hoa trong kho Loại Hoa mà thành viên này chưa có
+          return !ownersArr.some(o => o.toLowerCase() === targetLower);
+        }
+        // Trồng Hoa Mới trên Danh Sách Hoa: hiển thị những hoa trong kho Loại Hoa chưa có ai sở hữu
+        return ownersArr.length === 0;
       });
 
-      if (list.length === 0) {
+      if (availableFlowers.length === 0) {
         warehousePickerBox.innerHTML = '<div style="color:#64748b;font-size:13px;padding:12px;text-align:center;">Không có hoa phù hợp trong kho Loại Hoa.</div>';
         return;
       }
 
-      warehousePickerBox.innerHTML = list.map(f => `
-        <div class="warehouse-option ${String(f.id) === String(selectedWarehouseFlowerId) ? "selected" : ""}" onclick="selectWarehouseFlower('${f.id}')">
-          <div class="warehouse-option-left">${renderFlowerIconHtml(f, "flower-thumb-cat")}<span class="warehouse-option-name">${escapeHtml(f.name)}</span></div>
-          <span class="badge-rarity rarity-${f.rarity}" style="font-size:11px;padding:2px 10px;">${rarityLabelText(f.rarity)}</span>
-        </div>`).join("");
+      warehousePickerBox.innerHTML = availableFlowers.map(f => {
+        const isSel = String(f.id) === String(selectedWarehouseFlowerId);
+        const rarityLabel = f.rarity === "Vàng" ? "Vàng (Cam)" : f.rarity;
+        return `
+          <div class="warehouse-option ${isSel ? "selected" : ""}" onclick="selectWarehouseFlower('${f.id}')">
+            <div class="warehouse-option-left">
+              ${renderFlowerIconHtml(f, "flower-thumb-cat")}
+              <span class="warehouse-option-name">${escapeHtml(f.name)}</span>
+            </div>
+            <span class="badge-rarity rarity-${f.rarity}" style="font-size:11px;padding:2px 10px;">${rarityLabel}</span>
+          </div>
+        `;
+      }).join("");
     }
 
     window.selectWarehouseFlower = function(id) {
@@ -1140,26 +2210,42 @@
       document.getElementById("flowerRarity").value = item.rarity || "Tím";
       document.getElementById("flowerImage").value = getFlowerImageUrl(item);
 
-      const ownedEntry = flowers.find(f => String(f.name || "").trim().toLowerCase() === String(item.name || "").trim().toLowerCase());
+      const key = String(item.name || "").trim().toLowerCase();
+      const ownedEntry = flowers.find(f => String(f.name || "").trim().toLowerCase() === key);
       const currentOwners = ownedEntry ? getOwnersArray(ownedEntry.owners) : [];
-      renderOwnerChecklist(warehouseForMemberName ? Array.from(new Set([...currentOwners, warehouseForMemberName])) : currentOwners);
+
+      if (warehouseForMemberName) {
+        const merged = Array.from(new Set([...currentOwners, warehouseForMemberName]));
+        renderOwnerChecklist(merged);
+      } else {
+        renderOwnerChecklist(currentOwners);
+      }
+
       renderWarehousePicker();
     };
 
     function renderOwnerChecklist(selectedOwners = []) {
       const selectedLower = selectedOwners.map(s => s.toLowerCase());
-      checklistBox.innerHTML = getAllMemberNames().map(m => `
-        <label class="owner-check-item">
-          <input type="checkbox" class="owner-checkbox" value="${escapeHtml(m)}" ${selectedLower.includes(m.toLowerCase()) ? "checked" : ""} />
-          <span>${escapeHtml(m)}</span>
-        </label>`).join("");
+      const members = getAllMemberNames();
+      checklistBox.innerHTML = members.map(m => {
+        const checked = selectedLower.includes(m.toLowerCase()) ? "checked" : "";
+        return `
+          <label class="owner-check-item">
+            <input type="checkbox" class="owner-checkbox" value="${escapeHtml(m)}" ${checked} />
+            <span>${escapeHtml(m)}</span>
+          </label>
+        `;
+      }).join("");
       updateSelectAllButtonLabel();
-      checklistBox.querySelectorAll(".owner-checkbox").forEach(cb => cb.addEventListener("change", updateSelectAllButtonLabel));
+      checklistBox.querySelectorAll(".owner-checkbox").forEach(cb => {
+        cb.addEventListener("change", updateSelectAllButtonLabel);
+      });
     }
 
     function updateSelectAllButtonLabel() {
       const boxes = Array.from(checklistBox.querySelectorAll(".owner-checkbox"));
-      btnToggleAll.textContent = (boxes.length > 0 && boxes.every(b => b.checked)) ? "Bỏ chọn hết" : "Chọn tất cả";
+      const allChecked = boxes.length > 0 && boxes.every(b => b.checked);
+      btnToggleAll.textContent = allChecked ? "Bỏ chọn hết" : "Chọn tất cả";
     }
 
     btnToggleAll.addEventListener("click", () => {
@@ -1169,68 +2255,94 @@
       updateSelectAllButtonLabel();
     });
 
-    function openPickerModal({ title, forMember = "", defaultOwners = [], hideOwnerSection = false }) {
-      if (!canManageMod()) return;
-      warehouseForMemberName = forMember; selectedWarehouseFlowerId = ""; warehouseRarityFilter = "Tất cả";
-      document.getElementById("modalTitle").textContent = title;
+    document.getElementById("btnOpenAdd").addEventListener("click", () => {
+      if (!canManageFlowersAndMembers()) return;
+      warehouseForMemberName = "";
+      document.getElementById("modalTitle").textContent = "🌱 Trồng Hoa Mới";
       document.getElementById("editId").value = "";
+      selectedWarehouseFlowerId = "";
       document.getElementById("warehouseSearchInput").value = "";
-      document.getElementById("flowerName").value = ""; document.getElementById("flowerRarity").value = "Tím"; document.getElementById("flowerImage").value = "";
-      document.querySelectorAll("#warehouseFilterBar .w-filter-btn").forEach(b => b.classList.toggle("active", b.dataset.wfilter === "Tất cả"));
-
-      document.getElementById("editFlowerShowcase").style.display = "none";
-      document.getElementById("flowerWarehouseSection").style.display = "block";
-      document.getElementById("ownerSelectionSection").style.display = hideOwnerSection ? "none" : "block";
-      warehousePickerBox.classList.toggle("tall", hideOwnerSection);
+      document.getElementById("flowerName").value = "";
+      document.getElementById("flowerRarity").value = "Tím";
+      document.getElementById("flowerImage").value = "";
+      showcaseBox.style.display = "none";
+      warehouseSection.style.display = "block";
+      ownerSection.style.display = "block";
+      warehousePickerBox.classList.remove("tall");
       checklistBox.classList.remove("expanded");
+      renderWarehousePicker();
+      renderOwnerChecklist([]);
+      modal.classList.add("show");
+    });
 
-      renderWarehousePicker(); renderOwnerChecklist(defaultOwners);
-      setModalVisible("flowerModal", true);
-    }
-
-    document.getElementById("btnOpenAdd").addEventListener("click", () => openPickerModal({ title: "🌱 Trồng Hoa Mới" }));
     window.openAddFlowerForSelectedMember = function() {
-      if (!selectedMemberName) return;
-      openPickerModal({ title: `🌱 Thêm Hoa Cho ${selectedMemberName}`, forMember: selectedMemberName, defaultOwners: [selectedMemberName], hideOwnerSection: true });
+      if (!canManageFlowersAndMembers() || !selectedMemberName) return;
+      warehouseForMemberName = selectedMemberName;
+      document.getElementById("modalTitle").textContent = `🌱 Thêm Hoa Cho ${selectedMemberName}`;
+      document.getElementById("editId").value = "";
+      selectedWarehouseFlowerId = "";
+      document.getElementById("warehouseSearchInput").value = "";
+      document.getElementById("flowerName").value = "";
+      document.getElementById("flowerRarity").value = "Tím";
+      document.getElementById("flowerImage").value = "";
+      showcaseBox.style.display = "none";
+      warehouseSection.style.display = "block";
+      ownerSection.style.display = "none";
+      warehousePickerBox.classList.add("tall");
+      renderWarehousePicker();
+      renderOwnerChecklist([selectedMemberName]);
+      modal.classList.add("show");
     };
 
+    document.getElementById("btnCloseModalX").addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", (e) => { if (e.target.id === "flowerModal") modal.classList.remove("show"); });
+
     window.editFlower = function(id) {
-      if (!canManageMod()) return;
+      if (!canManageFlowersAndMembers()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
 
-      warehouseForMemberName = ""; selectedWarehouseFlowerId = "";
+      warehouseForMemberName = "";
       document.getElementById("modalTitle").textContent = "✏️ Chỉnh Sửa Người Sở Hữu";
       document.getElementById("editId").value = item.id;
-      document.getElementById("flowerName").value = item.name; document.getElementById("flowerRarity").value = item.rarity; document.getElementById("flowerImage").value = getFlowerImageUrl(item);
+      selectedWarehouseFlowerId = "";
+      document.getElementById("flowerName").value = item.name;
+      document.getElementById("flowerRarity").value = item.rarity;
+      document.getElementById("flowerImage").value = getFlowerImageUrl(item);
 
-      document.getElementById("editFlowerFrame").className = `flower-showcase-frame frame-${item.rarity}`;
+      const frameEl = document.getElementById("editFlowerFrame");
+      frameEl.className = `flower-showcase-frame frame-${item.rarity}`;
+
       const imgUrl = getFlowerImageUrl(item);
-      document.getElementById("editFlowerImgWrap").innerHTML = imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">` : `<i class="fa-solid fa-leaf"></i>`;
-      document.getElementById("editFlowerTitle").textContent = item.name;
+      document.getElementById("editFlowerImgWrap").innerHTML = imgUrl
+        ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
 
-      document.getElementById("editFlowerShowcase").style.display = "flex";
-      document.getElementById("flowerWarehouseSection").style.display = "none";
-      document.getElementById("ownerSelectionSection").style.display = "block";
+      document.getElementById("editFlowerTitle").textContent = item.name;
+      showcaseBox.style.display = "flex";
+      warehouseSection.style.display = "none";
+      ownerSection.style.display = "block";
       warehousePickerBox.classList.remove("tall");
       checklistBox.classList.add("expanded");
 
       renderOwnerChecklist(getOwnersArray(item.owners));
-      setModalVisible("flowerModal", true);
+      modal.classList.add("show");
     };
 
-    document.getElementById("btnSaveFlower").addEventListener("click", async () => {
-      if (!canManageMod()) return;
+    btnSave.addEventListener("click", async () => {
+      if (!canManageFlowersAndMembers()) return;
       const name = document.getElementById("flowerName").value.trim();
       const rarity = document.getElementById("flowerRarity").value;
       const image = document.getElementById("flowerImage").value.trim();
       let owners = Array.from(checklistBox.querySelectorAll(".owner-checkbox:checked")).map(cb => cb.value);
       if (!name) return alert("Vui lòng chọn tên hoa từ kho Loại Hoa!");
 
-      if (warehouseForMemberName && !owners.some(o => o.toLowerCase() === warehouseForMemberName.toLowerCase())) owners.push(warehouseForMemberName);
+      if (warehouseForMemberName && !owners.some(o => o.toLowerCase() === warehouseForMemberName.toLowerCase())) {
+        owners.push(warehouseForMemberName);
+      }
 
-      const btn = document.getElementById("btnSaveFlower");
-      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU LÊN MÂY...';
+      btnSave.disabled = true;
+      btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU LÊN MÂY...';
 
       const editId = document.getElementById("editId").value;
       const nameKey = name.toLowerCase();
@@ -1238,69 +2350,59 @@
       if (editId) {
         const idx = flowers.findIndex(f => String(f.id) === String(editId));
         if (idx !== -1) {
-          if (owners.length > 0) flowers[idx] = { ...flowers[idx], id: editId, name, rarity, owners, image };
-          else flowers.splice(idx, 1);
+          if (owners.length > 0) {
+            flowers[idx] = { ...flowers[idx], id: editId, name, rarity, owners, image };
+          } else {
+            flowers.splice(idx, 1);
+          }
         }
       } else {
         const existingIdx = flowers.findIndex(f => String(f.name || "").trim().toLowerCase() === nameKey);
         if (existingIdx !== -1) {
-          flowers[existingIdx] = { ...flowers[existingIdx], owners: Array.from(new Set([...getOwnersArray(flowers[existingIdx].owners), ...owners])) };
+          const mergedOwners = Array.from(new Set([...getOwnersArray(flowers[existingIdx].owners), ...owners]));
+          flowers[existingIdx] = {
+            ...flowers[existingIdx],
+            rarity: flowers[existingIdx].rarity || rarity,
+            image: flowers[existingIdx].image || image,
+            owners: mergedOwners
+          };
         } else if (owners.length > 0) {
-          flowers.push({ id: selectedWarehouseFlowerId ? ("fl_" + selectedWarehouseFlowerId) : ("fl_" + Date.now()), name, rarity, owners, image });
+          flowers.push({
+            id: selectedWarehouseFlowerId ? ("fl_" + selectedWarehouseFlowerId) : ("fl_" + Date.now()),
+            name,
+            rarity,
+            owners,
+            image
+          });
         }
       }
 
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      normalizeCatalogAndOwned();
+      saveLocalCache();
+      renderAllViews();
+      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) {
+        renderMemberModalContent();
+      }
 
       const ok = await saveToFirebase("flowers", flowers);
-      if (ok) setModalVisible("flowerModal", false);
-      btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY';
+      if (ok) modal.classList.remove("show");
+
+      btnSave.disabled = false;
+      btnSave.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY';
     });
 
     window.deleteFlower = async function(id) {
-      if (!canManageSuper()) return;
+      if (!canManageAll()) return;
       const item = flowers.find(f => String(f.id) === String(id));
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách sở hữu?`)) {
         flowers = flowers.filter(f => String(f.id) !== String(id));
-        normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
+        normalizeCatalogAndOwned();
+        saveLocalCache();
+        renderAllViews();
         await saveToFirebase("flowers", flowers);
       }
     };
-
-    // ================= SỰ KIỆN LỌC & TÌM KIẾM =================
-    document.querySelectorAll(".stat-card").forEach(card => {
-      card.addEventListener("click", () => {
-        document.querySelectorAll(".stat-card").forEach(c => c.classList.remove("active"));
-        card.classList.add("active"); currentFilter = card.dataset.filter; renderList();
-      });
-    });
-
-    document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#memberModalFilters .modal-filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active"); selectedMemberFilter = btn.dataset.mfilter; renderMemberModalContent();
-      });
-    });
-
-    document.querySelectorAll("#warehouseFilterBar .w-filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#warehouseFilterBar .w-filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active"); warehouseRarityFilter = btn.dataset.wfilter;
-        if (selectedWarehouseFlowerId) {
-          const cur = flowerCatalog.find(c => String(c.id) === String(selectedWarehouseFlowerId));
-          if (cur && warehouseRarityFilter !== "Tất cả" && cur.rarity !== warehouseRarityFilter) {
-            selectedWarehouseFlowerId = ""; document.getElementById("flowerName").value = "";
-          }
-        }
-        renderWarehousePicker();
-      });
-    });
-
-    document.getElementById("searchInput").addEventListener("input", debounce(renderList));
-    document.getElementById("memberSearchInput").addEventListener("input", debounce(renderMembers));
-    document.getElementById("categorySearchInput").addEventListener("input", debounce(renderCategories));
 
     // Khởi chạy
     applyAdminUI();
