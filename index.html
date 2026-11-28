@@ -22,7 +22,8 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Be Vietnam Pro', sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+    html, body { width: 100%; max-width: 100vw; overflow-x: hidden; }
+    body { background-color: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; }
     body:not(.role-mod):not(.role-super) .mod-only { display: none !important; }
     body:not(.role-super) .super-only { display: none !important; }
 
@@ -38,7 +39,7 @@
     .nav-item i { width: 18px; text-align: center; font-size: 15px; }
 
     /* ================= MAIN CONTENT ================= */
-    .main-wrapper { flex: 1; padding: 24px 32px; background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 55%), var(--bg-main); overflow-y: auto; }
+    .main-wrapper { flex: 1; min-width: 0; padding: 24px 32px; background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 55%), var(--bg-main); overflow-y: auto; }
     .top-header { background-color: rgba(27, 26, 46, 0.85); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
     .welcome-text { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .welcome-text span { color: var(--green-bright); }
@@ -57,7 +58,7 @@
     .dot-syncing { background-color: #facc15; box-shadow: 0 0 8px #facc15; }
     .dot-error { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
-    .content-frame { border: 1.5px dashed var(--border-dashed); border-radius: 20px; padding: 28px; background: rgba(20, 19, 36, 0.45); }
+    .content-frame { border: 1.5px dashed var(--border-dashed); border-radius: 20px; padding: 28px; background: rgba(20, 19, 36, 0.45); min-width: 0; }
     .tab-view { display: none; }
     .tab-view.active { display: block; }
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; color: #fff; }
@@ -67,8 +68,8 @@
     .news-header { margin-bottom: 24px; }
     .news-title { font-size: 28px; font-weight: 800; color: var(--green-neon); display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
     .news-subtitle { font-size: 14px; color: var(--text-muted); }
-    .news-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
-    .news-left, .news-right { display: flex; flex-direction: column; gap: 16px; }
+    .news-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: stretch; }
+    .news-left, .news-right { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
     .news-cover-box { width: 100%; aspect-ratio: 4 / 3; background: rgba(15, 18, 32, 0.85); border: 1px solid var(--border-subtle); border-radius: 18px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .news-cover-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .news-cover-placeholder { color: #64748b; text-align: center; padding: 20px; font-size: 14px; }
@@ -82,8 +83,8 @@
     .btn-save-news:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* ================= STATS & LIST ================= */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-    .stat-card { background: rgba(27, 26, 46, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: rgba(27, 26, 46, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
     .stat-card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.2); }
     .stat-card.active { background: linear-gradient(180deg, rgba(34, 197, 94, 0.16) 0%, rgba(27, 26, 46, 0.9) 100%); border: 1.5px solid var(--green-bright); box-shadow: 0 0 20px rgba(52, 211, 153, 0.2); }
     .stat-icon { font-size: 20px; margin-bottom: 4px; }
@@ -94,47 +95,49 @@
     .stat-count { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.1; }
     .stat-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; }
 
-    .toolbar { background: rgba(24, 25, 43, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
-    .search-box { position: relative; flex: 1; max-width: 440px; min-width: 220px; }
+    .toolbar { background: rgba(24, 25, 43, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+    .search-box { position: relative; flex: 1; max-width: 440px; min-width: 180px; }
     .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
     .search-box input { width: 100%; background: rgba(15, 16, 28, 0.8); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; padding: 10px 16px 10px 40px; color: #fff; font-size: 13.5px; outline: none; }
     .search-box input:focus { border-color: var(--green-bright); }
 
-    .btn-add, .btn-add-sm { background: linear-gradient(90deg, #10b981, #34d399); color: #fff; border: none; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); transition: filter 0.15s, transform 0.1s; }
+    .btn-add, .btn-add-sm { background: linear-gradient(90deg, #10b981, #34d399); color: #fff; border: none; border-radius: 999px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); transition: filter 0.15s, transform 0.1s; white-space: nowrap; }
     .btn-add { padding: 11px 22px; font-size: 13.5px; gap: 8px; }
     .btn-add-sm { padding: 8px 16px; font-size: 12.5px; }
     .btn-add:hover, .btn-add-sm:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
-    .table-header, .flower-row { display: grid; grid-template-columns: 60px 2fr 120px 2.5fr 170px; align-items: center; }
-    body:not(.role-super) .table-header, body:not(.role-super) .flower-row { grid-template-columns: 60px 2fr 120px 2.5fr; }
+    .table-header, .flower-row { display: grid; grid-template-columns: 56px minmax(0, 2fr) 115px minmax(0, 2.5fr) 170px; align-items: center; gap: 10px; }
+    body:not(.role-super) .table-header, body:not(.role-super) .flower-row { grid-template-columns: 56px minmax(0, 2fr) 115px minmax(0, 2.5fr); }
     .table-header { padding: 0 20px 12px; font-size: 11.5px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.6px; text-transform: uppercase; }
     .table-header div:last-child { text-align: right; }
 
     .flower-list { display: flex; flex-direction: column; gap: 12px; }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
-    .flower-row { background-color: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px 20px; transition: border-color 0.2s, background-color 0.2s; }
+    .flower-row { background-color: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px 20px; transition: border-color 0.2s, background-color 0.2s; min-width: 0; }
     body.role-mod .flower-row, body.role-super .flower-row { cursor: pointer; }
     .flower-row:hover { border-color: rgba(52, 211, 153, 0.45); background-color: #1e2036; }
 
     .col-stt { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
-    .col-name { display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 700; color: #fff; }
+    .col-name, .col-owners { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .col-name { font-size: 14.5px; font-weight: 700; color: #fff; }
+    .col-name span { word-break: keep-all; overflow-wrap: break-word; line-height: 1.35; }
     .col-name i { color: var(--green-bright); font-size: 15px; }
 
     .flower-thumb { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.45); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
     .flower-thumb-sm { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); background: rgba(255, 255, 255, 0.06); flex-shrink: 0; }
     .flower-thumb-cat { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(52, 211, 153, 0.4); background: rgba(255, 255, 255, 0.05); flex-shrink: 0; }
 
-    .badge-rarity { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; text-align: center; }
+    .badge-rarity { display: inline-block; padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; text-align: center; white-space: nowrap; }
     .rarity-Đỏ { background: linear-gradient(90deg, #ef4444, #f43f5e); }
     .rarity-Vàng { background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1e1b4b; }
     .rarity-Tím { background: linear-gradient(90deg, #a855f7, #d946ef); }
 
-    .col-owners { display: flex; flex-wrap: wrap; gap: 8px; }
-    .owner-pill { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(52, 211, 153, 0.35); color: #6ee7b7; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .col-owners { flex-wrap: wrap; gap: 8px; }
+    .owner-pill { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(52, 211, 153, 0.35); color: #6ee7b7; padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; max-width: 100%; }
     .owner-pill:hover { background: rgba(16, 185, 129, 0.28); }
 
     .col-actions { display: flex; justify-content: flex-end; gap: 8px; }
-    .btn-action { padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-action { padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
     .btn-edit { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); color: #60a5fa; }
     .btn-delete { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; }
 
@@ -148,7 +151,7 @@
     /* ================= THÀNH VIÊN & LOẠI HOA ================= */
     .members-header-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
     .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .member-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 14px; position: relative; }
+    .member-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 14px; position: relative; min-width: 0; }
     .member-card:hover { transform: translateY(-3px); border-color: var(--green-bright); background: #1e2036; }
     .member-card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; }
     .btn-edit-role, .btn-delete-member { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
@@ -167,15 +170,15 @@
     .mini-purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
     .member-card-footer { font-size: 12px; color: var(--green-bright); font-weight: 600; display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
-    .categories-grid { display: grid; grid-template-columns: repeat(3, minmax(280px, 1fr)); gap: 18px; align-items: start; }
-    .info-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; }
-    .info-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle); }
-    .info-card-count { background: rgba(52, 211, 153, 0.15); color: var(--green-bright); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; }
-    .cat-flower-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    .cat-flower-item { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-subtle); padding: 10px 14px; border-radius: 12px; font-size: 14px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 54px; cursor: pointer; transition: border-color 0.15s, background-color 0.15s, transform 0.15s; }
+    .categories-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+    .info-card { background: var(--bg-row); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; min-width: 0; }
+    .info-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle); gap: 8px; }
+    .info-card-count { background: rgba(52, 211, 153, 0.15); color: var(--green-bright); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .cat-flower-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .cat-flower-item { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-subtle); padding: 10px 14px; border-radius: 12px; font-size: 14px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 54px; cursor: pointer; transition: border-color 0.15s, background-color 0.15s, transform 0.15s; min-width: 0; }
     .cat-flower-item:hover { border-color: rgba(52, 211, 153, 0.45); background: rgba(255, 255, 255, 0.07); transform: translateX(2px); }
     .cat-flower-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .cat-flower-name { line-height: 1.35; word-break: break-word; }
+    .cat-flower-name { line-height: 1.35; word-break: keep-all; overflow-wrap: break-word; }
     .btn-edit-cat-img { background: rgba(59, 130, 246, 0.14); border: 1px solid rgba(96, 165, 250, 0.35); color: #93c5fd; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 12.5px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .btn-edit-cat-img:hover { background: rgba(59, 130, 246, 0.3); color: #fff; }
 
@@ -203,7 +206,7 @@
     .flower-showcase-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .flower-showcase-inner i { font-size: 42px; color: var(--green-bright); }
     .flower-showcase-name { font-size: 15px; font-weight: 800; color: #fff; text-align: center; }
-    .flower-view-title-32 { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.25; margin-top: 14px; word-break: break-word; }
+    .flower-view-title-32 { font-size: 32px; font-weight: 800; color: #fff; line-height: 1.25; margin-top: 14px; word-break: keep-all; overflow-wrap: break-word; }
 
     .owner-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .field-label { font-size: 14px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
@@ -246,7 +249,7 @@
     .btn-cloud-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
     .modal-wide { background: #1b1a2e; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; width: 100%; max-width: 720px; max-height: 85vh; padding: 24px; display: flex; flex-direction: column; }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); gap: 10px; flex-wrap: wrap; }
     .modal-header-right { display: flex; align-items: center; gap: 10px; }
     .modal-close-icon { background: rgba(255, 255, 255, 0.08); border: none; color: #cbd5e1; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; font-size: 15px; }
     .modal-close-icon:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
@@ -260,9 +263,29 @@
     .flower-mini-card-name { font-size: 14px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; line-height: 1.35; padding-right: 26px; }
     .flower-mini-card-name i { color: var(--green-bright); }
 
-    @media (max-width: 1120px) { .categories-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 1024px) { .news-layout { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .table-header { display: none; } .flower-row { grid-template-columns: 1fr; gap: 10px; } .col-actions { justify-content: flex-start; } }
-    @media (max-width: 768px) { body { flex-direction: column; } .sidebar { width: 100%; padding: 16px; } .nav-list { flex-direction: row; overflow-x: auto; } .main-wrapper { padding: 16px; } .flower-view-title-32 { font-size: 24px; } }
+    @media (max-width: 1120px) { .categories-grid { grid-template-columns: minmax(0, 1fr); } }
+    @media (max-width: 1024px) {
+      .news-layout { grid-template-columns: minmax(0, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .table-header { display: none; }
+      .flower-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+      .col-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 768px) {
+      body { flex-direction: column; width: 100%; max-width: 100vw; overflow-x: hidden; }
+      .sidebar { width: 100%; padding: 12px 14px; }
+      .nav-list { flex-direction: row; overflow-x: auto; gap: 6px; }
+      .nav-item { flex-shrink: 0; white-space: nowrap; padding: 9px 12px; font-size: 13px; }
+      .main-wrapper { width: 100%; padding: 12px; }
+      .top-header { padding: 12px 14px; }
+      .content-frame { padding: 14px; border-radius: 16px; }
+      .flower-row { grid-template-columns: 34px minmax(0, 1fr) auto; padding: 12px 14px; gap: 8px 10px; }
+      .col-name { font-size: 14px; }
+      .flower-thumb { width: 34px; height: 34px; }
+      .col-owners { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid var(--border-subtle); gap: 6px; }
+      .col-actions { grid-column: 1 / -1; justify-content: flex-end; }
+      .flower-view-title-32 { font-size: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -511,7 +534,7 @@
     const OLD_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbz5nOFbNi8SnCApGOe7AQ333UVkx_25ajUxl8chTX3imdkC8_KfqFNUzpAuq4Lu1E0JiA/exec";
     const PASS_MOD = "321444";
     const PASS_SUPER = "bumpyne";
-    const CACHE_KEY = "zero_garden_fb_cache_v19";
+    const CACHE_KEY = "zero_garden_fb_cache_v20";
 
     let adminLevel = "";
     let flowers = [];
@@ -545,6 +568,21 @@
     document.querySelectorAll(".modal-overlay").forEach(ov => {
       ov.addEventListener("click", (e) => { if (e.target === ov) ov.classList.remove("show"); });
     });
+
+    function refreshMemberPopupIfOpen() {
+      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) {
+        renderMemberModalContent();
+      }
+    }
+
+    function commitFlowersChange(syncFirebase = true) {
+      normalizeCatalogAndOwned();
+      saveLocalCache();
+      renderAllViews();
+      refreshMemberPopupIfOpen();
+      if (syncFirebase) return saveToFirebase("flowers", flowers);
+      return Promise.resolve(true);
+    }
 
     // ================= CACHE & CHUẨN HÓA KHO HOA =================
     function saveLocalCache() {
@@ -621,6 +659,14 @@
       return `<i class="fa-solid fa-leaf" style="color:#34d399;"></i>`;
     }
 
+    function renderShowcaseBox(frameId, wrapId, item) {
+      document.getElementById(frameId).className = `flower-showcase-frame frame-${item.rarity}`;
+      const url = getFlowerImageUrl(item);
+      document.getElementById(wrapId).innerHTML = url
+        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">`
+        : `<i class="fa-solid fa-leaf"></i>`;
+    }
+
     function renderRoleBadgeHtml(memberName) {
       const role = String(memberRoles[memberName] || "").trim();
       if (!role) return "";
@@ -654,7 +700,7 @@
       renderList();
       renderMembers();
       renderCategories();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      refreshMemberPopupIfOpen();
     }
 
     window.toggleAdminAuth = function() {
@@ -692,7 +738,7 @@
       normalizeCatalogAndOwned();
       saveLocalCache();
       renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      refreshMemberPopupIfOpen();
     }
 
     async function loadFromFirebase(silent = false) {
@@ -733,7 +779,7 @@
           try {
             const msg = JSON.parse(e.data);
             if (msg.path === "/" && msg.data) applyDatabaseSnapshot(msg.data);
-            else if (msg.path === "/flowers") { flowers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); }
+            else if (msg.path === "/flowers") { flowers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); refreshMemberPopupIfOpen(); }
             else if (msg.path === "/categories") { flowerCatalog = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; normalizeCatalogAndOwned(); saveLocalCache(); renderCategories(); }
             else if (msg.path === "/members") { allMembers = Array.isArray(msg.data) ? msg.data.filter(Boolean) : []; saveLocalCache(); renderMembers(); }
             else if (msg.path === "/roles") { memberRoles = (msg.data && typeof msg.data === "object") ? msg.data : {}; saveLocalCache(); renderMembers(); }
@@ -902,12 +948,8 @@
         const purple = list.filter(f => f.rarity === "Tím").length;
         const safeName = escapeJsStr(name);
 
-        const editRoleBtn = isSuper
-          ? `<button type="button" class="btn-edit-role" title="Cập nhật tên & vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')"><i class="fa-solid fa-pen"></i></button>`
-          : "";
-        const delMemberBtn = canMod
-          ? `<button type="button" class="btn-delete-member" title="Xóa thành viên" onclick="event.stopPropagation(); deleteMember('${safeName}')"><i class="fa-solid fa-trash"></i></button>`
-          : "";
+        const editRoleBtn = isSuper ? `<button type="button" class="btn-edit-role" title="Cập nhật tên & vai vế" onclick="event.stopPropagation(); openRecruitModal('${safeName}')"><i class="fa-solid fa-pen"></i></button>` : "";
+        const delMemberBtn = canMod ? `<button type="button" class="btn-delete-member" title="Xóa thành viên" onclick="event.stopPropagation(); deleteMember('${safeName}')"><i class="fa-solid fa-trash"></i></button>` : "";
 
         return `
           <div class="member-card" onclick="openMemberModal('${safeName}')">
@@ -935,24 +977,15 @@
 
       const targetLower = String(memberName).toLowerCase();
       allMembers = allMembers.filter(m => m.toLowerCase() !== targetLower);
-      Object.keys(memberRoles).forEach(k => {
-        if (k.toLowerCase() === targetLower) delete memberRoles[k];
-      });
-
-      flowers = flowers.map(f => {
-        const nextOwners = getOwnersArray(f.owners).filter(o => o.toLowerCase() !== targetLower);
-        return { ...f, owners: nextOwners };
-      }).filter(hasAnyOwner);
+      Object.keys(memberRoles).forEach(k => { if (k.toLowerCase() === targetLower) delete memberRoles[k]; });
+      flowers = flowers.map(f => ({ ...f, owners: getOwnersArray(f.owners).filter(o => o.toLowerCase() !== targetLower) })).filter(hasAnyOwner);
 
       if (selectedMemberName.toLowerCase() === targetLower) {
         selectedMemberName = "";
         setModalVisible("memberFlowersModal", false);
       }
 
-      normalizeCatalogAndOwned();
-      saveLocalCache();
-      renderAllViews();
-
+      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
       await saveToFirebase("members", allMembers);
       await saveToFirebase("roles", memberRoles);
       await saveToFirebase("flowers", flowers);
@@ -973,9 +1006,7 @@
       const nextOwners = getOwnersArray(flowers[idx].owners).filter(o => o.toLowerCase() !== String(memberName).toLowerCase());
       if (nextOwners.length > 0) flowers[idx] = { ...flowers[idx], owners: nextOwners };
       else flowers.splice(idx, 1);
-
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); renderMemberModalContent();
-      await saveToFirebase("flowers", flowers);
+      await commitFlowersChange(true);
     };
 
     function renderMemberModalContent() {
@@ -1027,9 +1058,8 @@
     window.openFlowerDetailModal = function(id) {
       const item = findFlowerById(id);
       if (!item) return;
-      document.getElementById("viewFlowerFrame").className = `flower-showcase-frame lg frame-${item.rarity}`;
-      const url = getFlowerImageUrl(item);
-      document.getElementById("viewFlowerImgWrap").innerHTML = url ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">` : `<i class="fa-solid fa-leaf"></i>`;
+      renderShowcaseBox("viewFlowerFrame", "viewFlowerImgWrap", item);
+      document.getElementById("viewFlowerFrame").classList.add("lg");
       document.getElementById("viewFlowerName32").textContent = item.name;
       setModalVisible("flowerDetailModal", true);
     };
@@ -1040,7 +1070,7 @@
       if (!item) return;
       document.getElementById("imgEditFlowerId").value = item.id;
       document.getElementById("imgEditFlowerName").textContent = item.name;
-      document.getElementById("imgPreviewFrame").className = `flower-showcase-frame frame-${item.rarity}`;
+      renderShowcaseBox("imgPreviewFrame", "imgPreviewWrap", item);
       document.getElementById("imgEditUrlInput").value = getFlowerImageUrl(item);
       updateImagePreviewBox();
       setModalVisible("flowerImageModal", true);
@@ -1118,21 +1148,14 @@
         allMembers = allMembers.map(m => m.toLowerCase() === oldLower ? newName : m);
         if (!allMembers.some(m => m.toLowerCase() === newName.toLowerCase())) allMembers.push(newName);
         delete memberRoles[oldName];
-
-        flowers = flowers.map(f => {
-          const arr = getOwnersArray(f.owners);
-          const replaced = arr.map(o => o.toLowerCase() === oldLower ? newName : o);
-          return { ...f, owners: Array.from(new Set(replaced)) };
-        });
-
+        flowers = flowers.map(f => ({ ...f, owners: Array.from(new Set(getOwnersArray(f.owners).map(o => o.toLowerCase() === oldLower ? newName : o))) }));
         if (selectedMemberName.toLowerCase() === oldLower) selectedMemberName = newName;
       } else if (!allMembers.some(m => m.toLowerCase() === newName.toLowerCase())) {
         allMembers.push(newName);
       }
 
       memberRoles[newName] = role;
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
+      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews(); refreshMemberPopupIfOpen();
 
       await saveToFirebase("members", allMembers);
       await saveToFirebase("roles", memberRoles);
@@ -1242,9 +1265,7 @@
       document.getElementById("editId").value = item.id;
       document.getElementById("flowerName").value = item.name; document.getElementById("flowerRarity").value = item.rarity; document.getElementById("flowerImage").value = getFlowerImageUrl(item);
 
-      document.getElementById("editFlowerFrame").className = `flower-showcase-frame frame-${item.rarity}`;
-      const imgUrl = getFlowerImageUrl(item);
-      document.getElementById("editFlowerImgWrap").innerHTML = imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(item.name)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<i class=\\'fa-solid fa-leaf\\'></i>'">` : `<i class="fa-solid fa-leaf"></i>`;
+      renderShowcaseBox("editFlowerFrame", "editFlowerImgWrap", item);
       document.getElementById("editFlowerTitle").textContent = item.name;
 
       document.getElementById("editFlowerShowcase").style.display = "flex";
@@ -1288,10 +1309,7 @@
         }
       }
 
-      normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
-      if (document.getElementById("memberFlowersModal").classList.contains("show") && selectedMemberName) renderMemberModalContent();
-
-      const ok = await saveToFirebase("flowers", flowers);
+      const ok = await commitFlowersChange(true);
       if (ok) setModalVisible("flowerModal", false);
       btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> GỬI GẮM LÊN MÂY';
     });
@@ -1302,8 +1320,7 @@
       if (!item) return;
       if (confirm(`Xóa "${item.name}" khỏi danh sách sở hữu?`)) {
         flowers = flowers.filter(f => String(f.id) !== String(id));
-        normalizeCatalogAndOwned(); saveLocalCache(); renderAllViews();
-        await saveToFirebase("flowers", flowers);
+        await commitFlowersChange(true);
       }
     };
 
